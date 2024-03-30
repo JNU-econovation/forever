@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="paragraph">#FF010205</color>
+    <color name="subtitle">#FF7A7A7A</color>
+    <color name="placeholder">#FF9F9F9F</color>
+
+    <color name="gray_medium">#FFD2D2D2</color>
+    <color name="gray_light">#FFF5F5F5</color>
+
+    <color name="secondary_strong">#FF8990FC</color>
+    <color name="secondary_medium">#FFDCDCFF</color>
+    <color name="secondary_light">#FFF9F9FF</color>
+
+    <color name="purple_strong">#FFD2B4FC</color>
+    <color name="purple_medium">#FFD8BDFF</color>
+    <color name="purple_light">#FFF7F2FE</color>
+
+    <color name="blue_strong">#FF8990FC</color>
+    <color name="blue_medium">#FFA1BEFF</color>
+    <color name="blue_light">#FFE2E4FE</color>
+
+    <color name="white">#FFFFFFFE</color>
+</resources>
