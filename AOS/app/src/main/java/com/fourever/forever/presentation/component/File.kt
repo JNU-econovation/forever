@@ -1,5 +1,6 @@
 package com.fourever.forever.presentation.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,8 @@ const val CARD_HEIGHT = 74
 const val CARD_WIDTH = 320
 const val CARD_PADDING = 25
 const val SPACE_BETWEEN_LEADING_ICON_AND_TITLE = 20
+const val MAX_TITLE_LENGTH = 15
+private const val BORDER_WIDTH = 0.3
 
 @Composable
 fun File(fileName: String) {
@@ -39,6 +42,10 @@ fun File(fileName: String) {
                 height = CARD_HEIGHT.dp,
                 width = CARD_WIDTH.dp
             ),
+        border = BorderStroke(
+            width = BORDER_WIDTH.dp,
+            color = colorResource(id = R.color.secondary_strong)
+        )
     ) {
         Box(
             modifier = Modifier
@@ -84,7 +91,7 @@ fun File(fileName: String) {
     }
 }
 
-@Preview(showSystemUi = false)
+@Preview(showBackground = true)
 @Composable
 private fun FilePreview() {
     MaterialTheme {
