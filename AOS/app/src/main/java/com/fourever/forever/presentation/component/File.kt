@@ -24,13 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.presentation.util.EditText
 
-const val CARD_RADIUS = 10
-const val CARD_HEIGHT = 74
-const val CARD_WIDTH = 320
-const val CARD_PADDING = 25
-const val SPACE_BETWEEN_LEADING_ICON_AND_TITLE = 20
-const val MAX_TITLE_LENGTH = 15
+private const val CARD_RADIUS = 10
+private const val CARD_HEIGHT = 74
+private const val CARD_WIDTH = 320
+private const val CARD_PADDING = 25
+private const val SPACE_BETWEEN_LEADING_ICON_AND_TITLE = 20
+private const val MAX_TITLE_LENGTH = 15
 private const val BORDER_WIDTH = 0.3
 
 @Composable
@@ -95,6 +96,6 @@ fun File(fileName: String) {
 @Composable
 private fun FilePreview() {
     MaterialTheme {
-        File("프로그래밍_언어론_ch03a")
+        File("프로그래밍_언어론_ch03az")
     }
 }
