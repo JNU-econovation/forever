@@ -64,7 +64,7 @@ fun ForeverTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = foreverTypography,
         content = content
     )
 }
