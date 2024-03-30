@@ -79,7 +79,7 @@ fun File(fileName: String) {
                         modifier = Modifier.size(SPACE_BETWEEN_LEADING_ICON_AND_TITLE.dp)
                     )
                     Text(
-                        text = fileName,
+                        text = EditText(text = fileName, max_length = MAX_TITLE_LENGTH),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
