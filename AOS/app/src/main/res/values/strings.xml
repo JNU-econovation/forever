@@ -11,7 +11,7 @@
     <string name="file_upload_summary_button">자료 요약하기</string>
 
     <string name="summary_subtitle">요약하면 이런 내용이에요.</string>
-    <string name="summary_save_button">저장하고 나가기</string>
+    <string name="summary_save_button">저장하고 질문 확인하기</string>
     <string name="summary_done_button">저장하지 않고 나가기</string>
 
     <string name="question_list_title">문제도 풀어볼까요?</string>
