@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
-import com.fourever.forever.presentation.util.EditText
+import com.fourever.forever.presentation.util.editText
 
 private const val BOX_HEIGHT = 73
 private const val BOX_WIDTH = 360
@@ -66,7 +66,7 @@ fun Question(question: String) {
                         modifier = Modifier.size(SPACE_BETWEEN_LEADING_ICON_AND_TITLE.dp)
                     )
                     Text(
-                        text = EditText(question, MAX_QUESTION_LENGTH),
+                        text = editText(question, MAX_QUESTION_LENGTH),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
