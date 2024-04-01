@@ -29,4 +29,9 @@
     <string name="question_bottom_answer_title">위로 올려 정답을 확인해보세요!</string>
     <string name="question_button_answer_subtitle">내가 적은 답변을 정답과 비교해 볼 수 있어요.</string>
     <string name="question_bottom_answer">정답</string>
+
+    <!--Content Descriptions-->
+    <string name="description_ic_main_top_profile">마이페이지로 이동합니다.</string>
+    <string name="description_ic_file_upload_top_navigation">홈 화면으로 이동합니다.</string>
+    <string name="description_ic_question_top_navigation">파일 요약 페이지로 이동합니다.</string>
 </resources>
