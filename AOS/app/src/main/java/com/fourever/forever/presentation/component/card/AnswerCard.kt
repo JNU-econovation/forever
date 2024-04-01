@@ -1,0 +1,71 @@
+package com.fourever.forever.presentation.component.card
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.fourever.forever.R
+import com.fourever.forever.presentation.util.abbreviateText
+
+private const val DIVIDER_THICKNESS = 1
+private const val DIVIDER_WIDTH = 320
+
+private const val ANSWER_CARD_HORIZONTAL_PADDING = 10
+private const val ANSWER_CARD_VERTICAL_PADDING = 20
+private const val ANSWER_CARD_SPACE_BETWEEN_TITLE_AND_CONTENT = 10
+private const val ANSWER_CARD_CONTENT_MAX_LENGTH = 30
+
+private const val ANSWER_CARD_CONTENT_WIDTH = 270
+private const val ANSWER_CARD_CONTENT_HEIGHT = 40
+
+@Composable
+fun AnswerCard(answer: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Divider(
+            modifier = Modifier.width(DIVIDER_WIDTH.dp),
+            color = colorResource(R.color.secondary_medium),
+            thickness = DIVIDER_THICKNESS.dp
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = ANSWER_CARD_HORIZONTAL_PADDING.dp, vertical = ANSWER_CARD_VERTICAL_PADDING.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.question_bottom_answer),
+                style = MaterialTheme.typography.titleSmall
+            )
+            Spacer(modifier = Modifier.size(ANSWER_CARD_SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
+            Text(
+                text = abbreviateText(answer, ANSWER_CARD_CONTENT_MAX_LENGTH),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.size(width = ANSWER_CARD_CONTENT_WIDTH.dp, height = ANSWER_CARD_CONTENT_HEIGHT.dp)
+            )
+        }
+        Divider(
+            modifier = Modifier.width(DIVIDER_WIDTH.dp),
+            color = colorResource(R.color.secondary_medium),
+            thickness = DIVIDER_THICKNESS.dp
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardPreview() {
+    MaterialTheme {
+        AnswerCard("이것이 질문입니다.이것이 질문입니다.이것이 질문입니다.이것이 질문입니다.이것이 질문입니다.")
+    }
+}
