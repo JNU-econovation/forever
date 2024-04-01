@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
-import com.fourever.forever.presentation.util.editText
+import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
 
 private const val CARD_RADIUS = 10
 private const val CARD_HEIGHT = 74
@@ -79,7 +79,7 @@ fun File(fileName: String) {
                         modifier = Modifier.size(SPACE_BETWEEN_LEADING_ICON_AND_TITLE.dp)
                     )
                     Text(
-                        text = editText(text = fileName, maxLength = MAX_TITLE_LENGTH),
+                        text = abbreviateTextWithEllipsis(text = fileName, maxLength = MAX_TITLE_LENGTH),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
