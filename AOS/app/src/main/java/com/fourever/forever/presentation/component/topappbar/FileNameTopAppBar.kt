@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.fourever.forever.R
+import com.fourever.forever.ui.theme.foreverTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +20,7 @@ fun FileNameTopAppBar(fileName: String) {
         title = {
             Text(
                 text = fileName,
-                style = MaterialTheme.typography.titleMedium,
+                style = foreverTypography.titleMedium,
                 color = colorResource(
                     id = R.color.paragraph
                 )

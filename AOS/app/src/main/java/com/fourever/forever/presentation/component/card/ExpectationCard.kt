@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.ui.theme.foreverTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +68,7 @@ fun ExpectationCard() {
         ) {
             Text(
                 text = stringResource(id = R.string.expectation),
-                style = MaterialTheme.typography.titleSmall
+                style = foreverTypography.titleSmall
             )
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
             BasicTextField(
@@ -91,7 +92,7 @@ fun ExpectationCard() {
                     placeholder = {
                         Text(
                             text = stringResource(id = R.string.expectation_placeholder),
-                            style = MaterialTheme.typography.bodySmall,
+                            style = foreverTypography.bodySmall,
                             color = colorResource(id = R.color.placeholder)
                         )
                     },

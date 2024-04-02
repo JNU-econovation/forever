@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.ui.theme.foreverTypography
 
 private const val FILE_UPLOAD_BTN_WIDTH = 320
 private const val FILE_UPLOAD_BTN_HEIGHT = 212
@@ -61,7 +62,7 @@ fun FileUploadBtn(isFileChosen: Boolean, fileName: String = "") {
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_ICON_AND_PARAGRAPH.dp))
                 Text(
                     text = fileName,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = foreverTypography.labelSmall,
                 )
             } else {
                 Image(
@@ -71,7 +72,7 @@ fun FileUploadBtn(isFileChosen: Boolean, fileName: String = "") {
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_ICON_AND_PARAGRAPH.dp))
                 Text(
                     text = stringResource(id = R.string.file_upload_notice),
-                    style = MaterialTheme.typography.labelSmall,
+                    style = foreverTypography.labelSmall,
                 )
             }
         }
@@ -82,6 +83,6 @@ fun FileUploadBtn(isFileChosen: Boolean, fileName: String = "") {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        FileUploadBtn(true, "프로그래밍_언어론_ch03a")
+        FileUploadBtn(false, "프로그래밍_언어론_ch03a")
     }
 }

@@ -41,9 +41,9 @@ val foreverTypography = Typography(
     ),
     titleMedium = TextStyle(
         fontFamily = Pretendard,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 18.sp,
-        lineHeight = 24.sp
+        lineHeight = 30.sp
     ),
     titleSmall = TextStyle(
         fontFamily = Pretendard,

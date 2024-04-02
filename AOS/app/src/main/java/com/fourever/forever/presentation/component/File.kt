@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
+import com.fourever.forever.ui.theme.foreverTypography
 
 private const val CARD_RADIUS = 10
 private const val CARD_HEIGHT = 74
@@ -80,7 +81,7 @@ fun File(fileName: String) {
                     )
                     Text(
                         text = abbreviateTextWithEllipsis(text = fileName, maxLength = MAX_TITLE_LENGTH),
-                        style = MaterialTheme.typography.bodySmall
+                        style = foreverTypography.bodySmall
                     )
                 }
                 Image(

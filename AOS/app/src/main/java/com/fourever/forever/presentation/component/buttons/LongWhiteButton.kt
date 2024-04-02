@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.ui.theme.foreverTypography
 
 private const val SPACE_BETWEEN_ICON_AND_TEXT = 10
 private const val ICON_SIZE = 15
@@ -65,7 +66,7 @@ fun LongWhiteBtn(enabled: Boolean) {
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_ICON_AND_TEXT.dp))
             Text(
                 text = stringResource(id = R.string.save_question_button),
-                style = MaterialTheme.typography.titleSmall,
+                style = foreverTypography.titleSmall,
             )
         }
     }
