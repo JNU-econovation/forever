@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.ui.theme.foreverTypography
 
-private const val FILE_UPLOAD_BTN_WIDTH = 320
+private const val FILE_UPLOAD_BTN_WIDTH = 360
 private const val FILE_UPLOAD_BTN_HEIGHT = 212
 private const val FILE_UPLOAD_BTN_RADIUS = 5
 private const val FILE_UPLOAD_BTN_STROKE_THICKNESS = 1.5
