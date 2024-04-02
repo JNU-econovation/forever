@@ -30,7 +30,8 @@ fun LongColorBtn(text: String, enabled: Boolean) {
                         colorResource(id = R.color.purple_medium),
                         colorResource(id = R.color.blue_medium),
                     )
-                )
+                ),
+                shape = RoundedCornerShape(BUTTON_RADIUS.dp)
             ),
         enabled = enabled,
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),

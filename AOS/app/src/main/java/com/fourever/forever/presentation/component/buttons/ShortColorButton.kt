@@ -31,7 +31,8 @@ fun ShortColorBtn() {
                         colorResource(id = R.color.purple_strong),
                         colorResource(id = R.color.blue_strong),
                     )
-                )
+                ),
+                shape = RoundedCornerShape(BUTTON_RADIUS.dp)
             ),
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),
         border = BorderStroke(
