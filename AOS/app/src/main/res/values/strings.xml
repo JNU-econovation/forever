@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">forever</string>
 
-    <string name="main_title">요약 혹은 질문을 확인할 자료를 고르세요.</string>
+    <string name="main_title">요약 혹은 질문을 확인할\n자료를 고르세요.</string>
     <string name="main_subtitle">FOREVER와 함께 편리하게 복습해요:)</string>
     <string name="main_file_list_empty">+ 버튼을 눌러 강의 자료를 추가해보세요.</string>
 
@@ -34,4 +34,5 @@
     <string name="description_ic_main_top_profile">마이페이지로 이동합니다.</string>
     <string name="description_ic_file_upload_top_navigation">홈 화면으로 이동합니다.</string>
     <string name="description_ic_question_top_navigation">파일 요약 페이지로 이동합니다.</string>
+    <string name="description_btn_main_add_file">파일 업로드 페이지로 이동합니다.</string>
 </resources>
