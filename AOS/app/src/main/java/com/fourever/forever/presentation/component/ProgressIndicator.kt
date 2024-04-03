@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 
-private const val MAX_PROGRESS_BAR_SIZE = 320
+private const val MAX_PROGRESS_BAR_SIZE = 380
 private const val MAX_QUESTION_NUM = 5
 
 @Composable
