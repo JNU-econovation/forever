@@ -3,6 +3,7 @@ package com.fourever.forever.presentation.component.btmsheet
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +18,9 @@ import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
 fun AnswerBtmSheet(answer: String) {
-    Column {
+    Column(
+        modifier = Modifier.width(BTM_SHEET_CONTENT_WIDTH.dp)
+    ) {
         Column {
             Text(
                 text = stringResource(id = R.string.question_bottom_answer_title),
