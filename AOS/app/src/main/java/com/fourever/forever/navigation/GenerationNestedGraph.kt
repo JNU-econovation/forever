@@ -16,7 +16,7 @@ fun NavGraphBuilder.generationGraph(navController: NavController) {
             FileUploadScreen()
         }
         composable(Screen.GenerateSummary.route) {
-            GenerateSummaryScreen()
+            GenerateSummaryScreen("", "")
         }
         composable(Screen.GenerateQuestion.route) {
             GenerateQuestionScreen()

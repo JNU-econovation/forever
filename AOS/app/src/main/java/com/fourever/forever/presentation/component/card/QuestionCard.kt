@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.util.abbreviateText
+import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
 fun QuestionCard(question: String) {
@@ -51,12 +52,12 @@ fun QuestionCard(question: String) {
         ) {
             Text(
                 text = stringResource(id = R.string.question),
-                style = MaterialTheme.typography.titleSmall
+                style = foreverTypography.titleSmall
             )
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
             Text(
                 text = abbreviateText(question, CARD_CONTENT_MAX_LENGTH),
-                style = MaterialTheme.typography.bodySmall
+                style = foreverTypography.bodySmall
             )
         }
     }

@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
+import com.fourever.forever.ui.theme.foreverTypography
 
 private const val BOX_HEIGHT = 73
 private const val BOX_WIDTH = 360
@@ -67,7 +68,7 @@ fun Question(question: String) {
                     )
                     Text(
                         text = abbreviateTextWithEllipsis(question, MAX_QUESTION_LENGTH),
-                        style = MaterialTheme.typography.bodySmall
+                        style = foreverTypography.bodySmall
                     )
                 }
                 Image(

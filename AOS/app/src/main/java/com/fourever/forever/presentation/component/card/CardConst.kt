@@ -1,6 +1,6 @@
 package com.fourever.forever.presentation.component.card
 
-const val CARD_WIDTH = 320
+const val CARD_WIDTH = 360
 const val CARD_HEIGHT = 120
 const val CARD_HORIZONTAL_PADDING = 25
 const val CARD_VERTICAL_PADDING = 20

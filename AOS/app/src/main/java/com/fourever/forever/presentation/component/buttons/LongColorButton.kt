@@ -16,6 +16,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
 fun LongColorBtn(text: String, enabled: Boolean) {
@@ -29,7 +30,8 @@ fun LongColorBtn(text: String, enabled: Boolean) {
                         colorResource(id = R.color.purple_medium),
                         colorResource(id = R.color.blue_medium),
                     )
-                )
+                ),
+                shape = RoundedCornerShape(BUTTON_RADIUS.dp)
             ),
         enabled = enabled,
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),
@@ -50,7 +52,7 @@ fun LongColorBtn(text: String, enabled: Boolean) {
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleSmall,
+            style = foreverTypography.titleSmall,
         )
     }
 }

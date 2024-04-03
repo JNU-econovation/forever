@@ -17,16 +17,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.util.abbreviateText
+import com.fourever.forever.ui.theme.foreverTypography
 
 private const val DIVIDER_THICKNESS = 1
-private const val DIVIDER_WIDTH = 320
+private const val DIVIDER_WIDTH = 380
 
 private const val ANSWER_CARD_HORIZONTAL_PADDING = 10
 private const val ANSWER_CARD_VERTICAL_PADDING = 20
 private const val ANSWER_CARD_SPACE_BETWEEN_TITLE_AND_CONTENT = 10
 private const val ANSWER_CARD_CONTENT_MAX_LENGTH = 30
 
-private const val ANSWER_CARD_CONTENT_WIDTH = 270
+private const val ANSWER_CARD_CONTENT_WIDTH = 330
 private const val ANSWER_CARD_CONTENT_HEIGHT = 40
 
 @Composable
@@ -45,12 +46,12 @@ fun AnswerCard(answer: String) {
         ) {
             Text(
                 text = stringResource(id = R.string.question_bottom_answer),
-                style = MaterialTheme.typography.titleSmall
+                style = foreverTypography.titleSmall
             )
             Spacer(modifier = Modifier.size(ANSWER_CARD_SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
             Text(
                 text = abbreviateText(answer, ANSWER_CARD_CONTENT_MAX_LENGTH),
-                style = MaterialTheme.typography.bodySmall,
+                style = foreverTypography.bodySmall,
                 modifier = Modifier.size(width = ANSWER_CARD_CONTENT_WIDTH.dp, height = ANSWER_CARD_CONTENT_HEIGHT.dp)
             )
         }

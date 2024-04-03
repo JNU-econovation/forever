@@ -12,7 +12,7 @@ fun NavGraphBuilder.detailGraph(navController: NavController) {
         startDestination = Screen.GetSummary.route, route = Screen.Detail.route
     ) {
         composable(Screen.GetSummary.route) {
-            GetSummaryScreen()
+            GetSummaryScreen("", "")
         }
         composable(Screen.GetQuestion.route) {
             GetQuestionScreen()

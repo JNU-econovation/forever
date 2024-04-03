@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
 fun ShortWhiteBtn() {
@@ -33,7 +34,7 @@ fun ShortWhiteBtn() {
     ) {
         Text(
             text = stringResource(id = R.string.summary_done_button),
-            style = MaterialTheme.typography.labelMedium,
+            style = foreverTypography.labelMedium,
         )
     }
 }
