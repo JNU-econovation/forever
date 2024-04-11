@@ -51,7 +51,11 @@ fun FileUploadScreen() {
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_BTN.dp))
             FileUploadBtn(isFileChosen = isFileChosen.value)
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_BTNS.dp))
-            LongColorBtn(text = stringResource(id = R.string.file_upload_summary_button), enabled = !isFileChosen.value)
+            LongColorBtn(
+                text = stringResource(id = R.string.file_upload_summary_button),
+                enabled = !isFileChosen.value,
+                onClick = {}
+            )
         }
     }
 }
