@@ -15,24 +15,27 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.presentation.component.File
 
 private const val SPACE_BETWEEN_FILES = 12
 @Composable
 fun FileList(
-    fileList: List<String>?,
+    fileList: List<GetFileListResponseDto.Document> = listOf(),
     onFileClick: (Int) -> Unit,
     loadMoreFile: () -> Unit
 ) {
     val fileListState = rememberLazyListState()
 
-    if (fileList != null) {
+    if (fileList.isNotEmpty()) {
         LazyColumn(state = fileListState) {
-            items(fileList) { fileName ->
-                File(fileName)
+            items(fileList) { file ->
+                File(fileName = file.title, onFileClick = { onFileClick(file.documentId) })
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_FILES.dp))
             }
         }
+    } else {
+       FileNotExist()
     }
 
     fileListState.OnBottomReached(
@@ -60,12 +63,22 @@ private fun LazyListState.OnBottomReached(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true)
 @Composable
 private fun FileListPreview() {
     MaterialTheme {
+/*        FileList(
+            fileList = listOf(
+                GetFileListResponseDto.Document(1, "프로그래밍_언어론_ch03a"),
+                GetFileListResponseDto.Document(2, "프로그래밍_언어론_ch03a"),
+                GetFileListResponseDto.Document(3, "프로그래밍_언어론_ch03a"),
+            ),
+            onFileClick = {},
+            loadMoreFile = {}
+        )*/
+
         FileList(
-            fileList = listOf("프로그래밍_언어론_ch03az", "프로그래밍_언어론_ch03az", "프로그래밍_언어론_ch03az", "프로그래밍_언어론_ch03az"),
+            fileList = listOf(),
             onFileClick = {},
             loadMoreFile = {}
         )

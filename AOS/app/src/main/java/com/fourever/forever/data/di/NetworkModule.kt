@@ -18,13 +18,19 @@ import javax.inject.Singleton
 object NetworkModule {
     private const val BASE_URL = "not yet determined"
 
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
     @Singleton
     @Provides
     fun providesOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor
-    ) = OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(httpLoggingInterceptor)
+        .build()
 
     @Singleton
     @Provides

@@ -10,8 +10,9 @@ import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class FakeFileRepositoryImpl : FileRepository {
+class FakeFileRepositoryImpl @Inject constructor() : FileRepository {
     override fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>> {
         return flow {
             emit(

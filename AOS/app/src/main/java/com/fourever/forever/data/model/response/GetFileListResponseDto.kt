@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 data class GetFileListResponseDto(
     @SerialName("documents")
-    val programs: List<Document>
+    val documents: List<Document>
 ) {
     @Serializable
     data class Document(

@@ -33,8 +33,8 @@ class ForeverNavActions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToGetSummary() {
-        navController.navigate(Screen.GetSummary.route) {
+    fun navigateToGetSummary(documentId: Int) {
+        navController.navigate(Screen.GetSummary.createRoute(documentId)) {
             popUpTo(navController.graph.findStartDestination().id)
             launchSingleTop = true
         }
