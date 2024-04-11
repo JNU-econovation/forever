@@ -3,6 +3,7 @@ package com.fourever.forever.presentation.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -36,14 +37,15 @@ private const val MAX_TITLE_LENGTH = 15
 private const val BORDER_WIDTH = 0.3
 
 @Composable
-fun File(fileName: String) {
+fun File(fileName: String, onFileClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(CARD_RADIUS.dp),
         modifier = Modifier
             .size(
                 height = CARD_HEIGHT.dp,
                 width = CARD_WIDTH.dp
-            ),
+            )
+            .clickable { onFileClick() },
         border = BorderStroke(
             width = BORDER_WIDTH.dp,
             color = colorResource(id = R.color.secondary_strong)
@@ -97,6 +99,6 @@ fun File(fileName: String) {
 @Composable
 private fun FilePreview() {
     MaterialTheme {
-        File("프로그래밍_언어론_ch03az")
+        File("프로그래밍_언어론_ch03az", {})
     }
 }
