@@ -13,7 +13,7 @@ fun ForeverNavGraph() {
         composable(Screen.Home.route) {
             HomeScreen()
         }
-        detailGraph(navController = navController)
-        generationGraph(navController = navController)
+        detailGraph()
+        generationGraph()
     }
 }
