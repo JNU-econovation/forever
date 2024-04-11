@@ -2,6 +2,7 @@ package com.fourever.forever.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,9 +36,10 @@ private const val MAX_QUESTION_LENGTH = 25
 private const val SPACE_BETWEEN_LEADING_ICON_AND_TITLE = 15
 
 @Composable
-fun Question(question: String) {
+fun Question(question: String, onQuestionClick: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable { onQuestionClick() }
     ) {
         Divider(
             modifier = Modifier.width(DIVIDER_WIDTH.dp),
@@ -89,6 +91,6 @@ fun Question(question: String) {
 @Composable
 private fun QuestionPreview() {
     MaterialTheme {
-        Question("캡스톤 강의의 주요 일정은 어떻게 되어 있나요?")
+        Question(question = "캡스톤 강의의 주요 일정은 어떻게 되어 있나요?", onQuestionClick = {})
     }
 }
