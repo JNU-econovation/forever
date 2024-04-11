@@ -14,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -26,17 +28,26 @@ import androidx.compose.ui.unit.sp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.SCREEN_MARGIN
 import com.fourever.forever.presentation.component.topappbar.MainTopAppBar
+import com.fourever.forever.presentation.util.UiState
 import com.fourever.forever.ui.theme.foreverTypography
+
 
 private const val SPACE_BETWEEN_TITLE_AND_SUBTITLE = 2
 private const val SPACE_BETWEEN_TITLE_AND_FILE_LIST = 100
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    homeUiState: HomeUiState,
+    goFileUploadScreen: () -> Unit,
+    onFileClick: (Int) -> Unit,
+    loadMoreFile: (Int) -> Unit
+) {
+    val page = rememberSaveable { mutableStateOf(0) }
+
     Scaffold(
         topBar = { MainTopAppBar() },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }, shape = CircleShape) {
+            FloatingActionButton(onClick = goFileUploadScreen, shape = CircleShape) {
                 Image(
                     painter = painterResource(id = R.drawable.btn_main_add_file),
                     contentDescription = stringResource(
@@ -74,23 +85,15 @@ fun HomeScreen() {
                 style = foreverTypography.labelSmall,
                 color = colorResource(id = R.color.gray_medium)
             )
-            /**
-             * TODO
-             * if (fileNotExist) { FileNotExist() }
-             * else { FileList() }
-             */
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_FILE_LIST.dp))
             FileList(
-                fileList = listOf(
-                    "프로그래밍_언어론_ch03az",
-                    "프로그래밍_언어론_ch03az",
-                    "프로그래밍_언어론_ch03az",
-                    "프로그래밍_언어론_ch03az",
-                    "프로그래밍_언어론_ch03az",
-                    "프로그래밍_언어론_ch03az",
-                    "프로그래밍_언어론_ch03az"),
-                onFileClick = {},
-                loadMoreFile = {}
+                fileList = if (homeUiState.fileState == UiState.Success) {
+                    homeUiState.files
+                } else {
+                    listOf()
+                },
+                onFileClick = { documentId -> onFileClick(documentId) },
+                loadMoreFile = { loadMoreFile(++page.value) }
             )
         }
     }
@@ -100,6 +103,11 @@ fun HomeScreen() {
 @Composable
 private fun HomePreview() {
     MaterialTheme {
-        HomeScreen()
+        HomeScreen(
+            homeUiState = HomeUiState(),
+            goFileUploadScreen = {},
+            onFileClick = {},
+            loadMoreFile = {}
+        )
     }
 }
