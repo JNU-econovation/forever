@@ -62,7 +62,8 @@ fun GetQuestionScreen() {
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_CARD_AND_BUTTON.dp))
                 LongColorBtn(
                     text = stringResource(id = R.string.question_done_button),
-                    enabled = true
+                    enabled = true,
+                    onClick = {}
                 )
             }
         }

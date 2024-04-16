@@ -19,9 +19,13 @@ import com.fourever.forever.R
 import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
-fun LongColorBtn(text: String, enabled: Boolean) {
+fun LongColorBtn(
+    text: String,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         modifier = Modifier
             .size(width = LONG_BTN_WIDTH.dp, height = LONG_BTN_HEIGHT.dp)
             .background(
@@ -61,6 +65,6 @@ fun LongColorBtn(text: String, enabled: Boolean) {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        LongColorBtn("자료 요약하기", true)
+        LongColorBtn("자료 요약하기", true, {})
     }
 }

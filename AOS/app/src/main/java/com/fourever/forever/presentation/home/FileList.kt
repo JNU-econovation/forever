@@ -1,6 +1,9 @@
 package com.fourever.forever.presentation.home
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -12,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,6 +23,8 @@ import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.presentation.component.File
 
 private const val SPACE_BETWEEN_FILES = 12
+private const val SPACE_BETWEEN_TITLE_AND_FILE_LIST = 100
+
 @Composable
 fun FileList(
     fileList: List<GetFileListResponseDto.Document> = listOf(),
@@ -28,6 +34,7 @@ fun FileList(
     val fileListState = rememberLazyListState()
 
     if (fileList.isNotEmpty()) {
+        Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_FILE_LIST.dp))
         LazyColumn(state = fileListState) {
             items(fileList) { file ->
                 File(fileName = file.title, onFileClick = { onFileClick(file.documentId) })
@@ -35,7 +42,13 @@ fun FileList(
             }
         }
     } else {
-       FileNotExist()
+       Column(
+           modifier = Modifier.fillMaxSize(),
+           horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.Center
+       ) {
+           FileNotExist()
+       }
     }
 
     fileListState.OnBottomReached(

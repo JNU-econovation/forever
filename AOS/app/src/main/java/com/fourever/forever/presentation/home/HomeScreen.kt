@@ -33,7 +33,6 @@ import com.fourever.forever.ui.theme.foreverTypography
 
 
 private const val SPACE_BETWEEN_TITLE_AND_SUBTITLE = 2
-private const val SPACE_BETWEEN_TITLE_AND_FILE_LIST = 100
 
 @Composable
 fun HomeScreen(
@@ -85,7 +84,6 @@ fun HomeScreen(
                 style = foreverTypography.labelSmall,
                 color = colorResource(id = R.color.gray_medium)
             )
-            Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_FILE_LIST.dp))
             FileList(
                 fileList = if (homeUiState.fileState == UiState.Success) {
                     homeUiState.files
