@@ -26,8 +26,8 @@ fun ForeverNavGraph(
 
             HomeScreen(
                 homeUiState = homeUiState,
-                goFileUploadScreen = { navActions.navigateToUploadFile() },
-                onFileClick = { documentId -> navActions.navigateToGetSummary(documentId) },
+                navigateToUploadFile = { navActions.navigateToUploadFile() },
+                navigateToGetSummary = { documentId -> navActions.navigateToGetSummary(documentId) },
                 loadMoreFile = { page -> (homeViewModel::getFileList)(page) }
             )
         }
