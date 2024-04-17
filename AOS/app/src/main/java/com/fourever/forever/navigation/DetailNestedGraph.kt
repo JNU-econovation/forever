@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.fourever.forever.presentation.getquestion.GetQuestionScreen
+import com.fourever.forever.presentation.getquestion.GetSingleQuestionScreen
 import com.fourever.forever.presentation.getsummary.GetSummaryScreen
 import com.fourever.forever.presentation.getsummary.GetSummaryViewModel
 
@@ -39,19 +39,39 @@ fun NavGraphBuilder.detailGraph() {
             )
         }
         composable(
-            Screen.GetQuestion.route,
+            Screen.GetSingleQuestion.route,
             arguments = listOf(
                 navArgument(ForeverDestinationArgs.DOCUMENT_ID_ARG) {
                     type = NavType.IntType
                     defaultValue = 0
                 },
-                navArgument("fileName") {
+                navArgument(ForeverDestinationArgs.QUESTION_ID_ARG) {
+                    type = NavType.IntType
+                    defaultValue = 0
+                },
+                navArgument(ForeverDestinationArgs.FILE_NAME_ARG) {
                     type = NavType.StringType
                     defaultValue = ""
                 }
             )
         ) {
-            GetQuestionScreen()
+            GetSingleQuestionScreen()
+        }
+
+        composable(
+            Screen.GetAllQuestions.route,
+            arguments = listOf(
+                navArgument(ForeverDestinationArgs.DOCUMENT_ID_ARG) {
+                    type = NavType.IntType
+                    defaultValue = 0
+                },
+                navArgument(ForeverDestinationArgs.FILE_NAME_ARG) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            GetSingleQuestionScreen()
         }
     }
 }

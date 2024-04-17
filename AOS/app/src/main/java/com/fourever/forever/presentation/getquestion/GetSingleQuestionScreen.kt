@@ -29,7 +29,7 @@ import com.fourever.forever.presentation.component.topappbar.FileNameTopAppBar
 private const val SPACE_BETWEEN_CARD_AND_BUTTON = 30
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetQuestionScreen() {
+fun GetSingleQuestionScreen() {
     BottomSheetScaffold(
         sheetContent = {
             Column(
@@ -74,6 +74,6 @@ fun GetQuestionScreen() {
 @Composable
 private fun QuestionPreview() {
     MaterialTheme {
-        GetQuestionScreen()
+        GetSingleQuestionScreen()
     }
 }
