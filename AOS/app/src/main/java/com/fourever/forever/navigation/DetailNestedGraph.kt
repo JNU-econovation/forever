@@ -12,7 +12,9 @@ import com.fourever.forever.presentation.getquestion.GetSingleQuestionScreen
 import com.fourever.forever.presentation.getsummary.GetSummaryScreen
 import com.fourever.forever.presentation.getsummary.GetSummaryViewModel
 
-fun NavGraphBuilder.detailGraph() {
+fun NavGraphBuilder.detailGraph(
+    navActions: ForeverNavActions
+) {
     navigation(
         startDestination = Screen.GetSummary.route, route = Screen.Detail.route
     ) {
@@ -34,8 +36,22 @@ fun NavGraphBuilder.detailGraph() {
             GetSummaryScreen(
                 summaryUiState = summaryUiState,
                 questionListUiState = questionListUiState,
-                getFileList = { (getSummaryViewModel::getSummary)(documentId) },
-                getQuestionList = { (getSummaryViewModel::getQuestionList)(documentId) }
+                getSummary = { (getSummaryViewModel::getSummary)(documentId) },
+                getQuestionList = { (getSummaryViewModel::getQuestionList)(documentId) },
+                navigateToGetSingleQuestion = { questionId ->
+                    navActions.navigateToGetSingleQuestion(
+                        documentId = documentId,
+                        fileName = summaryUiState.title,
+                        questionId = questionId
+                    )
+                },
+                navigateToGetAllQuestion = {
+                    navActions.navigateToGetAllQuestion(
+                        documentId = documentId,
+                        fileName = summaryUiState.title,
+                        questionSize = questionListUiState.questionList.size
+                    )
+                }
             )
         }
         composable(
@@ -68,6 +84,10 @@ fun NavGraphBuilder.detailGraph() {
                 navArgument(ForeverDestinationArgs.FILE_NAME_ARG) {
                     type = NavType.StringType
                     defaultValue = ""
+                },
+                navArgument(ForeverDestinationArgs.QUESTION_SIZE_ARG) {
+                    type = NavType.IntType
+                    defaultValue = 0
                 }
             )
         ) {

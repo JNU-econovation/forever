@@ -39,11 +39,13 @@ private const val CONTENT_AREA_HEIGHT = 550
 fun GetSummaryScreen(
     summaryUiState: SummaryUiState,
     questionListUiState: QuestionListUiState,
-    getFileList: () -> Unit,
-    getQuestionList: () -> Unit
+    getSummary: () -> Unit,
+    getQuestionList: () -> Unit,
+    navigateToGetSingleQuestion: (Int) -> Unit,
+    navigateToGetAllQuestion: () -> Unit
 ) {
     LaunchedEffect(Unit) {
-        getFileList()
+        getSummary()
         getQuestionList()
     }
 
@@ -52,7 +54,12 @@ fun GetSummaryScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                QuestionListBtnSheet(questionListUiState)
+                QuestionListBtnSheet(
+                    questionListUiState = questionListUiState,
+                    onQuestionClick = { questionId -> navigateToGetSingleQuestion(questionId) },
+                    onAllQuestionBtnClick = { navigateToGetAllQuestion() }
+
+                )
             }
         },
         sheetPeekHeight = BTM_SHEET_PEEK_HEIGHT.dp,
@@ -118,8 +125,10 @@ private fun SummaryPreview() {
         GetSummaryScreen(
             summaryUiState = SummaryUiState(),
             questionListUiState = QuestionListUiState(),
-            getFileList = {},
-            getQuestionList = {}
+            getSummary = {},
+            getQuestionList = {},
+            navigateToGetSingleQuestion = { _ ->},
+            navigateToGetAllQuestion = {}
         )
     }
 }
