@@ -20,6 +20,6 @@ public class DocumentController {
     @PostMapping("/documents/summary")
     public ApiResponse<ApiResponse.SuccesCustomBody<DocumentSummaryResponse>> saveDocumentSummary(@RequestBody DocumentSummaryRequest request){
         DocumentSummaryResponse response = documentService.saveDocumentSummary(request);
-        return ApiResponseGenerator.success(response, HttpStatus.OK, ErrorCode.SUCCESS);
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 }
