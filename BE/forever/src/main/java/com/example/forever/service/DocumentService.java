@@ -21,7 +21,7 @@ public class DocumentService {
 
             Document savedDocument = documentRepository.save(Document.builder()
                     .title(document.getTitle())
-                    .summary(document.getContent())
+                    .summary(document.getSummary())
                     .build());
 
             Long id = savedDocument.getId();
