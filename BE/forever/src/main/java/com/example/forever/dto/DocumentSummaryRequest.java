@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DocumentSummaryRequest {
     private String title;
-    private String content;
+    private String summary;
 }
