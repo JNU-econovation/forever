@@ -2,6 +2,7 @@ package com.example.forever.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,5 +20,11 @@ public class Document {
 
     @Column(columnDefinition="TEXT")
     private String summary;
+
+    @Builder
+    public Document(String title, String summary) {
+        this.title = title;
+        this.summary = summary;
+    }
 
 }
