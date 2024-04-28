@@ -28,6 +28,8 @@ import com.fourever.forever.R
 import com.fourever.forever.presentation.SCREEN_MARGIN
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_PEEK_HEIGHT
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_RADIUS
+import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_SHADOW_ELEVATION
+import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_TONAL_ELEVATION
 import com.fourever.forever.presentation.component.btmsheet.QuestionListBtnSheet
 import com.fourever.forever.ui.theme.foreverTypography
 
@@ -58,7 +60,6 @@ fun GetSummaryScreen(
                     questionListUiState = questionListUiState,
                     onQuestionClick = { questionId -> navigateToGetSingleQuestion(questionId) },
                     onAllQuestionBtnClick = { navigateToGetAllQuestion() }
-
                 )
             }
         },
@@ -67,7 +68,9 @@ fun GetSummaryScreen(
             topStart = BTM_SHEET_RADIUS.dp,
             topEnd = BTM_SHEET_RADIUS.dp
         ),
-        sheetContainerColor = colorResource(id = R.color.white)
+        sheetContainerColor = colorResource(id = R.color.white),
+        sheetTonalElevation = BTM_SHEET_TONAL_ELEVATION.dp,
+        sheetShadowElevation = BTM_SHEET_SHADOW_ELEVATION.dp
     ) { innerPadding ->
         Box(
             modifier = Modifier
