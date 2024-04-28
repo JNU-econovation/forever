@@ -36,6 +36,7 @@ fun AnswerBtmSheet(answer: String) {
         }
         Spacer(modifier = Modifier.size(BTM_SHEET_SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
         AnswerCard(answer = answer)
+        Spacer(modifier = Modifier.size(BTM_SHEET_SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
     }
 }
 
