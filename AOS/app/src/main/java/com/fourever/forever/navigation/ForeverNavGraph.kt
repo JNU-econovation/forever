@@ -31,7 +31,7 @@ fun ForeverNavGraph(
                 loadMoreFile = { page -> (homeViewModel::getFileList)(page) }
             )
         }
-        detailGraph(navActions = navActions)
+        detailGraph(navController = navController, navActions = navActions)
         generationGraph()
     }
 }
