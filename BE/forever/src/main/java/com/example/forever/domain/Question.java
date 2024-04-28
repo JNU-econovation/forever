@@ -3,6 +3,7 @@ package com.example.forever.domain;
 import com.example.forever.domain.Document;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,10 @@ public class Question {
     @JoinColumn(name = "document_id", nullable = false)
     private Document document;
 
+    @Builder
+    public Question(String content, Document document) {
+        this.content = content;
+        this.document = document;
+    }
 }
 
