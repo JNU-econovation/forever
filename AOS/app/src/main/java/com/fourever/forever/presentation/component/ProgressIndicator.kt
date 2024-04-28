@@ -15,11 +15,10 @@ import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 
 private const val MAX_PROGRESS_BAR_SIZE = 380
-private const val MAX_QUESTION_NUM = 5
 
 @Composable
-fun ProgressIndicator(progress: Int) {
-    val progressSize = (MAX_PROGRESS_BAR_SIZE * progress) / MAX_QUESTION_NUM
+fun ProgressIndicator(progress: Int = 1, questionListSize: Int = 5) {
+    val progressSize = (MAX_PROGRESS_BAR_SIZE * progress) / questionListSize
     Box {
         Divider(
             modifier = Modifier
