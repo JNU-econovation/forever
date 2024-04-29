@@ -2,6 +2,7 @@ package com.example.forever.service;
 
 import com.example.forever.domain.Answer;
 import com.example.forever.domain.Question;
+import com.example.forever.dto.GetSummaryResponse;
 import com.example.forever.dto.SaveQuestionAnswerRequest;
 import com.example.forever.repository.AnswerRepository;
 import com.example.forever.repository.DocumentRepository;
@@ -40,6 +41,14 @@ public class DocumentService {
 
         Question question = questionRepository.save(Question.builder().content(request.getQuestionContent()).document(document).build());
         answerRepository.save(Answer.builder().content(request.getAnswerContent()).question(question).build());
+    }
+
+    public GetSummaryResponse getDocumentSummary(Long documentId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new IllegalArgumentException("Document not found " + documentId));
+
+        return new GetSummaryResponse(document.getTitle(), document.getSummary());
+
     }
 
 }
