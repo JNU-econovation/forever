@@ -1,19 +1,19 @@
 package com.example.forever.service;
 
+import com.example.forever.converter.QuestionConversion;
 import com.example.forever.domain.Answer;
 import com.example.forever.domain.Question;
-import com.example.forever.dto.GetSummaryResponse;
-import com.example.forever.dto.SaveQuestionAnswerRequest;
+import com.example.forever.dto.*;
 import com.example.forever.repository.AnswerRepository;
 import com.example.forever.repository.DocumentRepository;
 import com.example.forever.domain.Document;
-import com.example.forever.dto.DocumentSummaryRequest;
-import com.example.forever.dto.DocumentSummaryResponse;
 import com.example.forever.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -49,6 +49,19 @@ public class DocumentService {
 
         return new GetSummaryResponse(document.getTitle(), document.getSummary());
 
+    }
+
+    public QuestionListResponse getQuestionList(Long documentId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new IllegalArgumentException("Document not found " + documentId));
+
+        List<Question> questionList = questionRepository.findAllByDocumentId(document.getId());
+
+        List<EachQuestionResponse> responses = questionList.stream()
+                .map(QuestionConversion::convertToEachQuestionResponse)
+                .toList();
+        
+        return new QuestionListResponse(responses);
     }
 
 }
