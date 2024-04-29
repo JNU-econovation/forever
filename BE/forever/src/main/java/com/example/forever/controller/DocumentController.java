@@ -1,5 +1,6 @@
 package com.example.forever.controller;
 
+import com.example.forever.dto.GetSummaryResponse;
 import com.example.forever.dto.SaveQuestionAnswerRequest;
 import com.example.forever.service.DocumentService;
 import com.example.forever.common.ApiResponse;
@@ -27,5 +28,11 @@ public class DocumentController {
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> saveDocumentQuestionAndAnswer(@PathVariable("documentId") Long documentId, @RequestBody SaveQuestionAnswerRequest request){
         documentService.saveDocumentQuestionAndAnswer(documentId, request);
         return ApiResponseGenerator.success(HttpStatus.OK);
+    }
+
+    @GetMapping("/{documentId}/summary")
+    public ApiResponse<ApiResponse.SuccesCustomBody<GetSummaryResponse>> getDocumentSummary(@PathVariable("documentId") Long documentId){
+        GetSummaryResponse response = documentService.getDocumentSummary(documentId);
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 }
