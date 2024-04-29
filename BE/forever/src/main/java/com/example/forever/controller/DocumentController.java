@@ -41,4 +41,10 @@ public class DocumentController {
     }
 
 
+    @GetMapping("/questions/{questionId}")
+    public ApiResponse<ApiResponse.SuccesCustomBody<QuestionAnswerResponse>> getQuestionAndAnswer(@PathVariable("questionId") Long questionId){
+        QuestionAnswerResponse response = documentService.getQuestionAndAnswer(questionId);
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
+    }
+
 }
