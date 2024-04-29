@@ -1,12 +1,9 @@
 package com.example.forever.controller;
 
-import com.example.forever.dto.GetSummaryResponse;
-import com.example.forever.dto.SaveQuestionAnswerRequest;
+import com.example.forever.dto.*;
 import com.example.forever.service.DocumentService;
 import com.example.forever.common.ApiResponse;
 import com.example.forever.common.ApiResponseGenerator;
-import com.example.forever.dto.DocumentSummaryRequest;
-import com.example.forever.dto.DocumentSummaryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +21,7 @@ public class DocumentController {
         return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 
-    @PostMapping("/{documentId}/questions")
+    @PostMapping("/{documentId}/save")
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> saveDocumentQuestionAndAnswer(@PathVariable("documentId") Long documentId, @RequestBody SaveQuestionAnswerRequest request){
         documentService.saveDocumentQuestionAndAnswer(documentId, request);
         return ApiResponseGenerator.success(HttpStatus.OK);
@@ -35,4 +32,13 @@ public class DocumentController {
         GetSummaryResponse response = documentService.getDocumentSummary(documentId);
         return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
+
+
+    @GetMapping("/{documentId}/questions")
+    public ApiResponse<ApiResponse.SuccesCustomBody<QuestionListResponse>> getQuestionList(@PathVariable("documentId") Long documentId){
+        QuestionListResponse response = documentService.getQuestionList(documentId);
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
+    }
+
+
 }
