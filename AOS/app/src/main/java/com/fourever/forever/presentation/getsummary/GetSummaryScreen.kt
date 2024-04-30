@@ -28,6 +28,8 @@ import com.fourever.forever.R
 import com.fourever.forever.presentation.SCREEN_MARGIN
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_PEEK_HEIGHT
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_RADIUS
+import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_SHADOW_ELEVATION
+import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_TONAL_ELEVATION
 import com.fourever.forever.presentation.component.btmsheet.QuestionListBtnSheet
 import com.fourever.forever.ui.theme.foreverTypography
 
@@ -39,11 +41,13 @@ private const val CONTENT_AREA_HEIGHT = 550
 fun GetSummaryScreen(
     summaryUiState: SummaryUiState,
     questionListUiState: QuestionListUiState,
-    getFileList: () -> Unit,
-    getQuestionList: () -> Unit
+    getSummary: () -> Unit,
+    getQuestionList: () -> Unit,
+    navigateToGetSingleQuestion: (Int) -> Unit,
+    navigateToGetAllQuestion: () -> Unit
 ) {
     LaunchedEffect(Unit) {
-        getFileList()
+        getSummary()
         getQuestionList()
     }
 
@@ -52,7 +56,11 @@ fun GetSummaryScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                QuestionListBtnSheet(questionListUiState)
+                QuestionListBtnSheet(
+                    questionListUiState = questionListUiState,
+                    onQuestionClick = { questionId -> navigateToGetSingleQuestion(questionId) },
+                    onAllQuestionBtnClick = { navigateToGetAllQuestion() }
+                )
             }
         },
         sheetPeekHeight = BTM_SHEET_PEEK_HEIGHT.dp,
@@ -60,7 +68,9 @@ fun GetSummaryScreen(
             topStart = BTM_SHEET_RADIUS.dp,
             topEnd = BTM_SHEET_RADIUS.dp
         ),
-        sheetContainerColor = colorResource(id = R.color.white)
+        sheetContainerColor = colorResource(id = R.color.white),
+        sheetTonalElevation = BTM_SHEET_TONAL_ELEVATION.dp,
+        sheetShadowElevation = BTM_SHEET_SHADOW_ELEVATION.dp
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -118,8 +128,10 @@ private fun SummaryPreview() {
         GetSummaryScreen(
             summaryUiState = SummaryUiState(),
             questionListUiState = QuestionListUiState(),
-            getFileList = {},
-            getQuestionList = {}
+            getSummary = {},
+            getQuestionList = {},
+            navigateToGetSingleQuestion = { _ ->},
+            navigateToGetAllQuestion = {}
         )
     }
 }

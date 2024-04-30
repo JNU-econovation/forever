@@ -21,6 +21,8 @@ import com.fourever.forever.ui.theme.foreverTypography
 @Composable
 fun QuestionListBtnSheet(
     questionListUiState: QuestionListUiState,
+    onQuestionClick: (Int) -> Unit,
+    onAllQuestionBtnClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.width(BTM_SHEET_CONTENT_WIDTH.dp)
@@ -43,8 +45,8 @@ fun QuestionListBtnSheet(
         ) {
             QuestionList(
                 questionList = questionListUiState.questionList,
-                onQuestionClick = {},
-                onAllQuestionBtnClick = {}
+                onQuestionClick = { questionId -> onQuestionClick(questionId) },
+                onAllQuestionBtnClick = { onAllQuestionBtnClick() }
             )
         }
     }
@@ -55,7 +57,9 @@ fun QuestionListBtnSheet(
 private fun BtmSheetPreview() {
     MaterialTheme {
         QuestionListBtnSheet(
-            questionListUiState = QuestionListUiState()
+            questionListUiState = QuestionListUiState(),
+            onQuestionClick = { _ -> },
+            onAllQuestionBtnClick = {}
         )
     }
 }

@@ -4,7 +4,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 class ForeverNavActions(private val navController: NavHostController) {
-
     fun navigateToHome() {
         navController.navigate(Screen.Home.route) {
             popUpTo(navController.graph.findStartDestination().id)
@@ -40,8 +39,19 @@ class ForeverNavActions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToGetQuestion() {
-        navController.navigate(Screen.GetQuestion.route) {
+    fun navigateToGetSingleQuestion(documentId: Int, questionId: Int, fileName: String) {
+        navController.navigate(
+            Screen.GetSingleQuestion.createRoute(documentId, questionId, fileName)
+        ) {
+            popUpTo(Screen.GetSummary.route)
+            launchSingleTop = false
+        }
+    }
+
+    fun navigateToGetAllQuestion(documentId: Int, fileName: String, questionSize: Int) {
+        navController.navigate(
+            Screen.GetAllQuestions.createRoute(documentId, fileName, questionSize)
+        ) {
             popUpTo(Screen.GetSummary.route)
             launchSingleTop = false
         }

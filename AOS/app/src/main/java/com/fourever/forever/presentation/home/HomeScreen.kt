@@ -37,8 +37,8 @@ private const val SPACE_BETWEEN_TITLE_AND_SUBTITLE = 2
 @Composable
 fun HomeScreen(
     homeUiState: HomeUiState,
-    goFileUploadScreen: () -> Unit,
-    onFileClick: (Int) -> Unit,
+    navigateToUploadFile: () -> Unit,
+    navigateToGetSummary: (Int) -> Unit,
     loadMoreFile: (Int) -> Unit
 ) {
     val page = rememberSaveable { mutableStateOf(0) }
@@ -46,7 +46,7 @@ fun HomeScreen(
     Scaffold(
         topBar = { MainTopAppBar() },
         floatingActionButton = {
-            FloatingActionButton(onClick = goFileUploadScreen, shape = CircleShape) {
+            FloatingActionButton(onClick = navigateToUploadFile, shape = CircleShape) {
                 Image(
                     painter = painterResource(id = R.drawable.btn_main_add_file),
                     contentDescription = stringResource(
@@ -90,7 +90,7 @@ fun HomeScreen(
                 } else {
                     listOf()
                 },
-                onFileClick = { documentId -> onFileClick(documentId) },
+                onFileClick = { documentId -> navigateToGetSummary(documentId) },
                 loadMoreFile = { loadMoreFile(++page.value) }
             )
         }
@@ -103,8 +103,8 @@ private fun HomePreview() {
     MaterialTheme {
         HomeScreen(
             homeUiState = HomeUiState(),
-            goFileUploadScreen = {},
-            onFileClick = {},
+            navigateToUploadFile = {},
+            navigateToGetSummary = {},
             loadMoreFile = {}
         )
     }

@@ -30,8 +30,8 @@ private const val BOX_HEIGHT = 73
 private const val BOX_WIDTH = 360
 private const val PADDING_HORIZONTAL = 20
 private const val PADDING_VERTICAL = 25
-private const val DIVIDER_THICKNESS = 1
-private const val DIVIDER_WIDTH = 360
+const val DIVIDER_THICKNESS = 1
+const val DIVIDER_WIDTH = 360
 private const val MAX_QUESTION_LENGTH = 25
 private const val SPACE_BETWEEN_LEADING_ICON_AND_TITLE = 15
 
@@ -79,11 +79,6 @@ fun Question(question: String, onQuestionClick: () -> Unit) {
                 )
             }
         }
-        Divider(
-            modifier = Modifier.width(DIVIDER_WIDTH.dp),
-            color = colorResource(R.color.secondary_medium),
-            thickness = DIVIDER_THICKNESS.dp
-        )
     }
 }
 
