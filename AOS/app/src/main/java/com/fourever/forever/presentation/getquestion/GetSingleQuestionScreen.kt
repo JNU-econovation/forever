@@ -35,7 +35,7 @@ private const val SPACE_BETWEEN_CARD_AND_BUTTON = 30
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GetSingleQuestionScreen(
-    questionUiState: QuestionUiState,
+    singleQuestionUiState: SingleQuestionUiState,
     fileName: String,
     getQuestion: () -> Unit,
     navigateUp: () -> Unit
@@ -49,7 +49,7 @@ fun GetSingleQuestionScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                AnswerBtmSheet(answer = questionUiState.answer)
+                AnswerBtmSheet(answer = singleQuestionUiState.answer)
             }
         },
         topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
@@ -76,7 +76,7 @@ fun GetSingleQuestionScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                QuestionCard(question = questionUiState.question)
+                QuestionCard(question = singleQuestionUiState.question)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_CARD_AND_BUTTON.dp))
                 LongColorBtn(
                     text = stringResource(id = R.string.question_done_button),
@@ -93,7 +93,7 @@ fun GetSingleQuestionScreen(
 private fun QuestionPreview() {
     MaterialTheme {
         GetSingleQuestionScreen(
-            questionUiState = QuestionUiState(),
+            singleQuestionUiState = SingleQuestionUiState(),
             fileName = "",
             getQuestion = {},
             navigateUp = {}
