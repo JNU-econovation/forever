@@ -17,8 +17,12 @@ import com.fourever.forever.R
 private const val MAX_PROGRESS_BAR_SIZE = 380
 
 @Composable
-fun ProgressIndicator(progress: Int = 1, questionListSize: Int = 5) {
-    val progressSize = (MAX_PROGRESS_BAR_SIZE * progress) / questionListSize
+fun ProgressIndicator(progress: Int = 1, questionListSize: Int = 1) {
+    val progressSize = if (questionListSize == 0) {
+        0
+    } else {
+        (MAX_PROGRESS_BAR_SIZE * progress) / questionListSize
+    }
     Box {
         Divider(
             modifier = Modifier
