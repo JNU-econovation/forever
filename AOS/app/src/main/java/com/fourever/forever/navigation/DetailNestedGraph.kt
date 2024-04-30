@@ -9,8 +9,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.fourever.forever.presentation.getquestion.GetQuestionViewModel
+import com.fourever.forever.presentation.getquestion.GetAllQuestionScreen
+import com.fourever.forever.presentation.getquestion.GetAllQuestionViewModel
 import com.fourever.forever.presentation.getquestion.GetSingleQuestionScreen
+import com.fourever.forever.presentation.getquestion.GetSingleQuestionViewModel
 import com.fourever.forever.presentation.getsummary.GetSummaryScreen
 import com.fourever.forever.presentation.getsummary.GetSummaryViewModel
 
@@ -75,15 +77,15 @@ fun NavGraphBuilder.detailGraph(
             )
         ) {
             /* TODO: 동알한 ViewModel을 쓰는 다른 두 Screen은 그 ViewModel을 반드시 공유해야 할까? */
-            val getQuestionViewModel = hiltViewModel<GetQuestionViewModel>()
-            val questionUiState by getQuestionViewModel.questionUiState.collectAsState()
+            val getQuestionViewModel = hiltViewModel<GetSingleQuestionViewModel>()
+            val questionUiState by getQuestionViewModel.singleQuestionUiState.collectAsState()
 
             val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
             val questionId = it.arguments?.getInt(ForeverDestinationArgs.QUESTION_ID_ARG) ?: 0
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
 
             GetSingleQuestionScreen(
-                questionUiState = questionUiState,
+                singleQuestionUiState = questionUiState,
                 fileName = fileName,
                 getQuestion = { (getQuestionViewModel::getQuestion)(documentId, questionId) },
                 navigateUp = { navController.navigateUp() }
@@ -107,7 +109,22 @@ fun NavGraphBuilder.detailGraph(
                 }
             )
         ) {
-            // GetAllQuestionScreen()
+            val getQuestionViewModel = hiltViewModel<GetAllQuestionViewModel>()
+            val allQuestionUiState by getQuestionViewModel.allQuestionUiState.collectAsState()
+
+            val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
+            val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
+            val questionSize = it.arguments?.getInt(ForeverDestinationArgs.QUESTION_SIZE_ARG) ?: 0
+
+            GetAllQuestionScreen(
+                allQuestionUiState = allQuestionUiState,
+                fileName = fileName,
+                questionSize = questionSize,
+                getQuestion = { questionIndex -> (getQuestionViewModel::getQuestion)(documentId, questionIndex) },
+                navigateUpToSummary = { navController.navigateUp() },
+                navigateUpToPrevQuestion = { navController.navigateUp() },
+                updateQuestionIndex = { getQuestionViewModel.updateQuestionIndex() }
+            )
         }
     }
 }
