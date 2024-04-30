@@ -60,11 +60,23 @@ class GetAllQuestionViewModel @Inject constructor(
         }
     }
 
-    fun updateQuestionIndex() {
-        _allQuestionUiState.update {
-            it.copy(
-                questionIndex = _allQuestionUiState.value.questionIndex + 1
-            )
+    fun increaseQuestionIndex() {
+        if(_allQuestionUiState.value.questionIndex < 5) {
+            _allQuestionUiState.update {
+                it.copy(
+                    questionIndex = _allQuestionUiState.value.questionIndex + 1
+                )
+            }
+        }
+    }
+
+    fun decreaseQuestionIndex() {
+        if(_allQuestionUiState.value.questionIndex > 1) {
+            _allQuestionUiState.update {
+                it.copy(
+                    questionIndex = _allQuestionUiState.value.questionIndex - 1
+                )
+            }
         }
     }
 }
