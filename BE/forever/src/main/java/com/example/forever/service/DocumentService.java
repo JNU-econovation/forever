@@ -1,5 +1,6 @@
 package com.example.forever.service;
 
+import com.example.forever.converter.DocumentConversion;
 import com.example.forever.converter.QuestionConversion;
 import com.example.forever.domain.Answer;
 import com.example.forever.domain.Question;
@@ -10,6 +11,10 @@ import com.example.forever.domain.Document;
 import com.example.forever.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +83,20 @@ public class DocumentService {
     }
     //여기서 조회를 2번해서 가져올 수 있지만 서로 연관되어있는 question, answer를 한번에 가져오기 위해 join fetch를 사용하여 조회를 한번만 하도록
     //하지만 이렇게 하면 questionId의 값이 없을 경우에는 예외가 발생하게 되므로 Optional로 감싸서 반환하도록
+
+    public DocumentListResponse getDocumentList(Long pageId) {
+
+        Pageable pageable = PageRequest.of(pageId.intValue(), 10, Sort.by("id").descending());
+        Page<Document> page = documentRepository.findAll(pageable);
+
+        List<Document> documentList = page.getContent();
+
+        List<EachDocumentResponse> responses = documentList.stream()
+                .map(DocumentConversion::convertToEachDocumentResponse)
+                .toList();
+
+        return new DocumentListResponse(responses);
+    }
 
 }
 

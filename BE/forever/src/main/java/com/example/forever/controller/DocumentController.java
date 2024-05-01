@@ -47,4 +47,11 @@ public class DocumentController {
         return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 
+    @GetMapping
+    public ApiResponse<ApiResponse.SuccesCustomBody<DocumentListResponse>> getDocumentList(@RequestParam(value = "page", defaultValue = "0") Long pageId){
+        DocumentListResponse response = documentService.getDocumentList(pageId);
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
+    }
+
+
 }
