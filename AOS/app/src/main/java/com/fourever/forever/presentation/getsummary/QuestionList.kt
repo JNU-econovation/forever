@@ -35,7 +35,7 @@ fun QuestionList(
         LazyColumn {
             items(questionList) { question ->
                 Question(
-                    question = question.content,
+                    question = question.questionContent,
                     onQuestionClick = { onQuestionClick(question.questionId) }
                 )
             }

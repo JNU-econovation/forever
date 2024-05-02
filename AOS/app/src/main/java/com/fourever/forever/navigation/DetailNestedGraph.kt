@@ -45,14 +45,13 @@ fun NavGraphBuilder.detailGraph(
                 getQuestionList = { (getSummaryViewModel::getQuestionList)(documentId) },
                 navigateToGetSingleQuestion = { questionId ->
                     navActions.navigateToGetSingleQuestion(
-                        documentId = documentId,
                         fileName = summaryUiState.title,
                         questionId = questionId
                     )
                 },
                 navigateToGetAllQuestion = {
                     navActions.navigateToGetAllQuestion(
-                        documentId = documentId,
+                        firstQuestionId = questionListUiState.questionList[0].questionId,
                         fileName = summaryUiState.title,
                         questionSize = questionListUiState.questionList.size
                     )
@@ -62,10 +61,6 @@ fun NavGraphBuilder.detailGraph(
         composable(
             Screen.GetSingleQuestion.route,
             arguments = listOf(
-                navArgument(ForeverDestinationArgs.DOCUMENT_ID_ARG) {
-                    type = NavType.IntType
-                    defaultValue = 0
-                },
                 navArgument(ForeverDestinationArgs.QUESTION_ID_ARG) {
                     type = NavType.IntType
                     defaultValue = 0
@@ -80,14 +75,13 @@ fun NavGraphBuilder.detailGraph(
             val getQuestionViewModel = hiltViewModel<GetSingleQuestionViewModel>()
             val questionUiState by getQuestionViewModel.singleQuestionUiState.collectAsState()
 
-            val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
             val questionId = it.arguments?.getInt(ForeverDestinationArgs.QUESTION_ID_ARG) ?: 0
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
 
             GetSingleQuestionScreen(
                 singleQuestionUiState = questionUiState,
                 fileName = fileName,
-                getQuestion = { (getQuestionViewModel::getQuestion)(documentId, questionId) },
+                getQuestion = { (getQuestionViewModel::getQuestion)(questionId) },
                 navigateUp = { navController.navigateUp() }
             )
         }
@@ -95,7 +89,7 @@ fun NavGraphBuilder.detailGraph(
         composable(
             Screen.GetAllQuestions.route,
             arguments = listOf(
-                navArgument(ForeverDestinationArgs.DOCUMENT_ID_ARG) {
+                navArgument(ForeverDestinationArgs.FIRST_QUESTION_ID_ARG) {
                     type = NavType.IntType
                     defaultValue = 0
                 },
@@ -112,7 +106,7 @@ fun NavGraphBuilder.detailGraph(
             val getQuestionViewModel = hiltViewModel<GetAllQuestionViewModel>()
             val allQuestionUiState by getQuestionViewModel.allQuestionUiState.collectAsState()
 
-            val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
+            val firstQuestionId = it.arguments?.getInt(ForeverDestinationArgs.FIRST_QUESTION_ID_ARG) ?: 0
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
             val questionSize = it.arguments?.getInt(ForeverDestinationArgs.QUESTION_SIZE_ARG) ?: 0
 
@@ -120,7 +114,7 @@ fun NavGraphBuilder.detailGraph(
                 allQuestionUiState = allQuestionUiState,
                 fileName = fileName,
                 questionSize = questionSize,
-                getQuestion = { questionIndex -> (getQuestionViewModel::getQuestion)(documentId, questionIndex) },
+                getQuestion = { (getQuestionViewModel::getQuestion)(firstQuestionId) },
                 navigateUpToSummary = { navController.navigateUp() },
                 navigateUpToPrevQuestion = { getQuestionViewModel.decreaseQuestionIndex() },
                 updateQuestionIndex = { getQuestionViewModel.increaseQuestionIndex() }

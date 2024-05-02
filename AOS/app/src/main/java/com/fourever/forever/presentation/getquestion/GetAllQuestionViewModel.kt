@@ -31,9 +31,9 @@ class GetAllQuestionViewModel @Inject constructor(
     val allQuestionUiState: StateFlow<AllQuestionUiState> = _allQuestionUiState.asStateFlow()
 
 
-    fun getQuestion(documentId: Int, questionId: Int) {
+    fun getQuestion(questionId: Int) {
         viewModelScope.launch {
-            fileRepository.getFileQuestion(documentId, questionId)
+            fileRepository.getFileQuestion(questionId)
                 .onStart { _allQuestionUiState.update { it.copy(questionState = UiState.Loading) }}
                 .collect { result ->
                     if (result is ResultWrapper.Success) {
@@ -41,8 +41,8 @@ class GetAllQuestionViewModel @Inject constructor(
                             _allQuestionUiState.update {
                                 it.copy(
                                     questionState = UiState.Success,
-                                    question = result.data?.content ?: "",
-                                    answer = result.data?.answer ?: ""
+                                    question = result.data?.questionContent ?: "",
+                                    answer = result.data?.answerContent ?: ""
                                 )
                             }
                         }
