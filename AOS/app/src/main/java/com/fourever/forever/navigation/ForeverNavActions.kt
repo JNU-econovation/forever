@@ -18,8 +18,8 @@ class ForeverNavActions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToSummaryGeneration() {
-        navController.navigate(Screen.GenerateSummary.route) {
+    fun navigateToSummaryGeneration(fileName: String, fileUri: String) {
+        navController.navigate(Screen.GenerateSummary.createRoute(fileName, fileUri)) {
             popUpTo(navController.graph.findStartDestination().id)
             launchSingleTop = true
         }
