@@ -33,13 +33,12 @@ import com.fourever.forever.ui.theme.foreverTypography
 
 
 private const val SPACE_BETWEEN_TITLE_AND_SUBTITLE = 2
-private const val SPACE_BETWEEN_TITLE_AND_FILE_LIST = 100
 
 @Composable
 fun HomeScreen(
     homeUiState: HomeUiState,
-    goFileUploadScreen: () -> Unit,
-    onFileClick: (Int) -> Unit,
+    navigateToUploadFile: () -> Unit,
+    navigateToGetSummary: (Int) -> Unit,
     loadMoreFile: (Int) -> Unit
 ) {
     val page = rememberSaveable { mutableStateOf(0) }
@@ -47,7 +46,7 @@ fun HomeScreen(
     Scaffold(
         topBar = { MainTopAppBar() },
         floatingActionButton = {
-            FloatingActionButton(onClick = goFileUploadScreen, shape = CircleShape) {
+            FloatingActionButton(onClick = navigateToUploadFile, shape = CircleShape) {
                 Image(
                     painter = painterResource(id = R.drawable.btn_main_add_file),
                     contentDescription = stringResource(
@@ -85,14 +84,13 @@ fun HomeScreen(
                 style = foreverTypography.labelSmall,
                 color = colorResource(id = R.color.gray_medium)
             )
-            Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_FILE_LIST.dp))
             FileList(
                 fileList = if (homeUiState.fileState == UiState.Success) {
                     homeUiState.files
                 } else {
                     listOf()
                 },
-                onFileClick = { documentId -> onFileClick(documentId) },
+                onFileClick = { documentId -> navigateToGetSummary(documentId) },
                 loadMoreFile = { loadMoreFile(++page.value) }
             )
         }
@@ -105,8 +103,8 @@ private fun HomePreview() {
     MaterialTheme {
         HomeScreen(
             homeUiState = HomeUiState(),
-            goFileUploadScreen = {},
-            onFileClick = {},
+            navigateToUploadFile = {},
+            navigateToGetSummary = {},
             loadMoreFile = {}
         )
     }

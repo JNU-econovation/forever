@@ -1,5 +1,8 @@
 package com.fourever.forever.presentation.fileupload
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -8,8 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -21,13 +22,31 @@ import com.fourever.forever.presentation.component.buttons.FileUploadBtn
 import com.fourever.forever.presentation.component.buttons.LongColorBtn
 import com.fourever.forever.presentation.component.topappbar.FileUploadTopAppBar
 import com.fourever.forever.ui.theme.foreverTypography
+import java.io.File
 
 private const val SPACE_BETWEEN_TITLE_AND_BTN = 130
 private const val SPACE_BETWEEN_BTNS = 30
 
 @Composable
-fun FileUploadScreen() {
-    val isFileChosen = remember { mutableStateOf(false) }
+fun FileUploadScreen(
+    fileUploadUiState: FileUploadUiState,
+    updateFileChosenState: (Boolean) -> Unit,
+    updateFileName: (String) -> Unit,
+    updateFileUri: (Uri) -> Unit,
+    navigateToGenerateSummary: () -> Unit
+) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+            selectedUri ->
+        if (selectedUri != null) {
+            val file = File(selectedUri.path!!)
+            val fileName = file.name
+
+            updateFileChosenState(true)
+            updateFileName(fileName)
+            updateFileUri(selectedUri)
+        }
+    }
+
     Scaffold(
         topBar = { FileUploadTopAppBar() }
     ) { innerPadding ->
@@ -49,9 +68,17 @@ fun FileUploadScreen() {
                 )
             }
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_BTN.dp))
-            FileUploadBtn(isFileChosen = isFileChosen.value)
+            FileUploadBtn(
+                isFileChosen = fileUploadUiState.isFileChosen,
+                fileName = fileUploadUiState.fileName,
+                onClick = { launcher.launch("application/pdf") }
+            )
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_BTNS.dp))
-            LongColorBtn(text = stringResource(id = R.string.file_upload_summary_button), enabled = !isFileChosen.value)
+            LongColorBtn(
+                text = stringResource(id = R.string.file_upload_summary_button),
+                enabled = fileUploadUiState.isFileChosen,
+                onClick = navigateToGenerateSummary
+            )
         }
     }
 }
@@ -60,6 +87,12 @@ fun FileUploadScreen() {
 @Composable
 private fun FileUploadPreview() {
     MaterialTheme {
-        FileUploadScreen()
+        FileUploadScreen(
+            fileUploadUiState = FileUploadUiState(),
+            updateFileChosenState = {},
+            updateFileName = {},
+            updateFileUri = {},
+            navigateToGenerateSummary = {}
+        )
     }
 }

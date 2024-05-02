@@ -11,7 +11,7 @@ data class GetQuestionListDto(
     data class Questions(
         @SerialName("questionId")
         val questionId: Int,
-        @SerialName("title")
-        val content: String
+        @SerialName("questionContent")
+        val questionContent: String
     )
 }

@@ -36,8 +36,7 @@ class FileRepositoryImpl @Inject constructor(
         fileDataSource.getFileQuestionList(documentId)
 
     override fun getFileQuestion(
-        documentId: Int,
         questionId: Int
     ): Flow<ResultWrapper<BaseResponse<GetFileQuestionResponseDto>>> =
-        fileDataSource.getFileQuestion(documentId, questionId)
+        fileDataSource.getFileQuestion(questionId)
 }

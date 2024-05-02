@@ -70,7 +70,8 @@ fun GenerateQuestionScreen() {
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_BUTTONS.dp))
                 LongColorBtn(
                     text = stringResource(id = R.string.question_done_button),
-                    enabled = true
+                    enabled = true,
+                    onClick = {}
                 )
             }
         }

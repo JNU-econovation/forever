@@ -22,7 +22,14 @@ class FakeFileRepositoryImpl @Inject constructor() : FileRepository {
                         null,
                         GetFileListResponseDto(
                             listOf(
-                                GetFileListResponseDto.Document(1, "파일명1")
+                                GetFileListResponseDto.Document(1, "파일명1"),
+                                GetFileListResponseDto.Document(2, "파일명1"),
+                                GetFileListResponseDto.Document(3, "파일명1"),
+                                GetFileListResponseDto.Document(4, "파일명1"),
+                                GetFileListResponseDto.Document(5, "파일명1"),
+                                GetFileListResponseDto.Document(6, "파일명1"),
+                                GetFileListResponseDto.Document(7, "파일명1"),
+                                GetFileListResponseDto.Document(8, "파일명1"),
                             )
                         )
                     )
@@ -92,7 +99,9 @@ class FakeFileRepositoryImpl @Inject constructor() : FileRepository {
                         null,
                         GetQuestionListDto(
                             listOf(
-                                GetQuestionListDto.Questions(1, "질문1")
+                                GetQuestionListDto.Questions(1, "질문1"),
+                                GetQuestionListDto.Questions(2, "질문2"),
+                                GetQuestionListDto.Questions(3, "질문3")
                             )
                         )
                     )
@@ -102,7 +111,6 @@ class FakeFileRepositoryImpl @Inject constructor() : FileRepository {
     }
 
     override fun getFileQuestion(
-        documentId: Int,
         questionId: Int
     ): Flow<ResultWrapper<BaseResponse<GetFileQuestionResponseDto>>> {
         return flow {
@@ -112,8 +120,8 @@ class FakeFileRepositoryImpl @Inject constructor() : FileRepository {
                         true,
                         null,
                         GetFileQuestionResponseDto(
-                            content = "질문1",
-                            answer = "답변1"
+                            questionContent = "질문1",
+                            answerContent = "답변1"
                         )
                     )
                 )

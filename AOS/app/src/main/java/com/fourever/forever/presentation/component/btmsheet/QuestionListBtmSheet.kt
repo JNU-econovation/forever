@@ -14,12 +14,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
-import com.fourever.forever.presentation.component.Question
-import com.fourever.forever.presentation.component.buttons.LongColorBtn
+import com.fourever.forever.presentation.getsummary.QuestionList
+import com.fourever.forever.presentation.getsummary.QuestionListUiState
 import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
-fun QuestionListBtnSheet(/*TODO: questionList: List<String>*/) {
+fun QuestionListBtnSheet(
+    questionListUiState: QuestionListUiState,
+    onQuestionClick: (Int) -> Unit,
+    onAllQuestionBtnClick: () -> Unit
+) {
     Column(
         modifier = Modifier.width(BTM_SHEET_CONTENT_WIDTH.dp)
     ) {
@@ -36,15 +40,13 @@ fun QuestionListBtnSheet(/*TODO: questionList: List<String>*/) {
                 color = colorResource(id = R.color.subtitle)
             )
         }
-        Spacer(modifier = Modifier.size(BTM_SHEET_SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            /*TODO: questionList로 Question 컴포넌트 추가*/
-            Question(question = "캡스톤 디자인 강의의 주요 일정은 어떻게 되어있나요?")
-            LongColorBtn(
-                text = stringResource(id = R.string.question_list_check_question_button),
-                enabled = true
+            QuestionList(
+                questionList = questionListUiState.questionList,
+                onQuestionClick = { questionId -> onQuestionClick(questionId) },
+                onAllQuestionBtnClick = { onAllQuestionBtnClick() }
             )
         }
     }
@@ -54,6 +56,10 @@ fun QuestionListBtnSheet(/*TODO: questionList: List<String>*/) {
 @Composable
 private fun BtmSheetPreview() {
     MaterialTheme {
-        QuestionListBtnSheet()
+        QuestionListBtnSheet(
+            questionListUiState = QuestionListUiState(),
+            onQuestionClick = { _ -> },
+            onAllQuestionBtnClick = {}
+        )
     }
 }

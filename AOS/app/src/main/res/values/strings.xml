@@ -23,7 +23,7 @@
     <string name="expectation">예상 답변</string>
     <string name="expectation_placeholder">정답을 확인하기 전, 예상 답변을 메모해보세요!</string>
     <string name="save_question_button">이 질문 저장하기</string>
-    <string name="question_progress_button">다음("%1$d"/5)</string>
+    <string name="question_progress_button">다음("%1$d"/"%2$d")</string>
     <string name="question_done_button">확인 완료</string>
 
     <string name="question_bottom_answer_title">위로 올려 정답을 확인해보세요!</string>

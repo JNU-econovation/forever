@@ -2,6 +2,7 @@ package com.fourever.forever.presentation.component.topappbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -15,7 +16,10 @@ import com.fourever.forever.ui.theme.foreverTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FileNameTopAppBar(fileName: String) {
+fun FileNameTopAppBar(
+    fileName: String,
+    onBackButtonClick: () -> Unit
+) {
     TopAppBar(
         title = {
             Text(
@@ -27,12 +31,14 @@ fun FileNameTopAppBar(fileName: String) {
             )
         },
         navigationIcon = {
-            Image(
-                painter = painterResource(id = R.drawable.ic_top_navigation),
-                contentDescription = stringResource(
-                    id = R.string.description_ic_question_top_navigation
+            IconButton(onClick = onBackButtonClick ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_top_navigation),
+                    contentDescription = stringResource(
+                        id = R.string.description_ic_question_top_navigation
+                    )
                 )
-            )
+            }
         }
     )
 }
@@ -41,6 +47,9 @@ fun FileNameTopAppBar(fileName: String) {
 @Composable
 private fun TopPreview() {
     MaterialTheme {
-        FileNameTopAppBar("프로그래밍 언어론 ch03a")
+        FileNameTopAppBar(
+            "프로그래밍 언어론 ch03a",
+            {}
+        )
     }
 }
