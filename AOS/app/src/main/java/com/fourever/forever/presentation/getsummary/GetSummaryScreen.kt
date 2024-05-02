@@ -105,10 +105,10 @@ fun GetSummaryScreen(
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
                 Column(
                     modifier = Modifier
-                        .verticalScroll(rememberScrollState())
                         .height(
                             height = CONTENT_AREA_HEIGHT.dp
                         )
+                        .verticalScroll(rememberScrollState())
                 ) {
                     Text(
                         text = summaryUiState.summary,
