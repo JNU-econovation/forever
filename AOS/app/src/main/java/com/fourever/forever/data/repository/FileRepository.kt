@@ -27,7 +27,6 @@ interface FileRepository {
     fun getFileQuestionList(documentId: Int): Flow<ResultWrapper<BaseResponse<GetQuestionListDto>>>
 
     fun getFileQuestion(
-        documentId: Int,
         questionId: Int
     ): Flow<ResultWrapper<BaseResponse<GetFileQuestionResponseDto>>>
 }

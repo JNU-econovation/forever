@@ -39,18 +39,18 @@ class ForeverNavActions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToGetSingleQuestion(documentId: Int, questionId: Int, fileName: String) {
+    fun navigateToGetSingleQuestion(questionId: Int, fileName: String) {
         navController.navigate(
-            Screen.GetSingleQuestion.createRoute(documentId, questionId, fileName)
+            Screen.GetSingleQuestion.createRoute(questionId, fileName)
         ) {
             popUpTo(Screen.GetSummary.route)
             launchSingleTop = false
         }
     }
 
-    fun navigateToGetAllQuestion(documentId: Int, fileName: String, questionSize: Int) {
+    fun navigateToGetAllQuestion(firstQuestionId: Int, fileName: String, questionSize: Int) {
         navController.navigate(
-            Screen.GetAllQuestions.createRoute(documentId, fileName, questionSize)
+            Screen.GetAllQuestions.createRoute(firstQuestionId, fileName, questionSize)
         ) {
             popUpTo(Screen.GetSummary.route)
             launchSingleTop = false

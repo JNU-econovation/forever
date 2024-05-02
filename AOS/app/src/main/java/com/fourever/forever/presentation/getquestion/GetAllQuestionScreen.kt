@@ -42,7 +42,7 @@ fun GetAllQuestionScreen(
     allQuestionUiState: AllQuestionUiState,
     fileName: String,
     questionSize: Int,
-    getQuestion: (Int) -> Unit,
+    getQuestion: () -> Unit,
     navigateUpToSummary: () -> Unit,
     navigateUpToPrevQuestion: () -> Unit,
     updateQuestionIndex: () -> Unit
@@ -58,7 +58,7 @@ fun GetAllQuestionScreen(
     }
 
     LaunchedEffect(Unit) {
-        getQuestion(allQuestionUiState.questionIndex)
+        getQuestion()
     }
 
     BottomSheetScaffold(
@@ -118,7 +118,7 @@ fun GetAllQuestionScreen(
                         if (allQuestionUiState.questionIndex == questionSize) {
                             navigateUpToSummary()
                         } else {
-                            getQuestion(allQuestionUiState.questionIndex)
+                            getQuestion()
                             updateQuestionIndex()
                         }
                     }

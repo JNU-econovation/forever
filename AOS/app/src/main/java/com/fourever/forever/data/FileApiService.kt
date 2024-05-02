@@ -24,7 +24,7 @@ interface FileApiService {
         @Body postFileSummaryRequestDto: PostFileSummaryRequestDto
     ): Result<BaseResponse<Void>>
 
-    @POST("/api/documents/{documentId}/questions")
+    @POST("/api/documents/{documentId}/save")
     suspend fun postFileQuestion(
         @Path(value = "documentId") documentId: Int,
         @Body postFileQuestionRequestDto: PostFileQuestionRequestDto
@@ -40,9 +40,8 @@ interface FileApiService {
         @Path(value = "documentId") documentId: Int,
     ): Result<BaseResponse<GetQuestionListDto>>
 
-    @GET("/api/documents/{documentId}/questions/{questionId}")
+    @GET("/api/documents/questions/{questionId}")
     suspend fun getFileQuestion(
-        @Path(value = "documentId") documentId: Int,
         @Path(value = "questionId") questionId: Int,
     ): Result<BaseResponse<GetFileQuestionResponseDto>>
 }

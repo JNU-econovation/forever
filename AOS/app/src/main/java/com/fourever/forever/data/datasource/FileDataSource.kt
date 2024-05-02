@@ -58,9 +58,9 @@ class FileDataSource @Inject constructor(
                 .onFailure { emit(ResultWrapper.Error(it.message!!)) }
         }.flowOn(ioDispatcher)
 
-    fun getFileQuestion(documentId: Int, questionId: Int): Flow<ResultWrapper<BaseResponse<GetFileQuestionResponseDto>>> =
+    fun getFileQuestion(questionId: Int): Flow<ResultWrapper<BaseResponse<GetFileQuestionResponseDto>>> =
         flow {
-            fileApiService.getFileQuestion(documentId, questionId)
+            fileApiService.getFileQuestion(questionId)
                 .onSuccess { emit(ResultWrapper.Success(it)) }
                 .onFailure { emit(ResultWrapper.Error(it.message!!)) }
         }.flowOn(ioDispatcher)
