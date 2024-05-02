@@ -28,9 +28,13 @@ private const val FILE_UPLOAD_BTN_STROKE_THICKNESS = 1.5
 private const val SPACE_BETWEEN_ICON_AND_PARAGRAPH = 15
 
 @Composable
-fun FileUploadBtn(isFileChosen: Boolean, fileName: String = "") {
+fun FileUploadBtn(
+    isFileChosen: Boolean,
+    fileName: String = "",
+    onClick: () -> Unit
+) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .size(width = FILE_UPLOAD_BTN_WIDTH.dp, height = FILE_UPLOAD_BTN_HEIGHT.dp),
         shape = RoundedCornerShape(FILE_UPLOAD_BTN_RADIUS.dp),
@@ -83,6 +87,6 @@ fun FileUploadBtn(isFileChosen: Boolean, fileName: String = "") {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        FileUploadBtn(false, "프로그래밍_언어론_ch03a")
+        FileUploadBtn(false, "프로그래밍_언어론_ch03a", {})
     }
 }
