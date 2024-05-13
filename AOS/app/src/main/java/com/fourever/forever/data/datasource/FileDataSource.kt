@@ -9,6 +9,7 @@ import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.data.model.response.GetFileQuestionResponseDto
 import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
+import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,7 @@ class FileDataSource @Inject constructor(
                 .onFailure { emit(ResultWrapper.Error(it.message!!)) }
         }.flowOn(ioDispatcher)
 
-    fun postFileSummary(postFileSummaryRequestDto: PostFileSummaryRequestDto): Flow<ResultWrapper<BaseResponse<Void>>> =
+    fun postFileSummary(postFileSummaryRequestDto: PostFileSummaryRequestDto): Flow<ResultWrapper<BaseResponse<PostFileSummaryResponseDto>>> =
         flow {
             fileApiService.postFileSummary(postFileSummaryRequestDto)
                 .onSuccess { emit(ResultWrapper.Success(it)) }

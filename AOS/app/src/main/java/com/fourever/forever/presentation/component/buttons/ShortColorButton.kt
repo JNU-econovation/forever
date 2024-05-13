@@ -20,9 +20,9 @@ import com.fourever.forever.R
 import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
-fun ShortColorBtn() {
+fun ShortColorBtn(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .size(width = SHORT_BTN_WIDTH.dp, height = SHORT_BTN_HEIGHT.dp)
             .background(
@@ -55,6 +55,6 @@ fun ShortColorBtn() {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        ShortColorBtn()
+        ShortColorBtn(onClick = {})
     }
 }
