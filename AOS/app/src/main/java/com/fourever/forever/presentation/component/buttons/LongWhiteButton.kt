@@ -32,19 +32,19 @@ fun LongWhiteBtn(enabled: Boolean) {
             .size(width = LONG_BTN_WIDTH.dp, height = LONG_BTN_HEIGHT.dp),
         enabled = enabled,
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),
-        border = if (enabled) {
-            BorderStroke(
-                width = BUTTON_STROKE_THICKNESS.dp,
-                color = colorResource(id = R.color.secondary_strong)
-            )
-        } else {
-            null
-        },
+        border = BorderStroke(
+            width = BUTTON_STROKE_THICKNESS.dp,
+            color = if (enabled) {
+                colorResource(id = R.color.secondary_strong)
+            } else {
+                colorResource(id = R.color.placeholder)
+            }
+        ),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.white),
             contentColor = colorResource(id = R.color.secondary_strong),
-            disabledContainerColor = colorResource(id = R.color.gray_light),
-            disabledContentColor = colorResource(R.color.gray_medium)
+            disabledContainerColor = colorResource(id = R.color.white),
+            disabledContentColor = colorResource(R.color.placeholder)
         )
     ) {
         Row(
