@@ -17,9 +17,11 @@ import com.fourever.forever.R
 import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
-fun ShortWhiteBtn() {
+fun ShortWhiteBtn(
+    onClick: () -> Unit
+) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .size(width = SHORT_BTN_WIDTH.dp, height = SHORT_BTN_HEIGHT.dp),
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),
@@ -43,6 +45,6 @@ fun ShortWhiteBtn() {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        ShortWhiteBtn()
+        ShortWhiteBtn(onClick = {})
     }
 }

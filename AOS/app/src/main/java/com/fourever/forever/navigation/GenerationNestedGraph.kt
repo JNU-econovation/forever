@@ -1,6 +1,7 @@
 package com.fourever.forever.navigation
 
 import android.os.Build
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,6 +15,7 @@ import com.fourever.forever.presentation.fileupload.FileUploadScreen
 import com.fourever.forever.presentation.fileupload.FileUploadViewModel
 import com.fourever.forever.presentation.generatequestion.GenerateQuestionScreen
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryScreen
+import com.fourever.forever.presentation.generatesummary.GenerateSummaryViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -71,7 +73,22 @@ fun NavGraphBuilder.generationGraph(
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
             val fileUri = it.arguments?.getString(ForeverDestinationArgs.FILE_URI_ARG) ?: ""
 
-            GenerateSummaryScreen(fileName, "")
+            val generateSummaryViewModel = hiltViewModel<GenerateSummaryViewModel>()
+            val generateSummaryUiState by generateSummaryViewModel.generateSummaryUiState.collectAsState()
+
+            LaunchedEffect(Unit) {
+                (generateSummaryViewModel::postPdfFile)(fileUri)
+            }
+
+            GenerateSummaryScreen(
+                generateSummaryUiState = generateSummaryUiState,
+                fileName = fileName,
+                postFileSummary = {
+                    (generateSummaryViewModel::postFileSummary)(fileName)
+                    navActions.navigateToQuestionGeneration()
+                },
+                navigateUp = { navController.navigateUp() }
+            )
         }
 
         composable(Screen.GenerateQuestion.route) {

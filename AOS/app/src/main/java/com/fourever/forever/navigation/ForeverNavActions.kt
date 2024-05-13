@@ -25,7 +25,7 @@ class ForeverNavActions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToQuestionGeneration(questionIndex: Int) {
+    fun navigateToQuestionGeneration() {
         navController.navigate(Screen.GenerateQuestion.route) {
             popUpTo(Screen.GenerateSummary.route)
             launchSingleTop = false
