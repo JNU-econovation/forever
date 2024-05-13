@@ -1,6 +1,5 @@
 package com.fourever.forever.presentation.component.card
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -41,10 +40,6 @@ fun ExpectationCard() {
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.white),
             contentColor = colorResource(id = R.color.paragraph)
-        ),
-        border = BorderStroke(
-            width = CARD_STROKE_THICKNESS.dp,
-            color = colorResource(id = R.color.secondary_strong)
         ),
         modifier = Modifier
             .size(width = CARD_WIDTH.dp, height = CARD_HEIGHT.dp)
