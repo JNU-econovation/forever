@@ -22,6 +22,8 @@ import com.fourever.forever.presentation.component.ProgressIndicator
 import com.fourever.forever.presentation.component.btmsheet.AnswerBtmSheet
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_PEEK_HEIGHT
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_RADIUS
+import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_SHADOW_ELEVATION
+import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_TONAL_ELEVATION
 import com.fourever.forever.presentation.component.buttons.LongColorBtn
 import com.fourever.forever.presentation.component.buttons.LongWhiteBtn
 import com.fourever.forever.presentation.component.card.ExpectationCard
@@ -51,7 +53,9 @@ fun GenerateQuestionScreen(
             topStart = BTM_SHEET_RADIUS.dp,
             topEnd = BTM_SHEET_RADIUS.dp
         ),
-        sheetContainerColor = colorResource(id = R.color.white)
+        sheetContainerColor = colorResource(id = R.color.white),
+        sheetTonalElevation = BTM_SHEET_TONAL_ELEVATION.dp,
+        sheetShadowElevation = BTM_SHEET_SHADOW_ELEVATION.dp
     ) { innerPadding ->
         Column(
             modifier = Modifier
