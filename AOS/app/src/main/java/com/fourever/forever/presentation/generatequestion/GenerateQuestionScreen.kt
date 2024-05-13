@@ -11,6 +11,8 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -33,12 +35,16 @@ import com.fourever.forever.presentation.component.topappbar.FileNameTopAppBar
 private const val SPACE_BETWEEN_COMPONENTS = 17
 private const val SPACE_BETWEEN_BUTTONS = 10
 
+private const val MAX_QUESTION_INDEX = 5
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenerateQuestionScreen(
     fileName: String,
     navigateUp: () -> Unit
 ) {
+    val questionIndex = rememberSaveable { mutableStateOf(1) }
+
     BottomSheetScaffold(
         sheetContent = {
             Column(
@@ -63,7 +69,7 @@ fun GenerateQuestionScreen(
                 .padding(innerPadding)
                 .padding(horizontal = SCREEN_MARGIN.dp)
         ) {
-            ProgressIndicator(progress = 1)
+            ProgressIndicator(progress = questionIndex.value, questionListSize = MAX_QUESTION_INDEX)
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -78,7 +84,11 @@ fun GenerateQuestionScreen(
                 LongColorBtn(
                     text = stringResource(id = R.string.question_done_button),
                     enabled = true,
-                    onClick = {}
+                    onClick = {
+                        if (questionIndex.value < MAX_QUESTION_INDEX) {
+                            questionIndex.value++
+                        }
+                    }
                 )
             }
         }
