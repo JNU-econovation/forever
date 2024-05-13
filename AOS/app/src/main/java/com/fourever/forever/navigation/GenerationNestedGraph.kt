@@ -85,7 +85,7 @@ fun NavGraphBuilder.generationGraph(
                 fileName = fileName,
                 postFileSummary = {
                     (generateSummaryViewModel::postFileSummary)(fileName)
-                    navActions.navigateToQuestionGeneration(generateSummaryUiState.documentId)
+                    navActions.navigateToQuestionGeneration(fileName, generateSummaryUiState.documentId)
                 },
                 navigateUp = { navController.navigateUp() }
             )
@@ -94,15 +94,23 @@ fun NavGraphBuilder.generationGraph(
         composable(
             Screen.GenerateQuestion.route,
             arguments = listOf(
+                navArgument(ForeverDestinationArgs.FILE_NAME_ARG) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
                 navArgument(ForeverDestinationArgs.DOCUMENT_ID_ARG) {
                     type = NavType.IntType
                     defaultValue = 0
-                }
+                },
             )
         ) {
+            val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
             val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
 
-            GenerateQuestionScreen()
+            GenerateQuestionScreen(
+                fileName = fileName,
+                navigateUp = { navController.navigateUp() }
+            )
         }
     }
 }

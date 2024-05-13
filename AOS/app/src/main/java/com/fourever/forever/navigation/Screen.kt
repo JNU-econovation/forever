@@ -22,8 +22,8 @@ sealed class Screen(val route: String) {
     }
 
     object GenerateQuestion :
-        Screen("GenerateQuestion/{${ForeverDestinationArgs.DOCUMENT_ID_ARG}}") {
-        fun createRoute(documentId: Int) = "GenerateQuestion/$documentId"
+        Screen("GenerateQuestion/{${ForeverDestinationArgs.FILE_NAME_ARG}}/{${ForeverDestinationArgs.DOCUMENT_ID_ARG}}") {
+        fun createRoute(fileName: String, documentId: Int) = "GenerateQuestion/$fileName/$documentId"
     }
 
 

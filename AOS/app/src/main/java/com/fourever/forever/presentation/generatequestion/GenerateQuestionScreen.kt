@@ -33,7 +33,10 @@ private const val SPACE_BETWEEN_BUTTONS = 10
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenerateQuestionScreen() {
+fun GenerateQuestionScreen(
+    fileName: String,
+    navigateUp: () -> Unit
+) {
     BottomSheetScaffold(
         sheetContent = {
             Column(
@@ -42,7 +45,7 @@ fun GenerateQuestionScreen() {
                 AnswerBtmSheet(answer = "3/24 계획서, 5월 발표, 6월 최종 평가로 구성되어 있습니다.")
             }
         },
-        topBar = { FileNameTopAppBar(fileName = "프로그래밍 언어론_ch03a") },
+        topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
         sheetPeekHeight = BTM_SHEET_PEEK_HEIGHT.dp,
         sheetShape = RoundedCornerShape(
             topStart = BTM_SHEET_RADIUS.dp,
@@ -82,6 +85,9 @@ fun GenerateQuestionScreen() {
 @Composable
 private fun QuestionPreview() {
     MaterialTheme {
-        GenerateQuestionScreen()
+        GenerateQuestionScreen(
+            fileName = "",
+            navigateUp = {}
+        )
     }
 }
