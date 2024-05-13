@@ -8,6 +8,7 @@ import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.data.model.response.GetFileQuestionResponseDto
 import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
+import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.flow.Flow
 
 interface FileRepository {
@@ -15,7 +16,7 @@ interface FileRepository {
 
     fun postFileSummary(
         postFileSummaryRequestDto: PostFileSummaryRequestDto
-    ): Flow<ResultWrapper<BaseResponse<Void>>>
+    ): Flow<ResultWrapper<BaseResponse<PostFileSummaryResponseDto>>>
 
     fun postFileQuestion(
         documentId: Int,

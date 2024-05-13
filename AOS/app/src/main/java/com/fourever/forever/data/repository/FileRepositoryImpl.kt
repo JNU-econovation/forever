@@ -9,6 +9,7 @@ import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.data.model.response.GetFileQuestionResponseDto
 import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
+import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class FileRepositoryImpl @Inject constructor(
 
     override fun postFileSummary(
         postFileSummaryRequestDto: PostFileSummaryRequestDto
-    ): Flow<ResultWrapper<BaseResponse<Void>>> =
+    ): Flow<ResultWrapper<BaseResponse<PostFileSummaryResponseDto>>> =
         fileDataSource.postFileSummary(postFileSummaryRequestDto)
 
     override fun postFileQuestion(
