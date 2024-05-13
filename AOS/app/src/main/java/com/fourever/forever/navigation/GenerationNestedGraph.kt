@@ -14,6 +14,7 @@ import androidx.navigation.navigation
 import com.fourever.forever.presentation.fileupload.FileUploadScreen
 import com.fourever.forever.presentation.fileupload.FileUploadViewModel
 import com.fourever.forever.presentation.generatequestion.GenerateQuestionScreen
+import com.fourever.forever.presentation.generatequestion.GenerateQuestionViewModel
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryScreen
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryViewModel
 import java.net.URLEncoder
@@ -107,9 +108,14 @@ fun NavGraphBuilder.generationGraph(
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
             val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
 
+            val generateQuestionViewModel = hiltViewModel<GenerateQuestionViewModel>()
+            val generateQuestionUiState by generateQuestionViewModel.generateQuestionUiState.collectAsState()
+
             GenerateQuestionScreen(
                 fileName = fileName,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                currentQuestion = generateQuestionUiState.currentQuestion,
+                currentAnswer = generateQuestionUiState.currentAnswer
             )
         }
     }

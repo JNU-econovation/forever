@@ -41,7 +41,9 @@ private const val MAX_QUESTION_INDEX = 5
 @Composable
 fun GenerateQuestionScreen(
     fileName: String,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    currentQuestion: String,
+    currentAnswer: String
 ) {
     val questionIndex = rememberSaveable { mutableStateOf(1) }
 
@@ -50,7 +52,7 @@ fun GenerateQuestionScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                AnswerBtmSheet(answer = "3/24 계획서, 5월 발표, 6월 최종 평가로 구성되어 있습니다.")
+                AnswerBtmSheet(answer = currentAnswer)
             }
         },
         topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
@@ -75,7 +77,7 @@ fun GenerateQuestionScreen(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
-                QuestionCard(question = "캡스톤 디자인 강의의 주요 일정은 어떻게 구성되어 있나요? 정말 궁금합니다. 얼른 답변을 입력해주세요.")
+                QuestionCard(question = currentQuestion)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
                 ExpectationCard()
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
@@ -101,7 +103,9 @@ private fun QuestionPreview() {
     MaterialTheme {
         GenerateQuestionScreen(
             fileName = "",
-            navigateUp = {}
+            navigateUp = {},
+            currentAnswer = "",
+            currentQuestion = ""
         )
     }
 }
