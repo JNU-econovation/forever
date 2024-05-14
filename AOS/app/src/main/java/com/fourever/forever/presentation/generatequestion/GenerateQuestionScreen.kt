@@ -48,7 +48,8 @@ fun GenerateQuestionScreen(
     navigateUp: () -> Unit,
     currentQuestion: String,
     currentAnswer: String,
-    toggleQuestionSaveStatus: (Int) -> Unit
+    toggleQuestionSaveStatus: (Int) -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     val questionIndex = rememberSaveable { mutableStateOf(0) }
     val backPressedState by remember { mutableStateOf(true) }
@@ -120,7 +121,9 @@ fun GenerateQuestionScreen(
                     },
                     enabled = true,
                     onClick = {
-                        if (questionIndex.value < MAX_QUESTION_INDEX) {
+                        if (questionIndex.value == MAX_QUESTION_INDEX) {
+                            navigateToHome()
+                        } else if(questionIndex.value < MAX_QUESTION_INDEX) {
                             questionIndex.value++
                         }
                     }
@@ -142,7 +145,6 @@ private fun QuestionPreview() {
             currentQuestion = "",
             toggleQuestionSaveStatus = {},
             navigateToHome = {},
-            saveQuestions = {}
         )
     }
 }

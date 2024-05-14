@@ -117,7 +117,8 @@ fun NavGraphBuilder.generationGraph(
                 navigateUp = { navController.navigateUp() },
                 currentQuestion = generateQuestionUiState.currentQuestion,
                 currentAnswer = generateQuestionUiState.currentAnswer,
-                toggleQuestionSaveStatus = { questionIndex -> generateQuestionViewModel.toggleQuestionSaveStatus(questionIndex)}
+                toggleQuestionSaveStatus = { questionIndex -> generateQuestionViewModel.toggleQuestionSaveStatus(questionIndex)},
+                navigateToHome = { navActions.navigateToHome() },
             )
         }
     }
