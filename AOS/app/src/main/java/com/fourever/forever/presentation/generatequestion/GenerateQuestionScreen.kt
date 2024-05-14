@@ -103,7 +103,18 @@ fun GenerateQuestionScreen(
                 )
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_BUTTONS.dp))
                 LongColorBtn(
-                    text = stringResource(id = R.string.question_done_button),
+                    text = if (questionIndex.value == MAX_QUESTION_INDEX) {
+                        stringResource(id = R.string.question_done_button)
+                    } else if (questionIndex.value < MAX_QUESTION_INDEX) {
+                        String.format(
+                            stringResource(R.string.question_progress_button),
+                            questionIndex.value + 1,
+                            MAX_QUESTION_INDEX + 1
+                        )
+                    } else {
+                        /* TODO: questionIndex가 예상 범위를 벗어난 경우 예외 처리 */
+                        stringResource(id = R.string.question_done_button)
+                    },
                     enabled = true,
                     onClick = {
                         if (questionIndex.value < MAX_QUESTION_INDEX) {
