@@ -1,5 +1,6 @@
 package com.fourever.forever.presentation.generatequestion
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,9 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -48,6 +51,15 @@ fun GenerateQuestionScreen(
     toggleQuestionSaveStatus: (Int) -> Unit
 ) {
     val questionIndex = rememberSaveable { mutableStateOf(0) }
+    val backPressedState by remember { mutableStateOf(true) }
+
+    BackHandler(enabled = backPressedState) {
+        if (questionIndex.value == 0) {
+            navigateUp()
+        } else if (questionIndex.value > 0) {
+            questionIndex.value--
+        }
+    }
 
     BottomSheetScaffold(
         sheetContent = {
@@ -114,7 +126,9 @@ private fun QuestionPreview() {
             navigateUp = {},
             currentAnswer = "",
             currentQuestion = "",
-            toggleQuestionSaveStatus = {}
+            toggleQuestionSaveStatus = {},
+            navigateToHome = {},
+            saveQuestions = {}
         )
     }
 }
