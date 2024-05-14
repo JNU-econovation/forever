@@ -85,7 +85,10 @@ fun GenerateQuestionScreen(
                 .padding(innerPadding)
                 .padding(horizontal = SCREEN_MARGIN.dp)
         ) {
-            ProgressIndicator(progress = questionIndex.value + 1, questionListSize = MAX_QUESTION_INDEX + 1)
+            ProgressIndicator(
+                progress = questionIndex.value + 1,
+                questionListSize = MAX_QUESTION_INDEX + 1
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
