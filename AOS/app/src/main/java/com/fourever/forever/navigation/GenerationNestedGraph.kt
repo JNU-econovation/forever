@@ -112,10 +112,12 @@ fun NavGraphBuilder.generationGraph(
             val generateQuestionUiState by generateQuestionViewModel.generateQuestionUiState.collectAsState()
 
             GenerateQuestionScreen(
+                generateQuestionUiState = generateQuestionUiState,
                 fileName = fileName,
                 navigateUp = { navController.navigateUp() },
                 currentQuestion = generateQuestionUiState.currentQuestion,
-                currentAnswer = generateQuestionUiState.currentAnswer
+                currentAnswer = generateQuestionUiState.currentAnswer,
+                toggleQuestionSaveStatus = { questionIndex -> generateQuestionViewModel.toggleQuestionSaveStatus(questionIndex)}
             )
         }
     }

@@ -25,16 +25,15 @@ private const val SPACE_BETWEEN_ICON_AND_TEXT = 10
 private const val ICON_SIZE = 15
 
 @Composable
-fun LongWhiteBtn(enabled: Boolean) {
+fun LongWhiteBtn(isSelected: Boolean, onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .size(width = LONG_BTN_WIDTH.dp, height = LONG_BTN_HEIGHT.dp),
-        enabled = enabled,
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),
         border = BorderStroke(
             width = BUTTON_STROKE_THICKNESS.dp,
-            color = if (enabled) {
+            color = if (isSelected) {
                 colorResource(id = R.color.secondary_strong)
             } else {
                 colorResource(id = R.color.placeholder)
@@ -42,7 +41,11 @@ fun LongWhiteBtn(enabled: Boolean) {
         ),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.white),
-            contentColor = colorResource(id = R.color.secondary_strong),
+            contentColor = if (isSelected) {
+                colorResource(id = R.color.secondary_strong)
+            } else {
+                colorResource(id = R.color.placeholder)
+            },
             disabledContainerColor = colorResource(id = R.color.white),
             disabledContentColor = colorResource(R.color.placeholder)
         )
@@ -50,7 +53,7 @@ fun LongWhiteBtn(enabled: Boolean) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (enabled) {
+            if (isSelected) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_save_question_enabled),
                     contentDescription = null,
@@ -76,6 +79,6 @@ fun LongWhiteBtn(enabled: Boolean) {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        LongWhiteBtn(enabled = false)
+        LongWhiteBtn(isSelected = false, onClick = {})
     }
 }

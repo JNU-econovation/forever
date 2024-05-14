@@ -35,17 +35,19 @@ import com.fourever.forever.presentation.component.topappbar.FileNameTopAppBar
 private const val SPACE_BETWEEN_COMPONENTS = 17
 private const val SPACE_BETWEEN_BUTTONS = 10
 
-private const val MAX_QUESTION_INDEX = 5
+private const val MAX_QUESTION_INDEX = 4
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenerateQuestionScreen(
+    generateQuestionUiState: GenerateQuestionUiState,
     fileName: String,
     navigateUp: () -> Unit,
     currentQuestion: String,
-    currentAnswer: String
+    currentAnswer: String,
+    toggleQuestionSaveStatus: (Int) -> Unit
 ) {
-    val questionIndex = rememberSaveable { mutableStateOf(1) }
+    val questionIndex = rememberSaveable { mutableStateOf(0) }
 
     BottomSheetScaffold(
         sheetContent = {
@@ -71,7 +73,7 @@ fun GenerateQuestionScreen(
                 .padding(innerPadding)
                 .padding(horizontal = SCREEN_MARGIN.dp)
         ) {
-            ProgressIndicator(progress = questionIndex.value, questionListSize = MAX_QUESTION_INDEX)
+            ProgressIndicator(progress = questionIndex.value + 1, questionListSize = MAX_QUESTION_INDEX + 1)
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -81,7 +83,12 @@ fun GenerateQuestionScreen(
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
                 ExpectationCard()
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
-                LongWhiteBtn(enabled = false)
+                LongWhiteBtn(
+                    isSelected = generateQuestionUiState.questionSaveStatus[questionIndex.value],
+                    onClick = {
+                        toggleQuestionSaveStatus(questionIndex.value)
+                    }
+                )
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_BUTTONS.dp))
                 LongColorBtn(
                     text = stringResource(id = R.string.question_done_button),
@@ -102,10 +109,12 @@ fun GenerateQuestionScreen(
 private fun QuestionPreview() {
     MaterialTheme {
         GenerateQuestionScreen(
+            generateQuestionUiState = GenerateQuestionUiState(),
             fileName = "",
             navigateUp = {},
             currentAnswer = "",
-            currentQuestion = ""
+            currentQuestion = "",
+            toggleQuestionSaveStatus = {}
         )
     }
 }
