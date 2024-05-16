@@ -20,8 +20,8 @@ data class GenerateQuestionUiState(
     val questionState: UiState = UiState.Empty,
     val errorMessage: String = "",
 
-    val currentQuestion: String = "질문1",
-    val currentAnswer: String = "답변1",
+    val currentQuestion: String = "",
+    val currentAnswer: String = "",
 
     val questionAndAnswerList: List<PostFileQuestionRequestDto> = listOf(
         PostFileQuestionRequestDto(
@@ -60,6 +60,18 @@ class GenerateQuestionViewModel @Inject constructor(
     fun toggleQuestionSaveStatus(questionIndex: Int) {
         val currentValue = generateQuestionUiState.value.questionSaveStatus[questionIndex]
         _generateQuestionUiState.value.questionSaveStatus[questionIndex] = !currentValue
+    }
+
+    fun updateCurrentContent(questionIndex: Int) {
+        val currentQuestionAndAnswer: PostFileQuestionRequestDto = generateQuestionUiState.value.questionAndAnswerList[questionIndex]
+        val currentQuestion = currentQuestionAndAnswer.questionContent
+        val currentAnswer = currentQuestionAndAnswer.answerContent
+        _generateQuestionUiState.update {
+            it.copy(
+                currentQuestion = currentQuestion,
+                currentAnswer = currentAnswer
+            )
+        }
     }
 
     fun postFileQuestion(documentId: Int) {

@@ -12,6 +12,7 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +51,8 @@ fun GenerateQuestionScreen(
     currentAnswer: String,
     toggleQuestionSaveStatus: (Int) -> Unit,
     navigateToHome: () -> Unit,
-    postFileQuestion: () -> Unit
+    postFileQuestion: () -> Unit,
+    updateCurrentContent: (Int) -> Unit
 ) {
     val questionIndex = rememberSaveable { mutableStateOf(0) }
     val backPressedState by remember { mutableStateOf(true) }
@@ -61,6 +63,10 @@ fun GenerateQuestionScreen(
         } else if (questionIndex.value > 0) {
             questionIndex.value--
         }
+    }
+
+    LaunchedEffect(Unit) {
+        updateCurrentContent(questionIndex.value)
     }
 
     BottomSheetScaffold(
@@ -127,6 +133,7 @@ fun GenerateQuestionScreen(
                             navigateToHome()
                         } else if(questionIndex.value < MAX_QUESTION_INDEX) {
                             questionIndex.value++
+                            updateCurrentContent(questionIndex.value)
                         }
                     }
                 )
@@ -147,7 +154,8 @@ private fun QuestionPreview() {
             currentQuestion = "",
             toggleQuestionSaveStatus = {},
             navigateToHome = {},
-            postFileQuestion = {}
+            postFileQuestion = {},
+            updateCurrentContent = {}
         )
     }
 }

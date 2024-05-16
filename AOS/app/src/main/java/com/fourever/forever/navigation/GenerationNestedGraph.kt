@@ -119,7 +119,8 @@ fun NavGraphBuilder.generationGraph(
                 currentAnswer = generateQuestionUiState.currentAnswer,
                 toggleQuestionSaveStatus = { questionIndex -> generateQuestionViewModel.toggleQuestionSaveStatus(questionIndex)},
                 navigateToHome = { navActions.navigateToHome() },
-                postFileQuestion = { generateQuestionViewModel.postFileQuestion(documentId) }
+                postFileQuestion = { generateQuestionViewModel.postFileQuestion(documentId) },
+                updateCurrentContent = { questionIndex -> generateQuestionViewModel.updateCurrentContent(questionIndex)}
             )
         }
     }
