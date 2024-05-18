@@ -47,12 +47,9 @@ fun GenerateQuestionScreen(
     generateQuestionUiState: GenerateQuestionUiState,
     fileName: String,
     navigateUp: () -> Unit,
-    currentQuestion: String,
-    currentAnswer: String,
     toggleQuestionSaveStatus: (Int) -> Unit,
     navigateToHome: () -> Unit,
     postFileQuestion: () -> Unit,
-    updateCurrentContent: (Int) -> Unit
 ) {
     val questionIndex = rememberSaveable { mutableStateOf(0) }
     val backPressedState by remember { mutableStateOf(true) }
@@ -65,16 +62,12 @@ fun GenerateQuestionScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        updateCurrentContent(questionIndex.value)
-    }
-
     BottomSheetScaffold(
         sheetContent = {
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                AnswerBtmSheet(answer = currentAnswer)
+                AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answerContent)
             }
         },
         topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
@@ -102,7 +95,7 @@ fun GenerateQuestionScreen(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
-                QuestionCard(question = currentQuestion)
+                QuestionCard(question = generateQuestionUiState.questionAndAnswerList[questionIndex.value].questionContent)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
                 ExpectationCard()
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
@@ -133,7 +126,6 @@ fun GenerateQuestionScreen(
                             navigateToHome()
                         } else if(questionIndex.value < MAX_QUESTION_INDEX) {
                             questionIndex.value++
-                            updateCurrentContent(questionIndex.value)
                         }
                     }
                 )
@@ -150,12 +142,9 @@ private fun QuestionPreview() {
             generateQuestionUiState = GenerateQuestionUiState(),
             fileName = "",
             navigateUp = {},
-            currentAnswer = "",
-            currentQuestion = "",
             toggleQuestionSaveStatus = {},
             navigateToHome = {},
             postFileQuestion = {},
-            updateCurrentContent = {}
         )
     }
 }
