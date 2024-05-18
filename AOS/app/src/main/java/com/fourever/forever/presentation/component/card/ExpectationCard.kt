@@ -19,10 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -38,8 +35,7 @@ import com.fourever.forever.ui.theme.foreverTypography
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun ExpectationCard() {
-    var expectation by remember { mutableStateOf("") }
+fun ExpectationCard(expectation: String, onValueChange: (String) -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -76,7 +72,7 @@ fun ExpectationCard() {
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
             BasicTextField(
                 value = expectation,
-                onValueChange = { expectation = it },
+                onValueChange = { expectation -> onValueChange(expectation)},
                 modifier = Modifier.height(
                     height = CARD_CONTENT_HEIGHT.dp
                 ),
@@ -112,6 +108,6 @@ fun ExpectationCard() {
 @Composable
 private fun CardPreview() {
     MaterialTheme {
-        ExpectationCard()
+        ExpectationCard("", {})
     }
 }

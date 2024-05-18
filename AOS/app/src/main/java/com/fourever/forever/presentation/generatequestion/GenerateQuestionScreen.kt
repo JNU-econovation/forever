@@ -12,7 +12,6 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +49,7 @@ fun GenerateQuestionScreen(
     toggleQuestionSaveStatus: (Int) -> Unit,
     navigateToHome: () -> Unit,
     postFileQuestion: () -> Unit,
+    updateExpectation: (String) -> Unit
 ) {
     val questionIndex = rememberSaveable { mutableStateOf(0) }
     val backPressedState by remember { mutableStateOf(true) }
@@ -59,6 +59,7 @@ fun GenerateQuestionScreen(
             navigateUp()
         } else if (questionIndex.value > 0) {
             questionIndex.value--
+            updateExpectation("")
         }
     }
 
@@ -97,7 +98,7 @@ fun GenerateQuestionScreen(
             ) {
                 QuestionCard(question = generateQuestionUiState.questionAndAnswerList[questionIndex.value].questionContent)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
-                ExpectationCard()
+                ExpectationCard(generateQuestionUiState.expectation, updateExpectation)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
                 LongWhiteBtn(
                     isSelected = generateQuestionUiState.questionSaveStatus[questionIndex.value],
@@ -126,6 +127,7 @@ fun GenerateQuestionScreen(
                             navigateToHome()
                         } else if(questionIndex.value < MAX_QUESTION_INDEX) {
                             questionIndex.value++
+                            updateExpectation("")
                         }
                     }
                 )
@@ -145,6 +147,7 @@ private fun QuestionPreview() {
             toggleQuestionSaveStatus = {},
             navigateToHome = {},
             postFileQuestion = {},
+            updateExpectation = {}
         )
     }
 }

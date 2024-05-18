@@ -27,6 +27,7 @@ data class GenerateQuestionUiState(
         PostFileQuestionRequestDto("질문3", "답변3"),
         PostFileQuestionRequestDto("질문4", "답변4"),
     ),
+    val expectation: String = "",
     val questionSaveStatus: MutableList<Boolean> = mutableStateListOf(false, false, false, false, false)
 )
 
@@ -37,6 +38,14 @@ class GenerateQuestionViewModel @Inject constructor(
     private val _generateQuestionUiState = MutableStateFlow(GenerateQuestionUiState())
     val generateQuestionUiState: StateFlow<GenerateQuestionUiState> =
         _generateQuestionUiState.asStateFlow()
+
+    fun updateExpectation(input: String) {
+        _generateQuestionUiState.update {
+            it.copy(
+                expectation = input
+            )
+        }
+    }
 
     fun toggleQuestionSaveStatus(questionIndex: Int) {
         val currentValue = generateQuestionUiState.value.questionSaveStatus[questionIndex]
