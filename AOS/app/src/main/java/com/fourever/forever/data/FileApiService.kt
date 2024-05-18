@@ -7,6 +7,7 @@ import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.data.model.response.GetFileQuestionResponseDto
 import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
+import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -22,7 +23,7 @@ interface FileApiService {
     @POST("/api/documents/summary")
     suspend fun postFileSummary(
         @Body postFileSummaryRequestDto: PostFileSummaryRequestDto
-    ): Result<BaseResponse<Void>>
+    ): Result<BaseResponse<PostFileSummaryResponseDto>>
 
     @POST("/api/documents/{documentId}/save")
     suspend fun postFileQuestion(

@@ -32,6 +32,6 @@ fun ForeverNavGraph(
             )
         }
         detailGraph(navController = navController, navActions = navActions)
-        generationGraph()
+        generationGraph(navController = navController, navActions = navActions)
     }
 }
