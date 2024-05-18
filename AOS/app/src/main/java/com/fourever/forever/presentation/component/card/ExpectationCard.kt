@@ -1,15 +1,17 @@
 package com.fourever.forever.presentation.component.card
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,34 +19,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.ui.theme.foreverTypography
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun ExpectationCard() {
-    var expectation by remember { mutableStateOf("") }
+fun ExpectationCard(expectation: String, onValueChange: (String) -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.white),
             contentColor = colorResource(id = R.color.paragraph)
-        ),
-        border = BorderStroke(
-            width = CARD_STROKE_THICKNESS.dp,
-            color = colorResource(id = R.color.secondary_strong)
         ),
         modifier = Modifier
             .size(width = CARD_WIDTH.dp, height = CARD_HEIGHT.dp)
@@ -73,13 +72,14 @@ fun ExpectationCard() {
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
             BasicTextField(
                 value = expectation,
-                onValueChange = { expectation = it },
-                modifier = Modifier.size(
-                    width = CARD_CONTENT_WIDTH.dp,
+                onValueChange = { expectation -> onValueChange(expectation)},
+                modifier = Modifier.height(
                     height = CARD_CONTENT_HEIGHT.dp
                 ),
                 visualTransformation = VisualTransformation.None,
                 singleLine = false,
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
             ) {
                 TextFieldDefaults.DecorationBox(
                     value = expectation,
@@ -97,7 +97,7 @@ fun ExpectationCard() {
                         )
                     },
                     contentPadding = PaddingValues(CARD_CONTENT_PADDING.dp),
-                    container = {}
+                    container = {},
                 )
             }
         }
@@ -108,6 +108,6 @@ fun ExpectationCard() {
 @Composable
 private fun CardPreview() {
     MaterialTheme {
-        ExpectationCard()
+        ExpectationCard("", {})
     }
 }

@@ -14,6 +14,7 @@ import androidx.navigation.navigation
 import com.fourever.forever.presentation.fileupload.FileUploadScreen
 import com.fourever.forever.presentation.fileupload.FileUploadViewModel
 import com.fourever.forever.presentation.generatequestion.GenerateQuestionScreen
+import com.fourever.forever.presentation.generatequestion.GenerateQuestionViewModel
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryScreen
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryViewModel
 import java.net.URLEncoder
@@ -85,7 +86,7 @@ fun NavGraphBuilder.generationGraph(
                 fileName = fileName,
                 postFileSummary = {
                     (generateSummaryViewModel::postFileSummary)(fileName)
-                    navActions.navigateToQuestionGeneration(generateSummaryUiState.documentId)
+                    navActions.navigateToQuestionGeneration(fileName, generateSummaryUiState.documentId)
                 },
                 navigateUp = { navController.navigateUp() }
             )
@@ -94,15 +95,31 @@ fun NavGraphBuilder.generationGraph(
         composable(
             Screen.GenerateQuestion.route,
             arguments = listOf(
+                navArgument(ForeverDestinationArgs.FILE_NAME_ARG) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
                 navArgument(ForeverDestinationArgs.DOCUMENT_ID_ARG) {
                     type = NavType.IntType
                     defaultValue = 0
-                }
+                },
             )
         ) {
+            val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
             val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
 
-            GenerateQuestionScreen()
+            val generateQuestionViewModel = hiltViewModel<GenerateQuestionViewModel>()
+            val generateQuestionUiState by generateQuestionViewModel.generateQuestionUiState.collectAsState()
+
+            GenerateQuestionScreen(
+                generateQuestionUiState = generateQuestionUiState,
+                fileName = fileName,
+                navigateUp = { navController.navigateUp() },
+                toggleQuestionSaveStatus = { questionIndex -> generateQuestionViewModel.toggleQuestionSaveStatus(questionIndex)},
+                navigateToHome = { navActions.navigateToHome() },
+                postFileQuestion = { generateQuestionViewModel.postFileQuestion(documentId) },
+                updateExpectation = { expectation -> generateQuestionViewModel.updateExpectation(expectation) }
+            )
         }
     }
 }
