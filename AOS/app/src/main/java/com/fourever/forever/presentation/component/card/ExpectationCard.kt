@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -76,8 +77,7 @@ fun ExpectationCard() {
             BasicTextField(
                 value = expectation,
                 onValueChange = { expectation = it },
-                modifier = Modifier.size(
-                    width = CARD_CONTENT_WIDTH.dp,
+                modifier = Modifier.height(
                     height = CARD_CONTENT_HEIGHT.dp
                 ),
                 visualTransformation = VisualTransformation.None,
