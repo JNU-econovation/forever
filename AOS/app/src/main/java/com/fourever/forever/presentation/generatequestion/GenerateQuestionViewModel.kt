@@ -24,29 +24,13 @@ data class GenerateQuestionUiState(
     val currentAnswer: String = "",
 
     val questionAndAnswerList: List<PostFileQuestionRequestDto> = listOf(
-        PostFileQuestionRequestDto(
-            "질문0", "답변0"
-        ),
-        PostFileQuestionRequestDto(
-            "질문1", "답변1"
-        ),
-        PostFileQuestionRequestDto(
-            "질문2", "답변2"
-        ),
-        PostFileQuestionRequestDto(
-            "질문3", "답변3"
-        ),
-        PostFileQuestionRequestDto(
-            "질문4", "답변4"
-        ),
+        PostFileQuestionRequestDto("질문0", "답변0"),
+        PostFileQuestionRequestDto("질문1", "답변1"),
+        PostFileQuestionRequestDto("질문2", "답변2"),
+        PostFileQuestionRequestDto("질문3", "답변3"),
+        PostFileQuestionRequestDto("질문4", "답변4"),
     ),
-    val questionSaveStatus: MutableList<Boolean> = mutableStateListOf(
-        false,
-        false,
-        false,
-        false,
-        false
-    )
+    val questionSaveStatus: MutableList<Boolean> = mutableStateListOf(false, false, false, false, false)
 )
 
 @HiltViewModel
