@@ -51,7 +51,7 @@ class GenerateSummaryViewModel @Inject constructor(
                                 _generateSummaryUiState.update {
                                     it.copy(
                                         generateSummaryState = UiState.Success,
-                                        documentId = result.data?.documentId ?: 0
+                                        documentId = result.data?.id ?: 0
                                     )
                                 }
                             } else {
