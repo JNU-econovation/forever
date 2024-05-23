@@ -33,6 +33,15 @@ class HomeViewModel @Inject constructor(
         getFileList(page = 0)
     }
 
+    fun refreshFileList() {
+        _homeUiState.update {
+            it.copy(
+                files = listOf()
+            )
+        }
+        getFileList(0)
+    }
+
     fun getFileList(page: Int) {
         viewModelScope.launch {
             fileRepository.getFileList(page)
