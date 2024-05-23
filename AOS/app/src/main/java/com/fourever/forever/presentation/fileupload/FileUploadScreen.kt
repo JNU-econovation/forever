@@ -1,6 +1,7 @@
 package com.fourever.forever.presentation.fileupload
 
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +24,6 @@ import com.fourever.forever.presentation.component.buttons.FileUploadBtn
 import com.fourever.forever.presentation.component.buttons.LongColorBtn
 import com.fourever.forever.presentation.component.topappbar.FileUploadTopAppBar
 import com.fourever.forever.ui.theme.foreverTypography
-import java.io.File
 
 private const val SPACE_BETWEEN_TITLE_AND_BTN = 130
 private const val SPACE_BETWEEN_BTNS = 30
@@ -35,15 +36,26 @@ fun FileUploadScreen(
     updateFileUri: (Uri) -> Unit,
     navigateToGenerateSummary: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             selectedUri ->
         if (selectedUri != null) {
-            val file = File(selectedUri.path!!)
-            val fileName = file.name
+            val contentResolver = context.contentResolver
+            val cursor = contentResolver.query(selectedUri, null, null, null, null)
 
-            updateFileChosenState(true)
-            updateFileName(fileName)
-            updateFileUri(selectedUri)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val displayNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (displayNameIndex != -1) {
+                        val fileName = it.getString(displayNameIndex)
+
+                        updateFileChosenState(true)
+                        updateFileName(fileName)
+                        updateFileUri(selectedUri)
+                    }
+                }
+            }
         }
     }
 
