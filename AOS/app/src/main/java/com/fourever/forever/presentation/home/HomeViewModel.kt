@@ -40,10 +40,16 @@ class HomeViewModel @Inject constructor(
                 .collect { result ->
                     if (result is ResultWrapper.Success) {
                         result.data.let { result ->
+                            val oldList = _homeUiState.value.files
+                            val newList = result.data?.documents ?: listOf()
+                            val joinedList: MutableList<GetFileListResponseDto.Document> = ArrayList()
+                            joinedList.addAll(oldList)
+                            joinedList.addAll(newList)
+
                             _homeUiState.update {
                                 it.copy(
                                     fileState = UiState.Success,
-                                    files = result.data?.documents ?: listOf()
+                                    files = joinedList
                                 )
                             }
                         }
