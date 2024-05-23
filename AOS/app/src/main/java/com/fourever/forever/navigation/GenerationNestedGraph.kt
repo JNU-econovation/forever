@@ -1,6 +1,8 @@
 package com.fourever.forever.navigation
 
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -86,7 +88,9 @@ fun NavGraphBuilder.generationGraph(
                 fileName = fileName,
                 postFileSummary = {
                     (generateSummaryViewModel::postFileSummary)(fileName)
-                    navActions.navigateToQuestionGeneration(fileName, generateSummaryUiState.documentId)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        navActions.navigateToQuestionGeneration(fileName, generateSummaryUiState.documentId)
+                    }, 1000)
                 },
                 navigateUp = { navController.navigateUp() }
             )

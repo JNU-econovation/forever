@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -42,23 +43,24 @@ fun GetAllQuestionScreen(
     allQuestionUiState: AllQuestionUiState,
     fileName: String,
     questionSize: Int,
-    getQuestion: () -> Unit,
+    firstQuestionId: Int,
+    getQuestion: (Int) -> Unit,
     navigateUpToSummary: () -> Unit,
-    navigateUpToPrevQuestion: () -> Unit,
-    updateQuestionIndex: () -> Unit
 ) {
+    val lastQuestionId = firstQuestionId + questionSize - 1
+    val questionIndex = rememberSaveable { mutableStateOf(firstQuestionId) }
     val backPressedState by remember { mutableStateOf(true) }
 
     BackHandler(enabled = backPressedState) {
-        if (allQuestionUiState.questionIndex == 1) {
+        if (questionIndex.value == firstQuestionId) {
             navigateUpToSummary()
-        } else {
-            navigateUpToPrevQuestion()
+        } else if (questionIndex.value > firstQuestionId) {
+            questionIndex.value--
         }
     }
 
     LaunchedEffect(Unit) {
-        getQuestion()
+        getQuestion(firstQuestionId)
     }
 
     BottomSheetScaffold(
@@ -92,7 +94,7 @@ fun GetAllQuestionScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ProgressIndicator(
-                progress = allQuestionUiState.questionIndex,
+                progress = (questionIndex.value - firstQuestionId) + 1,
                 questionListSize = questionSize
             )
             Column(
@@ -104,22 +106,22 @@ fun GetAllQuestionScreen(
                 QuestionCard(question = allQuestionUiState.question)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_CARD_AND_BUTTON.dp))
                 LongColorBtn(
-                    text = if (allQuestionUiState.questionIndex == questionSize) {
+                    text = if (questionIndex.value == lastQuestionId) {
                         stringResource(id = R.string.question_done_button)
                     } else {
                            String.format(
                                stringResource(R.string.question_progress_button),
-                               allQuestionUiState.questionIndex,
+                               (questionIndex.value - firstQuestionId) + 1,
                                questionSize
                            )
                     },
                     enabled = true,
                     onClick = {
-                        if (allQuestionUiState.questionIndex == questionSize) {
+                        if (questionIndex.value == lastQuestionId) {
                             navigateUpToSummary()
                         } else {
-                            getQuestion()
-                            updateQuestionIndex()
+                            questionIndex.value++
+                            getQuestion(questionIndex.value)
                         }
                     }
                 )
@@ -136,10 +138,9 @@ private fun QuestionPreview() {
             allQuestionUiState = AllQuestionUiState(),
             fileName = "",
             questionSize = 1,
+            firstQuestionId = 0,
             getQuestion = {},
-            navigateUpToSummary = {},
-            navigateUpToPrevQuestion = {},
-            updateQuestionIndex = {}
+            navigateUpToSummary = {}
         )
     }
 }

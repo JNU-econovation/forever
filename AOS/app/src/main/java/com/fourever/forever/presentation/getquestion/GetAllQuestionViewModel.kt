@@ -18,7 +18,6 @@ data class AllQuestionUiState(
     val questionState: UiState = UiState.Empty,
     val errorMessage: String = "",
 
-    val questionIndex: Int = 1,
     val question: String = "",
     val answer: String = ""
 )
@@ -57,26 +56,6 @@ class GetAllQuestionViewModel @Inject constructor(
                         }
                     }
                 }
-        }
-    }
-
-    fun increaseQuestionIndex() {
-        if(_allQuestionUiState.value.questionIndex < 5) {
-            _allQuestionUiState.update {
-                it.copy(
-                    questionIndex = _allQuestionUiState.value.questionIndex + 1
-                )
-            }
-        }
-    }
-
-    fun decreaseQuestionIndex() {
-        if(_allQuestionUiState.value.questionIndex > 1) {
-            _allQuestionUiState.update {
-                it.copy(
-                    questionIndex = _allQuestionUiState.value.questionIndex - 1
-                )
-            }
         }
     }
 }

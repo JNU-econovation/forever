@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -39,9 +40,14 @@ fun HomeScreen(
     homeUiState: HomeUiState,
     navigateToUploadFile: () -> Unit,
     navigateToGetSummary: (Int) -> Unit,
-    loadMoreFile: (Int) -> Unit
+    loadMoreFile: (Int) -> Unit,
+    refreshFileList: () -> Unit
 ) {
     val page = rememberSaveable { mutableStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        refreshFileList()
+    }
 
     Scaffold(
         topBar = { MainTopAppBar() },
@@ -105,7 +111,8 @@ private fun HomePreview() {
             homeUiState = HomeUiState(),
             navigateToUploadFile = {},
             navigateToGetSummary = {},
-            loadMoreFile = {}
+            loadMoreFile = {},
+            refreshFileList = {}
         )
     }
 }
