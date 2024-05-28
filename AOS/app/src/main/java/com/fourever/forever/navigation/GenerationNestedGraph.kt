@@ -1,11 +1,13 @@
 package com.fourever.forever.navigation
 
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,6 +21,7 @@ import com.fourever.forever.presentation.generatequestion.GenerateQuestionScreen
 import com.fourever.forever.presentation.generatequestion.GenerateQuestionViewModel
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryScreen
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryViewModel
+import com.fourever.forever.presentation.util.getMultipartBody
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -74,13 +77,17 @@ fun NavGraphBuilder.generationGraph(
             )
         ) {
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
-            val fileUri = it.arguments?.getString(ForeverDestinationArgs.FILE_URI_ARG) ?: ""
+            val fileUriString = it.arguments?.getString(ForeverDestinationArgs.FILE_URI_ARG) ?: ""
+
+            val fileUri = Uri.parse(fileUriString)
+            val context = LocalContext.current
+            val fileMultipartBody = getMultipartBody(fileUri, context, fileName)
 
             val generateSummaryViewModel = hiltViewModel<GenerateSummaryViewModel>()
             val generateSummaryUiState by generateSummaryViewModel.generateSummaryUiState.collectAsState()
 
             LaunchedEffect(Unit) {
-                (generateSummaryViewModel::postPdfFile)(fileUri)
+                (generateSummaryViewModel::postPdfFile)(fileMultipartBody)
             }
 
             GenerateSummaryScreen(

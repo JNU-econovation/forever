@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 data class GenerateSummaryUiState(
@@ -27,8 +28,28 @@ class GenerateSummaryViewModel @Inject constructor(
     private val _generateSummaryUiState = MutableStateFlow(GenerateSummaryUiState())
     val generateSummaryUiState = _generateSummaryUiState.asStateFlow()
 
-    fun postPdfFile(fileUri: String) {
-        /* TODO: AI 서버에 PDF 파일 전송*/
+    fun postPdfFile(filePart: MultipartBody.Part) {
+        viewModelScope.launch {
+            fileRepository.postFile(filePart)
+                .onStart {
+                    _generateSummaryUiState.update { it.copy(generateSummaryState = UiState.Loading) }
+                }
+                .collect { result ->
+                    if (result is ResultWrapper.Success) {
+                        _generateSummaryUiState.update {
+                            it.copy(
+                                generateSummaryState = UiState.Success
+                            )
+                        }
+                    } else if (result is ResultWrapper.Error) {
+                        _generateSummaryUiState.update {
+                            it.copy(
+                                generateSummaryState = UiState.Failure
+                            )
+                        }
+                    }
+                }
+        }
     }
 
     fun getGeneratedSummary() {
@@ -73,3 +94,4 @@ class GenerateSummaryViewModel @Inject constructor(
         }
     }
 }
+
