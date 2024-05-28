@@ -11,11 +11,15 @@ import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
 import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class FileRepositoryImpl @Inject constructor(
     private val fileDataSource: FileDataSource
 ): FileRepository {
+    override fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<Unit>> =
+        fileDataSource.postFile(file)
+
     override fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>> =
         fileDataSource.getFileList(page)
 

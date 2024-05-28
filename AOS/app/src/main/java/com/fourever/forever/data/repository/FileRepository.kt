@@ -10,8 +10,11 @@ import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
 import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 
 interface FileRepository {
+    fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<Unit>>
+
     fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>>
 
     fun postFileSummary(

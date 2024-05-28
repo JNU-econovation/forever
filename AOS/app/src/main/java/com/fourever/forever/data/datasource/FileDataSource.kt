@@ -1,5 +1,6 @@
 package com.fourever.forever.data.datasource
 
+import com.fourever.forever.data.AiApiService
 import com.fourever.forever.data.FileApiService
 import com.fourever.forever.data.ResultWrapper
 import com.fourever.forever.data.model.BaseResponse
@@ -15,12 +16,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class FileDataSource @Inject constructor(
     private val fileApiService: FileApiService,
+    private val aiApiService: AiApiService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<Unit>> =
+        flow {
+            aiApiService.postFile(file)
+                .onSuccess { emit(ResultWrapper.Success(it)) }
+                .onFailure { emit(ResultWrapper.Error(it.message!!)) }
+        }.flowOn(ioDispatcher)
+
     fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>> =
         flow {
             fileApiService.getFileList(page)
