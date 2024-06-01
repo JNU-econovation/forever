@@ -4,12 +4,17 @@ import com.fourever.forever.data.AiApiService
 import com.fourever.forever.data.FileApiService
 import com.fourever.forever.data.ResultWrapper
 import com.fourever.forever.data.model.BaseResponse
+import com.fourever.forever.data.model.request.GetGeneratedQuestionsRequestDto
+import com.fourever.forever.data.model.request.GetGeneratedSummaryRequestDto
 import com.fourever.forever.data.model.request.PostFileQuestionRequestDto
 import com.fourever.forever.data.model.request.PostFileSummaryRequestDto
 import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.data.model.response.GetFileQuestionResponseDto
 import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
+import com.fourever.forever.data.model.response.GetGeneratedQuestionsResponseDto
+import com.fourever.forever.data.model.response.GetGeneratedSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
+import com.fourever.forever.data.model.response.PostFileResponseDto
 import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +29,26 @@ class FileDataSource @Inject constructor(
     private val aiApiService: AiApiService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<Unit>> =
+    fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<PostFileResponseDto>> =
         flow {
             aiApiService.postFile(file)
                 .onSuccess { emit(ResultWrapper.Success(it)) }
                 .onFailure { emit(ResultWrapper.Error(it.message!!)) }
         }.flowOn(ioDispatcher)
+
+    fun getGeneratedSummary(getGeneratedSummaryRequestDto: GetGeneratedSummaryRequestDto): Flow<ResultWrapper<GetGeneratedSummaryResponseDto>> =
+        flow {
+            aiApiService.getGeneratedSummary(getGeneratedSummaryRequestDto)
+                .onSuccess { emit(ResultWrapper.Success(it)) }
+                .onFailure { emit(ResultWrapper.Error(it.message!!))}
+        }
+
+    fun getGeneratedQuestions(getGeneratedQuestionsRequestDto: GetGeneratedQuestionsRequestDto): Flow<ResultWrapper<List<GetGeneratedQuestionsResponseDto.QuestionAndAnswer>>> =
+        flow {
+            aiApiService.getGeneratedQuestions(getGeneratedQuestionsRequestDto)
+                .onSuccess { emit(ResultWrapper.Success(it.questions)) }
+                .onFailure { emit(ResultWrapper.Error(it.message!!)) }
+        }
 
     fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>> =
         flow {

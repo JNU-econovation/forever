@@ -3,12 +3,17 @@ package com.fourever.forever.data.repository
 import com.fourever.forever.data.ResultWrapper
 import com.fourever.forever.data.datasource.FileDataSource
 import com.fourever.forever.data.model.BaseResponse
+import com.fourever.forever.data.model.request.GetGeneratedQuestionsRequestDto
+import com.fourever.forever.data.model.request.GetGeneratedSummaryRequestDto
 import com.fourever.forever.data.model.request.PostFileQuestionRequestDto
 import com.fourever.forever.data.model.request.PostFileSummaryRequestDto
 import com.fourever.forever.data.model.response.GetFileListResponseDto
 import com.fourever.forever.data.model.response.GetFileQuestionResponseDto
 import com.fourever.forever.data.model.response.GetFileSummaryResponseDto
+import com.fourever.forever.data.model.response.GetGeneratedQuestionsResponseDto
+import com.fourever.forever.data.model.response.GetGeneratedSummaryResponseDto
 import com.fourever.forever.data.model.response.GetQuestionListDto
+import com.fourever.forever.data.model.response.PostFileResponseDto
 import com.fourever.forever.data.model.response.PostFileSummaryResponseDto
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -17,8 +22,14 @@ import javax.inject.Inject
 class FileRepositoryImpl @Inject constructor(
     private val fileDataSource: FileDataSource
 ): FileRepository {
-    override fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<Unit>> =
+    override fun postFile(file: MultipartBody.Part): Flow<ResultWrapper<PostFileResponseDto>> =
         fileDataSource.postFile(file)
+
+    override fun getGeneratedSummary(getGeneratedSummaryRequestDto: GetGeneratedSummaryRequestDto): Flow<ResultWrapper<GetGeneratedSummaryResponseDto>> =
+        fileDataSource.getGeneratedSummary(getGeneratedSummaryRequestDto)
+
+    override fun getGeneratedQuestions(getGeneratedQuestionsRequestDto: GetGeneratedQuestionsRequestDto): Flow<ResultWrapper<List<GetGeneratedQuestionsResponseDto.QuestionAndAnswer>>> =
+        fileDataSource.getGeneratedQuestions(getGeneratedQuestionsRequestDto)
 
     override fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>> =
         fileDataSource.getFileList(page)
