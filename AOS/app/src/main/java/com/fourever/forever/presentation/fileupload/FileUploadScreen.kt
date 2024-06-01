@@ -56,6 +56,7 @@ fun FileUploadScreen(
                     }
                 }
             }
+            cursor?.close()
         }
     }
 
