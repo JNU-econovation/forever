@@ -29,7 +29,11 @@ private fun getFileUriPath(contentUri: Uri, context: Context): String? {
 }
 
 private fun getFile(fileUriPath: String?): File {
-    return File(fileUriPath)
+    val file = File(fileUriPath)
+    if(!file.exists()) {
+        file.mkdirs()
+    }
+    return file
 }
 
 private fun getMultipartBody(file: File, fileName: String): MultipartBody.Part {
