@@ -1,12 +1,14 @@
 package com.fourever.forever.data.model.response
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GetGeneratedSummaryResponseDto(
-    @SerialName("summarized_file_path")
+    @SerializedName("summarized_file_path")
     val filePath: String,
-    @SerialName("file_name")
+    @SerializedName("file_name")
     val fileName: String,
-    @SerialName("summarized_input")
+    @SerializedName("summarized_input")
     val summary: String
 )

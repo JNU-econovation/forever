@@ -38,17 +38,17 @@ class FileDataSource @Inject constructor(
 
     fun getGeneratedSummary(getGeneratedSummaryRequestDto: GetGeneratedSummaryRequestDto): Flow<ResultWrapper<GetGeneratedSummaryResponseDto>> =
         flow {
-            aiApiService.getGeneratedSummary(getGeneratedSummaryRequestDto)
+            aiApiService.getGeneratedSummary(getGeneratedSummaryRequestDto.uploadFilePath, getGeneratedSummaryRequestDto.fileName)
                 .onSuccess { emit(ResultWrapper.Success(it)) }
                 .onFailure { emit(ResultWrapper.Error(it.message!!))}
-        }
+        }.flowOn(ioDispatcher)
 
     fun getGeneratedQuestions(getGeneratedQuestionsRequestDto: GetGeneratedQuestionsRequestDto): Flow<ResultWrapper<List<GetGeneratedQuestionsResponseDto.QuestionAndAnswer>>> =
         flow {
-            aiApiService.getGeneratedQuestions(getGeneratedQuestionsRequestDto)
+            aiApiService.getGeneratedQuestions(getGeneratedQuestionsRequestDto.filePath, getGeneratedQuestionsRequestDto.filePath)
                 .onSuccess { emit(ResultWrapper.Success(it.questions)) }
                 .onFailure { emit(ResultWrapper.Error(it.message!!)) }
-        }
+        }.flowOn(ioDispatcher)
 
     fun getFileList(page: Int): Flow<ResultWrapper<BaseResponse<GetFileListResponseDto>>> =
         flow {

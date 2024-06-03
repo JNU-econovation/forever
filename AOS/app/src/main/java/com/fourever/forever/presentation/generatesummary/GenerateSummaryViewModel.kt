@@ -1,9 +1,14 @@
 package com.fourever.forever.presentation.generatesummary
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fourever.forever.data.ResultWrapper
+import com.fourever.forever.data.model.request.GetGeneratedQuestionsRequestDto
+import com.fourever.forever.data.model.request.GetGeneratedSummaryRequestDto
 import com.fourever.forever.data.model.request.PostFileSummaryRequestDto
+import com.fourever.forever.data.model.response.PostFileResponseDto
 import com.fourever.forever.data.repository.FileRepository
 import com.fourever.forever.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +21,7 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 
 data class GenerateSummaryUiState(
+    val postPdfState: UiState = UiState.Empty,
     val generateSummaryState: UiState = UiState.Empty,
     val summary: String = "",
     val documentId: Int = 0
@@ -28,9 +34,40 @@ class GenerateSummaryViewModel @Inject constructor(
     private val _generateSummaryUiState = MutableStateFlow(GenerateSummaryUiState())
     val generateSummaryUiState = _generateSummaryUiState.asStateFlow()
 
+    lateinit var getGeneratedQuestionRequestDto: GetGeneratedQuestionsRequestDto
+
     fun postPdfFile(filePart: MultipartBody.Part) {
         viewModelScope.launch {
             fileRepository.postFile(filePart)
+                .onStart {
+                    _generateSummaryUiState.update { it.copy(postPdfState = UiState.Loading) }
+                }
+                .collect { result ->
+                    if (result is ResultWrapper.Success) {
+                        _generateSummaryUiState.update {
+                            it.copy(
+                                postPdfState = UiState.Success
+                            )
+                        }
+
+                        val postFileResponseDto = result.data
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            getGeneratedSummary(dtoAdapter(postFileResponseDto))
+                        }, 1000)
+                    } else if (result is ResultWrapper.Error) {
+                        _generateSummaryUiState.update {
+                            it.copy(
+                                postPdfState = UiState.Failure
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getGeneratedSummary(getGeneratedSummaryRequestDto: GetGeneratedSummaryRequestDto) {
+        viewModelScope.launch {
+            fileRepository.getGeneratedSummary(getGeneratedSummaryRequestDto)
                 .onStart {
                     _generateSummaryUiState.update { it.copy(generateSummaryState = UiState.Loading) }
                 }
@@ -38,9 +75,14 @@ class GenerateSummaryViewModel @Inject constructor(
                     if (result is ResultWrapper.Success) {
                         _generateSummaryUiState.update {
                             it.copy(
-                                generateSummaryState = UiState.Success
+                                generateSummaryState = UiState.Success,
+                                summary = result.data.summary
                             )
                         }
+                        getGeneratedQuestionRequestDto = GetGeneratedQuestionsRequestDto(
+                            fileName = result.data.fileName,
+                            filePath = result.data.filePath
+                        )
                     } else if (result is ResultWrapper.Error) {
                         _generateSummaryUiState.update {
                             it.copy(
@@ -50,10 +92,6 @@ class GenerateSummaryViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    fun getGeneratedSummary() {
-        /* TODO: 요약 얻어오기 - 소켓 대체 가능 */
     }
 
     fun postFileSummary(title: String) {
@@ -95,3 +133,9 @@ class GenerateSummaryViewModel @Inject constructor(
     }
 }
 
+private fun dtoAdapter(postFileResponseDto: PostFileResponseDto): GetGeneratedSummaryRequestDto {
+    return GetGeneratedSummaryRequestDto(
+        uploadFilePath = postFileResponseDto.uploadFilePath,
+        fileName = postFileResponseDto.fileName
+    )
+}

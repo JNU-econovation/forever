@@ -3,6 +3,7 @@ package com.fourever.forever.data.model.response
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+
 data class GetGeneratedQuestionsResponseDto(
     @SerialName("questions")
     val questions: List<QuestionAndAnswer>

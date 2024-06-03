@@ -1,10 +1,12 @@
 package com.fourever.forever.data.model.request
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GetGeneratedSummaryRequestDto(
-    @SerialName("upload_file_path")
+    @SerializedName("upload_file_path")
     val uploadFilePath: String,
-    @SerialName("file_name")
+    @SerializedName("file_name")
     val fileName: String
 )
