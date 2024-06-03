@@ -68,7 +68,7 @@ fun GenerateQuestionScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answerContent)
+                AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answer)
             }
         },
         topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
@@ -96,7 +96,7 @@ fun GenerateQuestionScreen(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
-                QuestionCard(question = generateQuestionUiState.questionAndAnswerList[questionIndex.value].questionContent)
+                QuestionCard(question = generateQuestionUiState.questionAndAnswerList[questionIndex.value].question)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
                 ExpectationCard(generateQuestionUiState.expectation, updateExpectation)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
