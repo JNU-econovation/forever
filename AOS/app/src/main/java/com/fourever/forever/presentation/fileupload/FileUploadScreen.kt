@@ -56,6 +56,7 @@ fun FileUploadScreen(
                     }
                 }
             }
+            cursor?.close()
         }
     }
 
@@ -83,7 +84,7 @@ fun FileUploadScreen(
             FileUploadBtn(
                 isFileChosen = fileUploadUiState.isFileChosen,
                 fileName = fileUploadUiState.fileName,
-                onClick = { launcher.launch("*/*") }
+                onClick = { launcher.launch("application/pdf") }
             )
             Spacer(modifier = Modifier.size(SPACE_BETWEEN_BTNS.dp))
             LongColorBtn(

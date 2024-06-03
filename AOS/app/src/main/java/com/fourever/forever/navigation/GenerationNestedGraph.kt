@@ -1,11 +1,13 @@
 package com.fourever.forever.navigation
 
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,12 +15,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.fourever.forever.data.model.request.GetGeneratedQuestionsRequestDto
 import com.fourever.forever.presentation.fileupload.FileUploadScreen
 import com.fourever.forever.presentation.fileupload.FileUploadViewModel
 import com.fourever.forever.presentation.generatequestion.GenerateQuestionScreen
 import com.fourever.forever.presentation.generatequestion.GenerateQuestionViewModel
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryScreen
 import com.fourever.forever.presentation.generatesummary.GenerateSummaryViewModel
+import com.fourever.forever.presentation.util.getMultipartBody
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -74,13 +78,17 @@ fun NavGraphBuilder.generationGraph(
             )
         ) {
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
-            val fileUri = it.arguments?.getString(ForeverDestinationArgs.FILE_URI_ARG) ?: ""
+            val fileUriString = it.arguments?.getString(ForeverDestinationArgs.FILE_URI_ARG) ?: ""
+
+            val fileUri = Uri.parse(fileUriString)
+            val context = LocalContext.current
+            val fileMultipartBody = getMultipartBody(fileUri, context, fileName)
 
             val generateSummaryViewModel = hiltViewModel<GenerateSummaryViewModel>()
             val generateSummaryUiState by generateSummaryViewModel.generateSummaryUiState.collectAsState()
 
             LaunchedEffect(Unit) {
-                (generateSummaryViewModel::postPdfFile)(fileUri)
+                (generateSummaryViewModel::postPdfFile)(fileMultipartBody)
             }
 
             GenerateSummaryScreen(
@@ -88,8 +96,19 @@ fun NavGraphBuilder.generationGraph(
                 fileName = fileName,
                 postFileSummary = {
                     (generateSummaryViewModel::postFileSummary)(fileName)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "requestFileName",
+                        value = generateSummaryViewModel.getGeneratedQuestionRequestDto.fileName
+                    )
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "requestFilePath",
+                        value = generateSummaryViewModel.getGeneratedQuestionRequestDto.filePath
+                    )
                     Handler(Looper.getMainLooper()).postDelayed({
-                        navActions.navigateToQuestionGeneration(fileName, generateSummaryUiState.documentId)
+                        navActions.navigateToQuestionGeneration(
+                            fileName,
+                            generateSummaryUiState.documentId
+                        )
                     }, 1000)
                 },
                 navigateUp = { navController.navigateUp() }
@@ -111,18 +130,40 @@ fun NavGraphBuilder.generationGraph(
         ) {
             val fileName = it.arguments?.getString(ForeverDestinationArgs.FILE_NAME_ARG) ?: ""
             val documentId = it.arguments?.getInt(ForeverDestinationArgs.DOCUMENT_ID_ARG) ?: 0
+            val requestFileName =
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("requestFileName")
+            val requestFilePath =
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("requestFilePath")
+
 
             val generateQuestionViewModel = hiltViewModel<GenerateQuestionViewModel>()
             val generateQuestionUiState by generateQuestionViewModel.generateQuestionUiState.collectAsState()
+
+            LaunchedEffect(Unit) {
+                (generateQuestionViewModel::getGeneratedQuestions)(
+                    GetGeneratedQuestionsRequestDto(
+                        filePath = requestFilePath!!,
+                        fileName = requestFileName!!
+                    )
+                )
+            }
 
             GenerateQuestionScreen(
                 generateQuestionUiState = generateQuestionUiState,
                 fileName = fileName,
                 navigateUp = { navController.navigateUp() },
-                toggleQuestionSaveStatus = { questionIndex -> generateQuestionViewModel.toggleQuestionSaveStatus(questionIndex)},
+                toggleQuestionSaveStatus = { questionIndex ->
+                    generateQuestionViewModel.toggleQuestionSaveStatus(
+                        questionIndex
+                    )
+                },
                 navigateToHome = { navActions.navigateToHome() },
                 postFileQuestion = { generateQuestionViewModel.postFileQuestion(documentId) },
-                updateExpectation = { expectation -> generateQuestionViewModel.updateExpectation(expectation) }
+                updateExpectation = { expectation ->
+                    generateQuestionViewModel.updateExpectation(
+                        expectation
+                    )
+                }
             )
         }
     }
