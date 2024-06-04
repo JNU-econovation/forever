@@ -57,6 +57,7 @@ fun GetAllQuestionScreen(
             navigateUpToSummary()
         } else if (questionIndex.value > firstQuestionId) {
             questionIndex.value--
+            getQuestion(questionIndex.value)
         }
     }
 
