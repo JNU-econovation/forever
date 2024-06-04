@@ -54,7 +54,12 @@ fun AnswerCard(answer: String) {
             Text(
                 text = abbreviateText(answer, ANSWER_CARD_CONTENT_MAX_LENGTH),
                 style = foreverTypography.bodySmall,
-                modifier = Modifier.size(width = ANSWER_CARD_CONTENT_WIDTH.dp, height = ANSWER_CARD_CONTENT_HEIGHT.dp)
+                modifier = Modifier
+                    .size(
+                        width = ANSWER_CARD_CONTENT_WIDTH.dp,
+                        height = ANSWER_CARD_CONTENT_HEIGHT.dp
+                    )
+                    .verticalScroll(rememberScrollState())
             )
         }
         Divider(
