@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +27,6 @@ import com.fourever.forever.presentation.component.buttons.ShortWhiteBtn
 import com.fourever.forever.ui.theme.foreverTypography
 
 private const val SPACE_BETWEEN_TITLE_AND_CONTENT = 50
-private const val CONTENT_AREA_HEIGHT = 550
 private const val SPACE_BETWEEN_CONTENT_AND_BUTTONS = 45
 
 @Composable
@@ -72,19 +68,7 @@ fun GenerateSummaryScreen(
                     )
                 }
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_TITLE_AND_CONTENT.dp))
-                Column(
-                    modifier = Modifier
-                        .height(
-                            height = CONTENT_AREA_HEIGHT.dp
-                        )
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    Text(
-                        text = generateSummaryUiState.summary,
-                        style = foreverTypography.bodyMedium,
-                        color = colorResource(id = R.color.paragraph)
-                    )
-                }
+                SummaryContent(summary = generateSummaryUiState.summary, generateSummaryState = generateSummaryUiState.generateSummaryState)
                 Spacer(modifier = Modifier.size(SPACE_BETWEEN_CONTENT_AND_BUTTONS.dp))
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
