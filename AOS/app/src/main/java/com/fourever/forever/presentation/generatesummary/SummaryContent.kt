@@ -18,7 +18,7 @@ import com.fourever.forever.R
 import com.fourever.forever.presentation.util.UiState
 import com.fourever.forever.ui.theme.foreverTypography
 
-private const val CONTENT_AREA_HEIGHT = 550
+private const val CONTENT_AREA_HEIGHT = 500
 
 @Composable
 fun SummaryContent(summary: String, generateSummaryState: UiState) {

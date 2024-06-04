@@ -27,7 +27,7 @@ import com.fourever.forever.presentation.component.buttons.ShortWhiteBtn
 import com.fourever.forever.ui.theme.foreverTypography
 
 private const val SPACE_BETWEEN_TITLE_AND_CONTENT = 50
-private const val SPACE_BETWEEN_CONTENT_AND_BUTTONS = 45
+private const val SPACE_BETWEEN_CONTENT_AND_BUTTONS = 20
 
 @Composable
 fun GenerateSummaryScreen(
