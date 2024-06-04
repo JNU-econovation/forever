@@ -25,6 +25,7 @@ import com.fourever.forever.presentation.SCREEN_MARGIN
 import com.fourever.forever.presentation.component.buttons.ShortColorBtn
 import com.fourever.forever.presentation.component.buttons.ShortWhiteBtn
 import com.fourever.forever.presentation.util.UiState
+import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
 import com.fourever.forever.ui.theme.foreverTypography
 
 private const val SPACE_BETWEEN_TITLE_AND_CONTENT = 50
@@ -58,7 +59,7 @@ fun GenerateSummaryScreen(
             ) {
                 Column {
                     Text(
-                        text = fileName,
+                        text = abbreviateTextWithEllipsis(fileName, 15),
                         style = foreverTypography.titleLarge,
                         color = colorResource(id = R.color.paragraph)
                     )

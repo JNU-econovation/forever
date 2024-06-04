@@ -34,6 +34,8 @@ import com.fourever.forever.presentation.component.buttons.LongWhiteBtn
 import com.fourever.forever.presentation.component.card.ExpectationCard
 import com.fourever.forever.presentation.component.card.QuestionCard
 import com.fourever.forever.presentation.component.topappbar.FileNameTopAppBar
+import com.fourever.forever.presentation.util.UiState
+import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
 
 private const val SPACE_BETWEEN_COMPONENTS = 17
 private const val SPACE_BETWEEN_BUTTONS = 10
@@ -71,7 +73,7 @@ fun GenerateQuestionScreen(
                 AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answer)
             }
         },
-        topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
+        topBar = { FileNameTopAppBar(fileName = abbreviateTextWithEllipsis(fileName, 15), onBackButtonClick = navigateUp) },
         sheetPeekHeight = BTM_SHEET_PEEK_HEIGHT.dp,
         sheetShape = RoundedCornerShape(
             topStart = BTM_SHEET_RADIUS.dp,
