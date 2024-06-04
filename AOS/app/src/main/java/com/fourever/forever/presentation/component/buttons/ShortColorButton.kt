@@ -20,7 +20,7 @@ import com.fourever.forever.R
 import com.fourever.forever.ui.theme.foreverTypography
 
 @Composable
-fun ShortColorBtn(onClick: () -> Unit) {
+fun ShortColorBtn(onClick: () -> Unit, enabled: Boolean) {
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -37,12 +37,19 @@ fun ShortColorBtn(onClick: () -> Unit) {
         shape = RoundedCornerShape(BUTTON_RADIUS.dp),
         border = BorderStroke(
             width = BUTTON_STROKE_THICKNESS.dp,
-            color = colorResource(id = R.color.secondary_strong)
+            color = if (enabled) {
+                colorResource(id = R.color.secondary_strong)
+            } else {
+                colorResource(id = R.color.placeholder)
+            }
         ),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
             contentColor = colorResource(id = R.color.white),
-        )
+            disabledContainerColor = colorResource(id = R.color.gray_medium),
+            disabledContentColor = colorResource(id = R.color.placeholder)
+        ),
+        enabled = enabled
     ) {
         Text(
             text = stringResource(id = R.string.summary_save_button),
@@ -55,6 +62,6 @@ fun ShortColorBtn(onClick: () -> Unit) {
 @Composable
 private fun BtnPreview() {
     MaterialTheme {
-        ShortColorBtn(onClick = {})
+        ShortColorBtn(onClick = {}, enabled = false)
     }
 }

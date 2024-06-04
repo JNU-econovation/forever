@@ -24,6 +24,7 @@ import com.fourever.forever.R
 import com.fourever.forever.presentation.SCREEN_MARGIN
 import com.fourever.forever.presentation.component.buttons.ShortColorBtn
 import com.fourever.forever.presentation.component.buttons.ShortWhiteBtn
+import com.fourever.forever.presentation.util.UiState
 import com.fourever.forever.ui.theme.foreverTypography
 
 private const val SPACE_BETWEEN_TITLE_AND_CONTENT = 50
@@ -75,7 +76,7 @@ fun GenerateSummaryScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     ShortWhiteBtn(navigateUp)
-                    ShortColorBtn(postFileSummary)
+                    ShortColorBtn(postFileSummary, generateSummaryUiState.generateSummaryState == UiState.Success)
                 }
             }
         }
