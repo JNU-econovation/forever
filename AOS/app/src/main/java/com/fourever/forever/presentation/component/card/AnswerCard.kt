@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,7 +27,7 @@ private const val DIVIDER_WIDTH = 380
 private const val ANSWER_CARD_HORIZONTAL_PADDING = 10
 private const val ANSWER_CARD_VERTICAL_PADDING = 20
 private const val ANSWER_CARD_SPACE_BETWEEN_TITLE_AND_CONTENT = 10
-private const val ANSWER_CARD_CONTENT_MAX_LENGTH = 30
+private const val ANSWER_CARD_CONTENT_MAX_LENGTH = 100
 
 private const val ANSWER_CARD_CONTENT_WIDTH = 330
 private const val ANSWER_CARD_CONTENT_HEIGHT = 40
