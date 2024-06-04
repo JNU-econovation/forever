@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
+import com.fourever.forever.presentation.component.ForeverCircularProgressIndicator
 import com.fourever.forever.presentation.util.UiState
 import com.fourever.forever.ui.theme.foreverTypography
 
@@ -41,11 +42,7 @@ private fun OnContentEmpty() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(30.dp),
-            color = colorResource(id = R.color.blue_strong),
-            trackColor = colorResource(id = R.color.gray_medium),
-        )
+        ForeverCircularProgressIndicator()
     }
 }
 
