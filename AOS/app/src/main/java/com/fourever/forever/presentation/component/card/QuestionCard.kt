@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -31,7 +32,7 @@ fun QuestionCard(question: String) {
             contentColor = colorResource(id = R.color.paragraph)
         ),
         modifier = Modifier
-            .size(width = CARD_WIDTH.dp, height = CARD_HEIGHT.dp)
+            .width(CARD_WIDTH.dp)
             .border(
                 width = CARD_STROKE_THICKNESS.dp,
                 brush = Brush.verticalGradient(
