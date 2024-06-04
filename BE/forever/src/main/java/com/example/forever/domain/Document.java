@@ -15,7 +15,7 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 45, nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Column(columnDefinition="TEXT")
