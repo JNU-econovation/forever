@@ -15,7 +15,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 45, nullable = false)
+    @Column(nullable = false)
     private String content;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -25,6 +25,11 @@ public class Answer {
     @Builder
     public Answer(String content, Question question) {
         this.content = content;
+        this.question = question;
+    }
+
+    @Builder
+    public Answer(Question question) {
         this.question = question;
     }
 
