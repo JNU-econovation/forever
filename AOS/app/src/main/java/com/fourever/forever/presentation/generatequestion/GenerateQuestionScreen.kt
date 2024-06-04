@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.SCREEN_MARGIN
+import com.fourever.forever.presentation.component.ForeverCircularProgressIndicator
 import com.fourever.forever.presentation.component.ProgressIndicator
 import com.fourever.forever.presentation.component.btmsheet.AnswerBtmSheet
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_PEEK_HEIGHT
@@ -70,7 +71,12 @@ fun GenerateQuestionScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answer)
+                when (generateQuestionUiState.questionState) {
+                    UiState.Empty -> { ForeverCircularProgressIndicator() }
+                    UiState.Loading -> { ForeverCircularProgressIndicator() }
+                    UiState.Success -> { AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answer) }
+                    UiState.Failure -> {  }
+                }
             }
         },
         topBar = { FileNameTopAppBar(fileName = abbreviateTextWithEllipsis(fileName, 15), onBackButtonClick = navigateUp) },
