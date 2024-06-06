@@ -47,6 +47,7 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         refreshFileList()
+        page.value = 0
     }
 
     Scaffold(
