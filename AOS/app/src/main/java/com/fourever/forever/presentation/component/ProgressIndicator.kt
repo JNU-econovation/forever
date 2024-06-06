@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 
-private const val MAX_PROGRESS_BAR_SIZE = 380
+private const val MAX_PROGRESS_BAR_SIZE = 320
 
 @Composable
 fun ProgressIndicator(progress: Int = 1, questionListSize: Int = 1) {
