@@ -34,6 +34,7 @@ import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_TONAL_ELEV
 import com.fourever.forever.presentation.component.buttons.LongColorBtn
 import com.fourever.forever.presentation.component.card.QuestionCard
 import com.fourever.forever.presentation.component.topappbar.FileNameTopAppBar
+import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
 
 private const val SPACE_BETWEEN_CARD_AND_BUTTON = 30
 
@@ -56,6 +57,7 @@ fun GetAllQuestionScreen(
             navigateUpToSummary()
         } else if (questionIndex.value > firstQuestionId) {
             questionIndex.value--
+            getQuestion(questionIndex.value)
         }
     }
 
@@ -73,7 +75,7 @@ fun GetAllQuestionScreen(
         },
         topBar = {
             FileNameTopAppBar(
-                fileName = fileName,
+                fileName = abbreviateTextWithEllipsis(fileName, 15),
                 onBackButtonClick = navigateUpToSummary
             )
         },

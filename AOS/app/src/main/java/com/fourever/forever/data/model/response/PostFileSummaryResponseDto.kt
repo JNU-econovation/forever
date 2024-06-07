@@ -1,8 +1,10 @@
 package com.fourever.forever.data.model.response
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PostFileSummaryResponseDto(
-    @SerialName("id")
+    @SerializedName("id")
     val id: Int
 )

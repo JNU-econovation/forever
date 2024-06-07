@@ -109,7 +109,7 @@ fun NavGraphBuilder.generationGraph(
                             fileName,
                             generateSummaryUiState.documentId
                         )
-                    }, 1000)
+                    }, 300)
                 },
                 navigateUp = { navController.navigateUp() }
             )
