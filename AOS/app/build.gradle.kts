@@ -55,6 +55,7 @@ android {
 }
 
 dependencies {
+    val richTextVersion = "0.11.0"
 
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
@@ -88,4 +89,7 @@ dependencies {
     /* Okhttp3 관련 Dependency */
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    /* Markdown 적용 */
+    implementation("com.halilibo.compose-richtext:richtext-commonmark:${richTextVersion}")
 }

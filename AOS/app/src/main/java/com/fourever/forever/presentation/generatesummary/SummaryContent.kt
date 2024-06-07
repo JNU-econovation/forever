@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.component.ForeverCircularProgressIndicator
 import com.fourever.forever.presentation.util.UiState
-import com.fourever.forever.ui.theme.foreverTypography
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
 
 private const val CONTENT_AREA_HEIGHT = 500
 
@@ -74,11 +74,9 @@ private fun OnGetSummary(summary: String) {
             )
             .verticalScroll(rememberScrollState())
     ) {
-        Text(
-            text = summary,
-            style = foreverTypography.bodyMedium,
-            color = colorResource(id = R.color.paragraph)
-        )
+        RichText {
+            Markdown(content = summary)
+        }
     }
 }
 
