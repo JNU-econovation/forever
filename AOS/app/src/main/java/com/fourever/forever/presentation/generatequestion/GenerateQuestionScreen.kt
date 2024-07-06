@@ -1,7 +1,6 @@
 package com.fourever.forever.presentation.generatequestion
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fourever.forever.R
 import com.fourever.forever.presentation.SCREEN_MARGIN
+import com.fourever.forever.presentation.component.ForeverCircularProgressIndicator
 import com.fourever.forever.presentation.component.ProgressIndicator
 import com.fourever.forever.presentation.component.btmsheet.AnswerBtmSheet
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_PEEK_HEIGHT
@@ -34,7 +34,10 @@ import com.fourever.forever.presentation.component.buttons.LongWhiteBtn
 import com.fourever.forever.presentation.component.card.ExpectationCard
 import com.fourever.forever.presentation.component.card.QuestionCard
 import com.fourever.forever.presentation.component.topappbar.FileNameTopAppBar
+import com.fourever.forever.presentation.util.UiState
+import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
 
+private const val SPACE_BETWEEN_TOP_AND_CONTENT = 100
 private const val SPACE_BETWEEN_COMPONENTS = 17
 private const val SPACE_BETWEEN_BUTTONS = 10
 
@@ -68,10 +71,15 @@ fun GenerateQuestionScreen(
             Column(
                 modifier = Modifier.padding(horizontal = SCREEN_MARGIN.dp)
             ) {
-                AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answerContent)
+                when (generateQuestionUiState.questionState) {
+                    UiState.Empty -> { ForeverCircularProgressIndicator() }
+                    UiState.Loading -> { ForeverCircularProgressIndicator() }
+                    UiState.Success -> { AnswerBtmSheet(answer = generateQuestionUiState.questionAndAnswerList[questionIndex.value].answer) }
+                    UiState.Failure -> {  }
+                }
             }
         },
-        topBar = { FileNameTopAppBar(fileName = fileName, onBackButtonClick = navigateUp) },
+        topBar = { FileNameTopAppBar(fileName = abbreviateTextWithEllipsis(fileName, 15), onBackButtonClick = navigateUp) },
         sheetPeekHeight = BTM_SHEET_PEEK_HEIGHT.dp,
         sheetShape = RoundedCornerShape(
             topStart = BTM_SHEET_RADIUS.dp,
@@ -87,50 +95,58 @@ fun GenerateQuestionScreen(
                 .padding(innerPadding)
                 .padding(horizontal = SCREEN_MARGIN.dp)
         ) {
-            ProgressIndicator(
-                progress = questionIndex.value + 1,
-                questionListSize = MAX_QUESTION_INDEX + 1
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                QuestionCard(question = generateQuestionUiState.questionAndAnswerList[questionIndex.value].questionContent)
-                Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
-                ExpectationCard(generateQuestionUiState.expectation, updateExpectation)
-                Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
-                LongWhiteBtn(
-                    isSelected = generateQuestionUiState.questionSaveStatus[questionIndex.value],
-                    onClick = {
-                        toggleQuestionSaveStatus(questionIndex.value)
-                    }
-                )
-                Spacer(modifier = Modifier.size(SPACE_BETWEEN_BUTTONS.dp))
-                LongColorBtn(
-                    text = if (questionIndex.value == MAX_QUESTION_INDEX) {
-                        stringResource(id = R.string.question_done_button)
-                    } else if (questionIndex.value < MAX_QUESTION_INDEX) {
-                        String.format(
-                            stringResource(R.string.question_progress_button),
-                            questionIndex.value + 1,
-                            MAX_QUESTION_INDEX + 1
+            when(generateQuestionUiState.questionState) {
+                UiState.Empty -> { ForeverCircularProgressIndicator() }
+                UiState.Loading -> { ForeverCircularProgressIndicator() }
+                UiState.Success -> {
+                    ProgressIndicator(
+                        progress = questionIndex.value + 1,
+                        questionListSize = MAX_QUESTION_INDEX + 1
+                    )
+                    Spacer(modifier = Modifier.size(SPACE_BETWEEN_TOP_AND_CONTENT.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+//                        verticalArrangement = Arrangement.Center
+                    ) {
+                        QuestionCard(question = generateQuestionUiState.questionAndAnswerList[questionIndex.value].question)
+                        Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
+                        ExpectationCard(generateQuestionUiState.expectation, updateExpectation)
+                        Spacer(modifier = Modifier.size(SPACE_BETWEEN_COMPONENTS.dp))
+                        LongWhiteBtn(
+                            isSelected = generateQuestionUiState.questionSaveStatus[questionIndex.value],
+                            onClick = {
+                                toggleQuestionSaveStatus(questionIndex.value)
+                            }
                         )
-                    } else {
-                        /* TODO: questionIndex가 예상 범위를 벗어난 경우 예외 처리 */
-                        stringResource(id = R.string.question_done_button)
-                    },
-                    enabled = true,
-                    onClick = {
-                        if (questionIndex.value == MAX_QUESTION_INDEX) {
-                            postFileQuestion()
-                            navigateToHome()
-                        } else if(questionIndex.value < MAX_QUESTION_INDEX) {
-                            questionIndex.value++
-                            updateExpectation("")
-                        }
+                        Spacer(modifier = Modifier.size(SPACE_BETWEEN_BUTTONS.dp))
+                        LongColorBtn(
+                            text = if (questionIndex.value == MAX_QUESTION_INDEX) {
+                                stringResource(id = R.string.question_done_button)
+                            } else if (questionIndex.value < MAX_QUESTION_INDEX) {
+                                String.format(
+                                    stringResource(R.string.question_progress_button),
+                                    questionIndex.value + 1,
+                                    MAX_QUESTION_INDEX + 1
+                                )
+                            } else {
+                                /* TODO: questionIndex가 예상 범위를 벗어난 경우 예외 처리 */
+                                stringResource(id = R.string.question_done_button)
+                            },
+                            enabled = true,
+                            onClick = {
+                                if (questionIndex.value == MAX_QUESTION_INDEX) {
+                                    postFileQuestion()
+                                    navigateToHome()
+                                } else if(questionIndex.value < MAX_QUESTION_INDEX) {
+                                    questionIndex.value++
+                                    updateExpectation("")
+                                }
+                            }
+                        )
                     }
-                )
+                }
+                UiState.Failure -> {  }
             }
         }
     }

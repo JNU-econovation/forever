@@ -114,10 +114,9 @@ fun NavGraphBuilder.detailGraph(
                 allQuestionUiState = allQuestionUiState,
                 fileName = fileName,
                 questionSize = questionSize,
-                getQuestion = { (getQuestionViewModel::getQuestion)(firstQuestionId) },
+                firstQuestionId = firstQuestionId,
+                getQuestion = { questionId -> (getQuestionViewModel::getQuestion)(questionId) },
                 navigateUpToSummary = { navController.navigateUp() },
-                navigateUpToPrevQuestion = { getQuestionViewModel.decreaseQuestionIndex() },
-                updateQuestionIndex = { getQuestionViewModel.increaseQuestionIndex() }
             )
         }
     }

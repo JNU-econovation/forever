@@ -3,7 +3,6 @@ package com.fourever.forever.presentation.component.topappbar
 import androidx.compose.foundation.Image
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
@@ -15,7 +14,9 @@ import com.fourever.forever.R
 @Composable
 fun MainTopAppBar() {
     TopAppBar(
-        title = { Text(text = "Add Logo") },
+        title = {
+            Image(painter = painterResource(id = R.drawable.ic_logo_text), contentDescription = "")
+        },
         actions = {
             Image(
                 painter = painterResource(id = R.drawable.ic_main_top_profile),

@@ -31,7 +31,10 @@ import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_RADIUS
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_SHADOW_ELEVATION
 import com.fourever.forever.presentation.component.btmsheet.BTM_SHEET_TONAL_ELEVATION
 import com.fourever.forever.presentation.component.btmsheet.QuestionListBtnSheet
+import com.fourever.forever.presentation.util.abbreviateTextWithEllipsis
 import com.fourever.forever.ui.theme.foreverTypography
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
 
 private const val SPACE_BETWEEN_TITLE_AND_CONTENT = 50
 private const val CONTENT_AREA_HEIGHT = 550
@@ -92,7 +95,7 @@ fun GetSummaryScreen(
             ) {
                 Column {
                     Text(
-                        text = summaryUiState.title,
+                        text = abbreviateTextWithEllipsis(summaryUiState.title, 15),
                         style = foreverTypography.titleLarge,
                         color = colorResource(id = R.color.paragraph)
                     )
@@ -110,11 +113,9 @@ fun GetSummaryScreen(
                         )
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Text(
-                        text = summaryUiState.summary,
-                        style = foreverTypography.bodyMedium,
-                        color = colorResource(id = R.color.paragraph)
-                    )
+                    RichText {
+                        Markdown(content = summaryUiState.summary)
+                    }
                 }
             }
         }

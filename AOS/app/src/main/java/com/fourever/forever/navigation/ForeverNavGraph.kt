@@ -28,7 +28,8 @@ fun ForeverNavGraph(
                 homeUiState = homeUiState,
                 navigateToUploadFile = { navActions.navigateToUploadFile() },
                 navigateToGetSummary = { documentId -> navActions.navigateToGetSummary(documentId) },
-                loadMoreFile = { page -> (homeViewModel::getFileList)(page) }
+                loadMoreFile = { page -> (homeViewModel::getFileList)(page) },
+                refreshFileList = { (homeViewModel::refreshFileList)()}
             )
         }
         detailGraph(navController = navController, navActions = navActions)

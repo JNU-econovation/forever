@@ -69,10 +69,14 @@ fun Question(question: String, onQuestionClick: () -> Unit) {
                         modifier = Modifier.size(SPACE_BETWEEN_LEADING_ICON_AND_TITLE.dp)
                     )
                     Text(
+                        modifier = Modifier.width(200.dp),
                         text = abbreviateTextWithEllipsis(question, MAX_QUESTION_LENGTH),
                         style = foreverTypography.bodySmall
                     )
                 }
+                Spacer(
+                    modifier = Modifier.size(SPACE_BETWEEN_LEADING_ICON_AND_TITLE.dp)
+                )
                 Image(
                     painter = painterResource(R.drawable.ic_enter),
                     contentDescription = ""
