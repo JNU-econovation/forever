@@ -5,16 +5,16 @@ import os
 import shutil
 import json
 from pydantic import BaseModel
+import fitz  # PyMuPDF
+import pymupdf4llm
 
 from tempfile import NamedTemporaryFile
 
 from openai import OpenAI
 from dotenv import load_dotenv
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders.pdf import *
 from langchain_core.prompts import PromptTemplate
 
-upload = APIRouter(prefix='/api/upload')
+upload = APIRouter(prefix='/ai/upload')
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 SUMMARY_DIR = "summaries"
@@ -32,19 +32,14 @@ async def upload_file(file: UploadFile):
     with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
         shutil.copyfileobj(file.file, temp_file)
         temp_file_path = temp_file.name
-        
-    # PyPDFLoader를 사용하여 파일을 읽습니다.
-    loader = PyPDFLoader(temp_file_path)
-    pages = loader.load_and_split()
-
-    # pages 내부에 있는 개별 페이지를 연결하여 
-    summary_input = ""
-    for page in pages:
-        summary_input += page.page_content
+    
+    print(temp_file_path)
+    # PyMuPDF4LLMLoader를 사용하여 파일을 읽습니다
+    loader = pymupdf4llm.to_markdown(temp_file_path)
 
     upload_file_path = os.path.join(UPLOAD_DIR, f"{file.filename}_summary.txt")
     with open(upload_file_path, "w") as upload_file:
-        upload_file.write(summary_input)
+        upload_file.write(loader)
 
     # 임시 파일 삭제
     os.remove(temp_file_path)
@@ -115,7 +110,7 @@ async def summarize_file(data : Upload_file_path):
     ## api 이용한 pdf 문서 요약
     summary_query = summary_prompt.format(input = summary_input)
     summary_message = [{'role': 'user', 'content': summary_query}]
-    completion = client.chat.completions.create(model='gpt-4o', messages= summary_message)
+    completion = client.chat.completions.create(model='gpt-4o-mini', messages= summary_message)
     summarized_input = completion.choices[0].message.content
 
     summary_file_path = os.path.join(SUMMARY_DIR, f"{file_name}_summary.txt")
@@ -215,6 +210,7 @@ async def make_questions(data: Summarized_file_path):
     question = questions.choices[0].message.function_call.arguments
     question = json.loads(question)
 
+    os.remove(summarized_file_path)
     return question
 
 @upload.post('/model')
