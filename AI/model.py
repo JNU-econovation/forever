@@ -14,7 +14,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 
-upload = APIRouter(prefix='/ai/upload')
+upload = APIRouter(prefix='/ai')
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 SUMMARY_DIR = "summaries"
@@ -28,7 +28,7 @@ client = OpenAI (
 
 
 # 경로 설정
-@upload.post('/')
+@upload.post('/upload')
 async def upload_file(file: UploadFile):
     with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
         shutil.copyfileobj(file.file, temp_file)
