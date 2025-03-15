@@ -1,0 +1,67 @@
+# 환경 변수 파일
+.env
+
+# Python 관련
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 가상 환경
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# IDE 관련
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 프로젝트 특정 파일/디렉토리
+uploads/
+summaries/
+*.pdf
+*.txt
+
+# 로그 파일
+*.log
+
+# Docker 관련
+.docker/
+docker-compose.override.yml
+
+# 테스트 관련
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# 기타
+*.bak
+*.tmp
+*.temp
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
