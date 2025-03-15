@@ -20,9 +20,10 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 SUMMARY_DIR = "summaries"
 os.makedirs(SUMMARY_DIR, exist_ok=True)
 
+load_dotenv()
 
 client = OpenAI (
-    api_key = ""
+    api_key = os.getenv("OPENAI_API_KEY")
 )
 
 
@@ -34,7 +35,6 @@ async def upload_file(file: UploadFile):
         temp_file_path = temp_file.name
     
     print(temp_file_path)
-    # PyMuPDF4LLMLoader를 사용하여 파일을 읽습니다
     loader = pymupdf4llm.to_markdown(temp_file_path)
 
     upload_file_path = os.path.join(UPLOAD_DIR, f"{file.filename}_summary.txt")
