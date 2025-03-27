@@ -21,6 +21,10 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	jjwt_version = '0.11.5'
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -29,6 +33,22 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
+	implementation 'org.springframework.cloud:spring-cloud-dependencies:2023.0.0'
+	implementation 'org.springframework.cloud:spring-cloud-commons:4.1.1'
+
+	//jwt
+	implementation "io.jsonwebtoken:jjwt-api:${jjwt_version}"
+	implementation "io.jsonwebtoken:jjwt-impl:${jjwt_version}"
+	implementation "io.jsonwebtoken:jjwt-jackson:${jjwt_version}"
+
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-mysql'
+
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

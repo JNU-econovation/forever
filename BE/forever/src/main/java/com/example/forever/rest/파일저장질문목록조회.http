@@ -1,0 +1,4 @@
+### GET request to example server
+POST http://localhost:8080/api/documents/100/questions
+
+###

@@ -1,17 +1,8 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: { DATABASE_URL }
-    username: { USERNAME }
-    password: {PASSWORD}
   jpa:
-    defer-datasource-initialization: true
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-
     hibernate:
       ddl-auto: none
-    database-platform: org.hibernate.dialect.MySQLDialect
-    generate-ddl: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration

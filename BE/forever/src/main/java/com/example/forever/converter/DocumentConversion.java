@@ -1,9 +1,7 @@
 package com.example.forever.converter;
 
 import com.example.forever.domain.Document;
-import com.example.forever.domain.Question;
-import com.example.forever.dto.EachDocumentResponse;
-import com.example.forever.dto.EachQuestionResponse;
+import com.example.forever.dto.document.response.EachDocumentResponse;
 
 public class DocumentConversion {
     public static EachDocumentResponse convertToEachDocumentResponse(Document document) {

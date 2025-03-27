@@ -1,0 +1,29 @@
+package com.example.forever.common.errorcode;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@RequiredArgsConstructor
+public enum AuthErrorCode implements ErrorCode {
+
+    ONBOARDING_REQUIRED("회원가입이 필요한 사용자입니다.", HttpStatus.UNAUTHORIZED),
+    INVALID_KAKAO_CODE("유효하지 않은 인가코드입니다.", HttpStatus.BAD_REQUEST),
+    //TODO : 예외코드 고민해보기 401? 400?
+    MEMBER_NOT_FOUND("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST),
+    UNAUTHORIZED_DOCUMENT_ACCESS("문서에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
+    UNAUTHORIZED_ACCESS("접근 권한이 없습니다.", HttpStatus.UNAUTHORIZED);
+
+
+    private final String message;
+    private final HttpStatus status;
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public HttpStatus getStatus() {
+        return status;
+    }
+}
