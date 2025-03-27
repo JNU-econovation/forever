@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name="answer_tb")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Answer {
+public class Answer extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

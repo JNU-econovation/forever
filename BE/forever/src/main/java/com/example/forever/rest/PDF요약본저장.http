@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/documents/summary
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDMwODYwODksImV4cCI6MTc0MzA4Njk4OX0.1BlfKWX_roEj6uE0MM5fAh8pT7m5Gynha5Bs3jnrYHc
+
+{
+  "title": "파일명",
+  "summary": "요약"
+}
