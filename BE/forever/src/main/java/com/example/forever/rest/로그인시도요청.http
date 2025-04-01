@@ -1,1 +1,1 @@
-GET http://localhost:8080/api/oauth/kakao?code=YXKH7d3o8SH6-ES8i_3jzn-hfCCwXS6KP1yuulzZFxi42SUrEz0T-QAAAAQKDSKZAAABldgGnJGvm_uHqQwxKA
+GET http://localhost:8080/api/oauth/kakao?code=GpeOmb2mHyoK8mRA33C1WZPikh9oD5yIuO4b2ao0OXabF1yZUo5FkgAAAAQKDQxeAAABleHYnDISmUam6ZdnFg

@@ -1,6 +1,7 @@
 package com.example.forever.domain;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.*;
 
 @Entity
@@ -28,16 +29,45 @@ public class Member extends BaseTimeEntity{
     @Column(length = 512)
     private String refreshToken;
 
-    @Column(name = "agreed_to_privacy", nullable = false)
-    private boolean agreedToPrivacy;
+    @Builder.Default
+    @Column
+    private int availableTokens = 3;
 
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-    }
+    @Builder.Default
+    @Column(name = "is_agreed_policy", nullable = false)
+    private Boolean isAgreedPolicy = true;
+
+    @Builder.Default
+    @Column(name = "effective_date_policy", nullable = false)
+    private LocalDate effectiveDatePolicy = LocalDate.of(2025, 4, 3);
+
+    @Builder.Default
+    @Column(name = "is_agreed_terms", nullable = false)
+    private Boolean isAgreedTerms = true;
+
+    @Builder.Default
+    @Column(name = "effective_date_terms", nullable = false)
+    private LocalDate effectiveDateTerms = LocalDate.of(2025, 4, 3);
+
 
     public void updateRefreshToken(String token) {
         this.refreshToken = token;
     }
 
+    public void agreePolicy() {
+        this.isAgreedPolicy = true;
+    }
+
+    public void useToken() {
+        this.availableTokens--;
+    }
+
+    public boolean isAvailableTokens() {
+        return this.availableTokens > 0;
+    }
+
+    public void agreeTerms() {
+        this.isAgreedTerms = true;
+    }
 
 }

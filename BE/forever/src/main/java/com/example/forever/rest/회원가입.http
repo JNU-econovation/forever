@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/oauth/kakao/signup
+Content-Type: application/json
+
+{
+  "name": "이름",
+  "major": "학과",
+  "verificationCode": "인증코드"
+}
