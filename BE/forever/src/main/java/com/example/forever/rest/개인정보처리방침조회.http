@@ -1,0 +1,3 @@
+GET http://localhost:8080/api/agreement/policy
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDMyNTA4NDAsImV4cCI6MTc0MzI1MTc0MH0.N4wsN6TPu6cc6yYT7Ct_vKComrCJpWFkuiybcwt99kI
+###

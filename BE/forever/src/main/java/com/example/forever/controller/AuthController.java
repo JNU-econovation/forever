@@ -4,6 +4,7 @@ import com.example.forever.common.response.ApiResponse;
 import com.example.forever.common.response.ApiResponseGenerator;
 import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.service.KakaoAuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,11 @@ public class AuthController {
 
 
     @GetMapping("/kakao")
-    public ApiResponse<ApiResponse.SuccesCustomBody<LoginTokenResponse>> oAuthLogin(
-            @RequestParam(value = "code") String code) {
-        LoginTokenResponse response = kakaoAuthService.kakaoLogin(code);
-        return ApiResponseGenerator.success(response, HttpStatus.OK);
+    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthLogin(
+            @RequestParam(value = "code") String code, HttpServletResponse resp) {
+            kakaoAuthService.kakaoLogin(code, resp);
+        return ApiResponseGenerator.success(HttpStatus.OK);
     }
+
+
 }
