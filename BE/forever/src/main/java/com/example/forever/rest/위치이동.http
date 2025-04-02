@@ -1,0 +1,11 @@
+POST http://localhost:8080/api/documents/move
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDM2MTcwNjAsImV4cCI6MTc0MzYxNzk2MH0.QYxQwysXanaxKSfnQpsmwFmwZevZn4XubESMRv2P-pQ
+
+{
+  "fileId": 1,
+  "isFolder": true,
+  "parentFolderId": null,
+  "order": 5,
+  "isReallocate": false
+}

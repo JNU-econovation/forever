@@ -9,14 +9,10 @@ public record KakaoMemberInfoResponse(
         KakaoAccount kakaoAccount
 ) {
     public record KakaoAccount(
-            Profile profile,
 
             @JsonProperty("email")
             String email
     ) {
-        public record Profile(
-                @JsonProperty("nickname")
-                String nickname
-        ) {}
+
     }
 }

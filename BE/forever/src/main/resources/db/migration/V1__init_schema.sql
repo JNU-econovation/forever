@@ -16,17 +16,37 @@ CREATE TABLE IF NOT EXISTS member_tb (
                                         updated_at DATETIME(6) NOT NULL
     );
 
+CREATE TABLE IF NOT EXISTS folder_tb (
+                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                           name VARCHAR(255) NOT NULL,
+                           created_by BIGINT NOT NULL,
+                           created_at DATETIME(6) NOT NULL,
+                           updated_at DATETIME(6) NOT NULL
+
+);
+
+
 
 CREATE TABLE IF NOT EXISTS document_tb (
-                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                             title VARCHAR(255) NOT NULL,
-                             summary TEXT,
-                             member_id BIGINT NOT NULL,
-                             created_at DATETIME NOT NULL,
-                             updated_at DATETIME NOT NULL,
-                            CONSTRAINT fk_document_member FOREIGN KEY (member_id)
-                            REFERENCES member_tb(id)
-                            ON DELETE CASCADE
+                                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                           title VARCHAR(255) NOT NULL,
+                                            summary TEXT,
+
+                                            member_id BIGINT NOT NULL,
+                                            folder_id BIGINT DEFAULT NULL,
+
+                                            created_at DATETIME(6) NOT NULL,
+                                            updated_at DATETIME(6) NOT NULL,
+
+                                            CONSTRAINT fk_document_member
+                                            FOREIGN KEY (member_id)
+                                            REFERENCES member_tb(id)
+                                            ON DELETE CASCADE,
+
+                                            CONSTRAINT fk_document_folder
+                                            FOREIGN KEY (folder_id)
+                                            REFERENCES folder_tb(id)
+                                            ON DELETE SET NULL
 );
 
 
@@ -59,5 +79,23 @@ CREATE TABLE IF NOT EXISTS verification_code_tb (
                             expires_time DATETIME(6) NOT NULL,
                             created_at DATETIME NOT NULL,
                             updated_at DATETIME NOT NULL
-    );
-)
+ );
+
+
+CREATE TABLE IF NOT EXISTS item_tb (
+                      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                      type ENUM('FILE', 'FOLDER') NOT NULL,
+                      ref_id BIGINT NOT NULL, -- document_tb.id 또는 folder_tb.id를 참조
+                      folder_id BIGINT DEFAULT NULL, -- 포함된 폴더, NULL이면 루트
+                      order_value INT NOT NULL,
+                      CONSTRAINT fk_item_folder
+                          FOREIGN KEY (folder_id)
+                              REFERENCES folder_tb(id)
+                              ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS app_info_tb (
+                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                             latest_version VARCHAR(50) NOT NULL,
+                             store_url VARCHAR(1024) NOT NULL
+);

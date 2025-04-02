@@ -8,8 +8,12 @@ import com.example.forever.common.validator.MemberValidator;
 import com.example.forever.converter.DocumentConversion;
 import com.example.forever.converter.QuestionConversion;
 import com.example.forever.domain.Answer;
+import com.example.forever.domain.Folder;
+import com.example.forever.domain.Item;
+import com.example.forever.domain.ItemType;
 import com.example.forever.domain.Member;
 import com.example.forever.domain.Question;
+import com.example.forever.dto.SaveFolderRequest;
 import com.example.forever.dto.document.request.DocumentSummaryRequest;
 import com.example.forever.dto.document.request.DocumentUpdateRequest;
 import com.example.forever.dto.document.request.SaveQuestionAnswerRequest;
@@ -25,6 +29,8 @@ import com.example.forever.exception.document.QuestionNotFoundException;
 import com.example.forever.repository.AnswerRepository;
 import com.example.forever.repository.DocumentRepository;
 import com.example.forever.domain.Document;
+import com.example.forever.repository.FolderRepository;
+import com.example.forever.repository.ItemRepository;
 import com.example.forever.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,24 +54,51 @@ public class DocumentService {
     private final QuestionRepository questionRepository;
     private final MemberValidator memberValidator;
     private final DocumentValidator documentValidator;
+    private final ItemRepository itemRepository;
+    private final FolderRepository folderRepository;
 
-
+    @Transactional
     public DocumentSummaryResponse saveDocumentSummary(DocumentSummaryRequest request, MemberInfo memberInfo) {
         Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
+
         Document savedDocument = documentRepository.save(Document.builder()
                 .title(request.title())
-                .summary(request.summary()).member(member)
+                .summary(request.summary())
+                .member(member)
+                .folder(null)
                 .build());
 
-        Long id = savedDocument.getId();
-        return new DocumentSummaryResponse(id);
+        // Item 생성 (파일)
+        Item item = Item.builder()
+                .type(ItemType.FILE)
+                .refId(savedDocument.getId())
+                .folder(null)
+                .orderValue(0)  // 프론트에서 계산해서 넘겨줌
+                .build();
+        itemRepository.save(item);
+        // 5. 응답
+        return new DocumentSummaryResponse(savedDocument.getId());
+    }
+
+    public void createFolder(SaveFolderRequest request, MemberInfo memberInfo) {
+        Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
+        Folder folder = folderRepository.save(
+                Folder.builder().name(request.folderName()).createdBy(memberInfo.getMemberId()).build()
+        );
+        Item item = Item.builder()
+                .type(ItemType.FOLDER)
+                .refId(folder.getId())
+                .folder(null)
+                .orderValue(0)
+                .build();
+        itemRepository.save(item);
     }
 
     public void updateDocument(Long documentId, DocumentUpdateRequest request, MemberInfo memberInfo) {
         Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
         Document document = documentValidator.validateAndGetById(documentId);
         DocumentAuthorizationValidator.validateAuthor(document, member);
-        document.update(request.title());
+        document.update(request.newName());
     }
 
     public void deleteDocument(Long documentId, MemberInfo memberInfo) {

@@ -1,8 +1,10 @@
-package com.example.forever.email;
+package com.example.forever.controller;
 
 import com.example.forever.common.response.ApiResponse;
 import com.example.forever.common.response.ApiResponseGenerator;
-import com.example.forever.dto.document.response.DocumentListResponse;
+import com.example.forever.email.EmailSendService;
+import com.example.forever.email.MemberEmailRequest;
+import com.example.forever.email.MemberEmailVerifyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
