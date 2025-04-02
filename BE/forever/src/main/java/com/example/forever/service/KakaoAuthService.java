@@ -91,7 +91,7 @@ public class KakaoAuthService {
     }
 
     @Transactional
-    public void kakaoSignUp(SignUpRequest request){
+    public void kakaoSignUp(SignUpRequest request, HttpServletResponse response){
         //verificationcode가 맞는지 확인
         //맞다면 회원가입 진행
         //아니라면 에러
@@ -101,6 +101,23 @@ public class KakaoAuthService {
 
         Member member = memberRepository.save(Member.builder().email(verificationCode.getEmail()).nickname(request.name()).build());
 
+
+        // 4. 토큰 발급
+        String accessToken = jwtTokenProvider.createAccessToken(member.getId(), "member");
+        String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
+
+        // 5. 리프레시 토큰 저장
+        member.updateRefreshToken(refreshToken);
+        memberRepository.save(member);
+        // 6. 응답 헤더 설정
+        response.setHeader("Authorization", "Bearer " + accessToken);
+
+        Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(refreshTokenCookie);
     }
 
 }

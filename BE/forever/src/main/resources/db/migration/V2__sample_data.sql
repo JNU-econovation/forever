@@ -1,6 +1,7 @@
 -- Member 테이블
 INSERT INTO member_tb (nickname, email, major, refresh_token, available_tokens, is_agreed_policy, effective_date_policy, is_agreed_terms, effective_date_terms, created_at, updated_at)
 VALUES
+    ('근성', 'rmstjd777777@naver.com','소프트웨어공학과','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsImlhdCI6MTc0MzYzNDU4NCwiZXhwIjoxNzQ0MjM5Mzg0fQ.OESAIxVmY-q8VdMVrWJPLdKO2u5h4ryafutI98Aq7FA',3,true, '2025-04-03', true, '2025-04-03', NOW(), NOW()),
     ('minju', 'minju_kwak@naver.com', 'Software Engineering', null, 3, true, '2025-04-03', true, '2025-04-03', NOW(), NOW()),
     ('jisu', 'jisu@example.com', 'Computer Science', null, 3, true, '2025-04-03', true, '2025-04-03', NOW(), NOW());
 
@@ -29,7 +30,7 @@ VALUES
 INSERT INTO item_tb ( type, ref_id, folder_id, order_value)
 VALUES
 -- 폴더 아이템 (최상위 폴더로)
-( 'FOLDER', 1, null, 10),
+( 'FOLDER', 1, null, 1000),
 ( 'FOLDER', 2, null, 20),
 -- 하위 폴더
 -- (3, 'FOLDER', 3, 1, 1),
@@ -38,7 +39,7 @@ VALUES
 ( 'FILE', 1, 1, 25),
 ( 'FILE', 2, 2, 30),
 ( 'FILE', 3, null, 40),
-( 'FILE', 4, 1, 1),
+( 'FILE', 4, 1, 111),
 ( 'FILE', 5, 2, 35),
 ( 'FILE', 6, null, 55),
 ( 'FILE', 7, null, 100);

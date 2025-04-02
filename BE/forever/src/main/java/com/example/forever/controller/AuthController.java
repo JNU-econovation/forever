@@ -32,8 +32,8 @@ public class AuthController {
     }
 
     @PostMapping("/kakao/signup")
-    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthSignup(@RequestBody SignUpRequest request) {
-        kakaoAuthService.kakaoSignUp(request);
+    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthSignup(@RequestBody SignUpRequest request, HttpServletResponse response) {
+        kakaoAuthService.kakaoSignUp(request, response);
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 

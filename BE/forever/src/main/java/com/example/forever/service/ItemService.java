@@ -11,6 +11,8 @@ import com.example.forever.dto.FileAndFolderListResponse;
 import com.example.forever.dto.FileResponseDto;
 import com.example.forever.dto.FolderResponseDto;
 import com.example.forever.dto.MoveItemRequest;
+import com.example.forever.exception.auth.NotResourceOwnerException;
+import com.example.forever.exception.document.DocumentNotFoundException;
 import com.example.forever.repository.DocumentRepository;
 import com.example.forever.repository.FolderRepository;
 import com.example.forever.repository.ItemRepository;
@@ -38,7 +40,7 @@ public class ItemService {
         Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
 
         // 모든 Item 가져오기 (order 기준 정렬)
-        List<Item> allItems = itemRepository.findAllByOrderByOrderValueAsc();
+        List<Item> allItems = itemRepository.findAllByOwner(member.getId());
 
         List<FileResponseDto> fileDtos = new ArrayList<>();
         List<FolderResponseDto> folderDtos = new ArrayList<>();
@@ -73,12 +75,31 @@ public class ItemService {
 
     @Transactional
     public void moveItem(MoveItemRequest request, MemberInfo memberInfo) {
+        Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
+
         // 1. Item 조회
         ItemType type = request.isFolder() ? ItemType.FOLDER : ItemType.FILE;
 
-        System.out.println("request.itemId() = " + request.fileId() + ", type = " + type);
         Item item = itemRepository.findByTypeAndRefId(type, request.fileId())
-                .orElseThrow(() -> new IllegalArgumentException("아이템이 존재하지 않음"));
+                .orElseThrow(DocumentNotFoundException::new);
+
+        // 2. 소유자 검증
+        if (type == ItemType.FILE) {
+            Document document = documentRepository.findById(item.getRefId())
+                    .orElseThrow(DocumentNotFoundException::new);
+
+            if (!document.getMember().getId().equals(member.getId())) {
+                throw new NotResourceOwnerException();
+            }
+
+        } else if (type == ItemType.FOLDER) {
+            Folder folder = folderRepository.findById(item.getRefId())
+                    .orElseThrow(DocumentNotFoundException::new);
+
+            if (!folder.getCreatedBy().equals(member.getId())) {
+                throw new NotResourceOwnerException();
+            }
+        }
 
         // 2. 새 폴더 조회 (null이면 루트)
         Folder targetFolder = null;

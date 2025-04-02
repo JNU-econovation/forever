@@ -14,6 +14,6 @@ public class DocumentValidator {
 
     public Document validateAndGetById(Long documentId) {
         return documentRepository.findById(documentId)
-                .orElseThrow(() -> new DocumentNotFoundException(documentId));
+                .orElseThrow(DocumentNotFoundException::new);
     }
 }
