@@ -1,5 +1,5 @@
-from typing import List
-from fastapi import APIRouter, Request, UploadFile
+from typing import List, Optional
+from fastapi import APIRouter, Request, UploadFile, Header, HTTPException
 from fastapi.responses import FileResponse
 import os
 import shutil
@@ -7,12 +7,15 @@ import json
 from pydantic import BaseModel
 import fitz  # PyMuPDF
 import pymupdf4llm
+from utils.token_validator import verify_token
 
 from tempfile import NamedTemporaryFile
 
 from openai import OpenAI
 from dotenv import load_dotenv
+import httpx
 from langchain_core.prompts import PromptTemplate
+import asyncio
 
 upload = APIRouter(prefix='/ai')
 UPLOAD_DIR = "uploads"
@@ -26,13 +29,16 @@ client = OpenAI (
     api_key = os.getenv("OPENAI_API_KEY")
 )
 
-
 # 경로 설정
 @upload.post('/upload')
-async def upload_file(file: UploadFile):
+async def upload_file(
+    file: UploadFile,
+):
+
     with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
         shutil.copyfileobj(file.file, temp_file)
         temp_file_path = temp_file.name
+    
     
     print(temp_file_path)
     loader = pymupdf4llm.to_markdown(temp_file_path)
@@ -51,7 +57,21 @@ class Upload_file_path(BaseModel) :
     file_name : str
 
 @upload.get("/summary")
-async def summarize_file(data : Upload_file_path):
+async def summarize_file(data : Upload_file_path, authorization: Optional[str] = Header(None, description="Bearer token")):
+    upload_file_path = data.upload_file_path
+    file_name = data.file_name
+    if not authorization or not authorization.startswith('Bearer '):
+        raise HTTPException(
+            status_code=401,
+            detail="인증이 필요합니다"
+        )
+    
+    token = authorization.split(' ')[1]
+    is_valid = await verify_token(token)
+    if not is_valid:
+        return {"status": "fail", "message": "기본 이용을 전부 다 사용했습니다."}
+
+
     upload_file_path = data.upload_file_path
     file_name = data.file_name
     
@@ -74,8 +94,8 @@ async def summarize_file(data : Upload_file_path):
 
     \n 이 때 설명은 반드시 구체적인 내용을 작성해주세요. 예를 들어 '제출일'이 있다면 그 날짜가 '6월 9일'이라는 것도 내용에 포함되어야합니다.
     \n 다른 내용들도 마찬가지로 반드시 해당 내용에 대한 구체적인 정보가 포함되어야 합니다.
-    \n 다른 예시로 'SQL'에 대한 내용을 포함하고 있다면 SQL문의 종류에는 ‘DML, DDL, DCL’이 있으며 각 
-    종류마다 ‘SELECT, INSERT’, ‘’CREATE, ALTER”, “”GRANT,REVOKE” 등을 포함하고 있음을 명시해야
+    \n 다른 예시로 'SQL'에 대한 내용을 포함하고 있다면 SQL문의 종류에는 'DML, DDL, DCL'이 있으며 각 
+    종류마다 'SELECT, INSERT', ''CREATE, ALTER", ""GRANT,REVOKE" 등을 포함하고 있음을 명시해야
     합니다.
     \n 또 다른 예시로 '프로젝트 과제'에 대한 내용이 있다면 '프로젝트 과제 수행에는 레포트 작성, 유스케이스 작성 등이 있다'를 명시해주어야합니다.
     """
@@ -127,8 +147,18 @@ class Summarized_file_path(BaseModel) :
     file_name : str
 
 @upload.get("/questions")
-async def make_questions(data: Summarized_file_path):
-
+async def make_questions(data: Summarized_file_path, authorization: Optional[str] = Header(None, description="Bearer token")):
+    if not authorization or not authorization.startswith('Bearer '):
+        raise HTTPException(
+            status_code=401,
+            detail="인증이 필요합니다"
+        )
+    
+    token = authorization.split(' ')[1]
+    is_valid = await verify_token(token)
+    if not is_valid:
+        return {"status": "fail", "message": "기본 이용을 전부 다 사용했습니다."}
+    
     summarized_file_path = data.summarized_file_path
     file_name = data.file_name
     
@@ -209,10 +239,46 @@ async def make_questions(data: Summarized_file_path):
     )
     question = questions.choices[0].message.function_call.arguments
     question = json.loads(question)
+  
+    async with httpx.AsyncClient() as client:
+        max_retries = 3
+        retry_delay = 1 
+        
+        for attempt in range(max_retries):
+            try:
+                response = await client.post(
+                    "https://fourever.duckdns.org/api/summary/completion",  
+                    headers={"Authorization": f"Bearer {token}"},
+                    json={"isComplete": True},
+                    timeout=10.0
+                )
+                
+                if response.json().get("status") == 200:
+                    break
+                
+                print(f"완료 상태 전송 실패 (시도 {attempt + 1}/{max_retries}): {response.json().get('message')}")
+                if attempt < max_retries - 1:
+                    await asyncio.sleep(retry_delay)
+                    
+            except httpx.RequestError as e:
+                print(f"완료 상태 전송 중 오류 발생 (시도 {attempt + 1}/{max_retries}): {str(e)}")
+                if attempt < max_retries - 1:
+                    await asyncio.sleep(retry_delay)
 
     os.remove(summarized_file_path)
     return question
 
 @upload.post('/model')
-async def start_model():
-    return {'message' : "model"}
+async def start_model(authorization: Optional[str] = Header(None, description="Bearer token")):
+    if not authorization or not authorization.startswith('Bearer '):
+        raise HTTPException(
+            status_code=401,
+            detail="인증이 필요합니다"
+        )
+    
+    token = authorization.split(' ')[1]
+    is_valid = await verify_token(token)
+    if not is_valid:
+        return {"status": "fail", "message": "기본 이용을 전부 다 사용했습니다."}
+
+    return {'message': "model"}
