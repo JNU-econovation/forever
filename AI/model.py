@@ -52,9 +52,9 @@ async def upload_file(
 
     return {"upload_file_path" : upload_file_path , "file_name" : file.filename}
 
-class Upload_file_path(BaseModel) :
-    upload_file_path: str
-    file_name : str
+# class Upload_file_path(BaseModel) :
+#     upload_file_path: str
+#     file_name : str
 
 @upload.get("/summary")
 async def summarize_file(data : Upload_file_path, authorization: Optional[str] = Header(None, description="Bearer token")):
@@ -142,9 +142,9 @@ async def summarize_file(data : Upload_file_path, authorization: Optional[str] =
     return {"summarized_file_path" : summary_file_path , "file_name" : file_name, "summarized_input": summarized_input}
 
 
-class Summarized_file_path(BaseModel) :
-    summarized_file_path: str
-    file_name : str
+# class Summarized_file_path(BaseModel) :
+#     summarized_file_path: str
+#     file_name : str
 
 @upload.get("/questions")
 async def make_questions(data: Summarized_file_path, authorization: Optional[str] = Header(None, description="Bearer token")):
