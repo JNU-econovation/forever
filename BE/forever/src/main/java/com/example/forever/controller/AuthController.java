@@ -2,6 +2,7 @@ package com.example.forever.controller;
 
 import com.example.forever.common.response.ApiResponse;
 import com.example.forever.common.response.ApiResponseGenerator;
+import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.service.KakaoAuthService;
@@ -24,15 +25,15 @@ public class AuthController {
 
 
     @GetMapping("/kakao")
-    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthLogin(
+    public ApiResponse<ApiResponse.SuccesCustomBody<KakaoLoginResponse>> oAuthLogin(
             @RequestParam(value = "code") String code, HttpServletResponse resp) {
-            kakaoAuthService.kakaoLogin(code, resp);
-        return ApiResponseGenerator.success(HttpStatus.OK);
+        KakaoLoginResponse response = kakaoAuthService.kakaoLogin(code, resp);
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 
     @PostMapping("/kakao/signup")
-    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthSignup(@RequestBody SignUpRequest request, HttpServletResponse resp) {
-        kakaoAuthService.kakaoSignUp(request, resp);
+    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthSignup(@RequestBody SignUpRequest request, HttpServletResponse response) {
+        kakaoAuthService.kakaoSignUp(request, response);
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 

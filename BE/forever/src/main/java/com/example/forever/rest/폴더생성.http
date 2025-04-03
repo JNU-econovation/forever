@@ -1,0 +1,7 @@
+POST http://localhost:8080/api/documents/folder
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDM2MTcwNjAsImV4cCI6MTc0MzYxNzk2MH0.QYxQwysXanaxKSfnQpsmwFmwZevZn4XubESMRv2P-pQ
+Content-Type: application/json
+
+{
+    "folderName": "폴더이름"
+}

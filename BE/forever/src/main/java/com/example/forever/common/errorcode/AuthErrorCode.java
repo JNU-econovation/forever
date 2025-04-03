@@ -13,7 +13,8 @@ public enum AuthErrorCode implements ErrorCode {
     UNAUTHORIZED_DOCUMENT_ACCESS("문서에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
     UNAUTHORIZED_ACCESS("접근 권한이 없습니다.", HttpStatus.UNAUTHORIZED),
     //TODO : 예외코드 고민해보기 401? 400?
-    NO_AVAILABLE_USAGE("사용 가능한 횟수가 없습니다.", HttpStatus.BAD_REQUEST);
+    NO_AVAILABLE_USAGE("사용 가능한 횟수가 없습니다.", HttpStatus.BAD_REQUEST),
+    NOT_RESOURCE_OWNER("소유자가 아닙니다.", HttpStatus.FORBIDDEN);
 
 
     private final String message;
