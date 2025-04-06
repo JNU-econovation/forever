@@ -1,5 +1,5 @@
 POST http://localhost:8080/api/documents/folder
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDM2MTcwNjAsImV4cCI6MTc0MzYxNzk2MH0.QYxQwysXanaxKSfnQpsmwFmwZevZn4XubESMRv2P-pQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDM5MzU5ODIsImV4cCI6MTc0NDEwODc4Mn0.Lh1LjrhINdTK_89wmkGfjWGprZqUJjNJ2zVlKOdHoQk
 Content-Type: application/json
 
 {

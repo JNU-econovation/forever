@@ -114,10 +114,10 @@ public class ItemService {
         // 4. 재정렬 처리
         if (request.isReallocate()) {
             List<Item> siblings = itemRepository.findByFolderOrderByOrderValueAsc(targetFolder);
-            int order = 1;
+            int order = 100;
             for (Item s : siblings) {
                 s.updateOrder(order);
-                order += 1;
+                order += 100;
             }
         }
     }

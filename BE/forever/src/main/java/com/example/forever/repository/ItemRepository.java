@@ -29,4 +29,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     ORDER BY i.orderValue ASC
 """)
     List<Item> findAllByOwner(@Param("memberId") Long memberId);
+
+    @Query("SELECT MIN(i.orderValue) FROM Item i")
+    Optional<Integer> findMinOrderValue();
 }
