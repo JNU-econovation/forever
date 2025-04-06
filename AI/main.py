@@ -4,7 +4,12 @@ import uvicorn
 from model import upload
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Forever AI",
+    description="Forever AI API",
+    version="0.1.0",
+    max_upload_size=30 * 1024 * 1024,
+)
 app.include_router(upload)
 
 @app.get('/')
