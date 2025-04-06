@@ -6,11 +6,11 @@ VALUES
 
 
 -- Folder 테이블 (parent_folder_id는 null이면 루트 폴더)
-INSERT INTO folder_tb ( name, parent_folder_id, created_by, created_at, updated_at)
+INSERT INTO folder_tb ( name,  created_by, created_at, updated_at)
 VALUES
-    ( 'Reports', null, 1,NOW(), NOW()),
-    ('Projects', null, 1,NOW(), NOW()),
-    ( 'Subfolder A', 1, 1,NOW(), NOW());
+    ( 'Reports',  1,NOW(), NOW()),
+    ('Projects',  1,NOW(), NOW()),
+    ( 'Subfolder A',  1,NOW(), NOW());
 
 
 -- Document 테이블 (각 파일은 Member와 Folder에 연결됨)

@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/upload")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AiUsageCheckController {
 
     private final AiUsageCheckService aiUsageCheckService;
 
-    @PostMapping("/isAvailable")
+    @PostMapping("/upload/isAvailable")
     public ApiResponse<ApiResponse.SuccesCustomBody<AiTokenUsageResponse>> checkTokenUsage(@AuthMember MemberInfo memberInfo){
         AiTokenUsageResponse response = aiUsageCheckService.checkTokenUsage(memberInfo);
         return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 
-    @PostMapping("/complete")
+    @PostMapping("summary/complete")
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> checkCompleteUpload(@AuthMember MemberInfo memberInfo){
         aiUsageCheckService.checkCompleteUpload(memberInfo);
         return ApiResponseGenerator.success(HttpStatus.OK);

@@ -13,7 +13,6 @@ import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.email.VerificationCodeRepository;
 import com.example.forever.exception.auth.InvalidKakaoCodeException;
-import com.example.forever.exception.auth.OnboardingRequiredException;
 import com.example.forever.repository.MemberRepository;
 import feign.FeignException.FeignClientException;
 import jakarta.servlet.http.Cookie;
