@@ -1,9 +1,4 @@
 spring:
   profiles:
-    active: prod
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/forever
-    username: root
-    password: 1234
+    active: test
 

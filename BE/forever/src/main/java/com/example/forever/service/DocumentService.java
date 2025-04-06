@@ -32,6 +32,7 @@ import com.example.forever.domain.Document;
 import com.example.forever.repository.FolderRepository;
 import com.example.forever.repository.ItemRepository;
 import com.example.forever.repository.QuestionRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -68,12 +69,18 @@ public class DocumentService {
                 .folder(null)
                 .build());
 
+        // 2. 최소 orderValue 조회
+        Optional<Integer> minOrderOpt = itemRepository.findMinOrderValue();
+
+        // 3. 새 orderValue 계산
+        int newOrderValue = minOrderOpt.map(min -> min / 2).orElse(0); // 처음엔 0으로 시작
+
         // Item 생성 (파일)
         Item item = Item.builder()
                 .type(ItemType.FILE)
                 .refId(savedDocument.getId())
                 .folder(null)
-                .orderValue(0)  // 프론트에서 계산해서 넘겨줌
+                .orderValue(newOrderValue)  // 프론트에서 계산해서 넘겨줌
                 .build();
         itemRepository.save(item);
         // 5. 응답
@@ -85,11 +92,18 @@ public class DocumentService {
         Folder folder = folderRepository.save(
                 Folder.builder().name(request.folderName()).createdBy(memberInfo.getMemberId()).build()
         );
+        System.out.println("폴더 아이디" + folder.getId());
+        // 2. 최소 orderValue 조회
+        Optional<Integer> minOrderOpt = itemRepository.findMinOrderValue();
+
+        // 3. 새 orderValue 계산
+        int newOrderValue = minOrderOpt.map(min -> min / 2).orElse(0); // 처음엔 0으로 시작
+
         Item item = Item.builder()
                 .type(ItemType.FOLDER)
                 .refId(folder.getId())
                 .folder(null)
-                .orderValue(0)
+                .orderValue(newOrderValue)
                 .build();
         itemRepository.save(item);
     }
@@ -161,20 +175,20 @@ public class DocumentService {
     //여기서 조회를 2번해서 가져올 수 있지만 서로 연관되어있는 question, answer를 한번에 가져오기 위해 join fetch를 사용하여 조회를 한번만 하도록
     //하지만 이렇게 하면 questionId의 값이 없을 경우에는 예외가 발생하게 되므로 Optional로 감싸서 반환하도록
 
-    //TODO : 수정
-    public DocumentListResponse getDocumentList(Long pageId, MemberInfo memberInfo) {
-        memberValidator.validateExistence(memberInfo.getMemberId());
-        Pageable pageable = PageRequest.of(pageId.intValue(), 10, Sort.by("id").descending());
-        Page<Document> page = documentRepository.findAll(pageable);
-
-        List<Document> documentList = page.getContent();
-
-        List<EachDocumentResponse> responses = documentList.stream()
-                .map(DocumentConversion::convertToEachDocumentResponse)
-                .toList();
-
-        return new DocumentListResponse(responses);
-    }
+//    //TODO : 안쓰는 메서드
+//    public DocumentListResponse getDocumentList(Long pageId, MemberInfo memberInfo) {
+//        memberValidator.validateExistence(memberInfo.getMemberId());
+//        Pageable pageable = PageRequest.of(pageId.intValue(), 10, Sort.by("id").descending());
+//        Page<Document> page = documentRepository.findAll(pageable);
+//
+//        List<Document> documentList = page.getContent();
+//
+//        List<EachDocumentResponse> responses = documentList.stream()
+//                .map(DocumentConversion::convertToEachDocumentResponse)
+//                .toList();
+//
+//        return new DocumentListResponse(responses);
+//    }
 
 }
 

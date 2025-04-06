@@ -31,18 +31,18 @@ INSERT INTO item_tb ( type, ref_id, folder_id, order_value)
 VALUES
 -- 폴더 아이템 (최상위 폴더로)
 ( 'FOLDER', 1, null, 1000),
-( 'FOLDER', 2, null, 20),
+( 'FOLDER', 2, null, 200),
 -- 하위 폴더
 -- (3, 'FOLDER', 3, 1, 1),
 
 -- 파일 아이템
 ( 'FILE', 1, 1, 25),
-( 'FILE', 2, 2, 30),
-( 'FILE', 3, null, 40),
-( 'FILE', 4, 1, 111),
-( 'FILE', 5, 2, 35),
-( 'FILE', 6, null, 55),
-( 'FILE', 7, null, 100);
+( 'FILE', 2, 2, 309),
+( 'FILE', 3, 2, 400),
+( 'FILE', 4,  null, 111),
+( 'FILE', 5, null, 35),
+( 'FILE', 6, 1, 55),
+( 'FILE', 7, null, 1000);
 
 
 -- Question 테이블
