@@ -31,7 +31,7 @@ public class Member extends BaseTimeEntity{
 
     @Builder.Default
     @Column
-    private int availableTokens = 3;
+    private int availableTokens = 10;
 
     @Builder.Default
     @Column(name = "is_agreed_policy", nullable = false)
