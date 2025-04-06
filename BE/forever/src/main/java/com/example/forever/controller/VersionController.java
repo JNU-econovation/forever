@@ -26,11 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class VersionController {
 
     private final AppInfoRepository appInfoRepository;
-    private final MemberValidator memberValidator;
 
     @GetMapping("/version")
-    public ApiResponse<ApiResponse.SuccesCustomBody<AppVersionResponse>> getVersion(@AuthMember MemberInfo memberInfo) {
-        Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
+    public ApiResponse<ApiResponse.SuccesCustomBody<AppVersionResponse>> getVersion() {
         AppInfo appInfo = appInfoRepository.findById(1L).orElseThrow();
         AppVersionResponse appVersionResponse = new AppVersionResponse(appInfo.getLatestVersion(),
                 appInfo.getStoreUrl());
