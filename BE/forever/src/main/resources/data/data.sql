@@ -1,10 +1,27 @@
 -- Member 테이블
-INSERT INTO member_tb (nickname, email, major, refresh_token, available_tokens, is_agreed_policy, effective_date_policy, is_agreed_terms, effective_date_terms, created_at, updated_at)
-VALUES
-    ('minju', 'minju_kwak@naver.com', 'Software Engineering', null, 3, true, '2025-04-03', true, '2025-04-03', NOW(), NOW()),
-    ('jisu', 'jisu@example.com', 'Computer Science', null, 3, true, '2025-04-03', true, '2025-04-03', NOW(), NOW());
-
-
+INSERT INTO member_tb (nickname, email, major, school, refresh_token, kakao_access_token,
+                       available_tokens, is_agreed_policy, effective_date_policy,
+                       is_agreed_terms, effective_date_terms,
+                       is_deleted, deleted_at,
+                       created_at, updated_at)
+VALUES ('근성', 'r@naver.com', '소프트웨어공학과', '전남대학교',
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsImlhdCI6MTc0MzYzNDU4NCwiZXhwIjoxNzQ0MjM5Mzg0fQ.OESAIxVmY-q8VdMVrWJPLdKO2u5h4ryafutI98Aq7FA',
+        'sample-kakao-access-token-1',
+        10, true, '2025-04-03', true, '2025-04-03',
+        false, NULL,
+        NOW(), NOW()),
+       ('minju', 'minju_kwak@naver.com', 'Software Engineering', '연세대학교',
+        NULL,
+        NULL,
+        10, true, '2025-04-03', true, '2025-04-03',
+        false, NULL,
+        NOW(), NOW()),
+       ('jisu', 'jisu@example.com', 'Computer Science', '고려대학교',
+        NULL,
+        NULL,
+        10, true, '2025-04-03', true, '2025-04-03',
+        false, NULL,
+        NOW(), NOW());
 -- Folder 테이블 (parent_folder_id는 null이면 루트 폴더)
 INSERT INTO folder_tb ( name,  created_by, created_at, updated_at)
 VALUES

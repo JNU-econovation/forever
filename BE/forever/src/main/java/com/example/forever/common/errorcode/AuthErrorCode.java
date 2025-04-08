@@ -14,7 +14,9 @@ public enum AuthErrorCode implements ErrorCode {
     UNAUTHORIZED_ACCESS("접근 권한이 없습니다.", HttpStatus.UNAUTHORIZED),
     //TODO : 예외코드 고민해보기 401? 400?
     NO_AVAILABLE_USAGE("사용 가능한 횟수가 없습니다.", HttpStatus.BAD_REQUEST),
-    NOT_RESOURCE_OWNER("소유자가 아닙니다.", HttpStatus.FORBIDDEN);
+    NOT_RESOURCE_OWNER("소유자가 아닙니다.", HttpStatus.FORBIDDEN),
+    INVALID_VERIFICATION_CODE("유효하지 않은 인증코드입니다.", HttpStatus.BAD_REQUEST),
+    INVALID_REFRESH_TOKEN("유효하지 않은 리프레시토큰 입니다.", HttpStatus.BAD_REQUEST);
 
 
     private final String message;
