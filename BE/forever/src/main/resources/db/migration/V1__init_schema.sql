@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `forevertest`;
-USE `forevertest`;
+CREATE DATABASE IF NOT EXISTS `forever`;
+USE `forever`;
 
 CREATE TABLE IF NOT EXISTS member_tb (
                                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
