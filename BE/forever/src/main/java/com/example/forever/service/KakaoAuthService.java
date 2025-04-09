@@ -4,8 +4,10 @@ package com.example.forever.service;
 import com.example.forever.common.auth.JwtTokenProvider;
 import com.example.forever.common.feign.kakao.client.KakaoInfoClient;
 import com.example.forever.common.feign.kakao.client.KakaoTokenClient;
+import com.example.forever.common.feign.kakao.client.KakaoUnlinkClient;
 import com.example.forever.common.feign.kakao.dto.KakaoAccessTokenResponse;
 import com.example.forever.common.feign.kakao.dto.KakaoMemberInfoResponse;
+import com.example.forever.common.validator.MemberValidator;
 import com.example.forever.domain.Member;
 import com.example.forever.domain.VerificationCode;
 import com.example.forever.dto.KakaoLoginResponse;
@@ -13,6 +15,8 @@ import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.email.VerificationCodeRepository;
 import com.example.forever.exception.auth.InvalidKakaoCodeException;
+import com.example.forever.exception.auth.InvalidRefreshTokenException;
+import com.example.forever.exception.auth.InvalidVerificationCode;
 import com.example.forever.repository.MemberRepository;
 import feign.FeignException.FeignClientException;
 import jakarta.servlet.http.Cookie;
@@ -33,6 +37,8 @@ public class KakaoAuthService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final VerificationCodeRepository verificationCodeRepository;
+    private final MemberValidator memberValidator;
+    private final KakaoUnlinkClient kakaoUnlinkClient;
 
     private final String kakaoClientId = "36d643394b6e66e4c5e99bf19398541f";
     //private final String kakaoClientId = "97544952621589e082444154812d231c";
@@ -41,14 +47,15 @@ public class KakaoAuthService {
     public KakaoLoginResponse kakaoLogin(String code, HttpServletResponse response) {
         // 1. 카카오 토큰 요청
         KakaoMemberInfoResponse kakaoMemberInfoResponse = null;
+        String bearerCode = null;
         try {
             KakaoAccessTokenResponse kakaoToken = kakaoTokenClient.getAccessToken(
                     "authorization_code", kakaoClientId, code
             );
             // 2. 사용자 정보 요청
-            String bearer = "Bearer " + kakaoToken.accessToken();
-            kakaoMemberInfoResponse = kakaoInfoClient.getUserInfo(bearer);
-        }catch (FeignClientException e){
+            bearerCode = "Bearer " + kakaoToken.accessToken();
+            kakaoMemberInfoResponse = kakaoInfoClient.getUserInfo(bearerCode);
+        } catch (FeignClientException e) {
             if (e.status() == 400 || e.status() == 401) {
                 throw new InvalidKakaoCodeException();
             }
@@ -62,7 +69,7 @@ public class KakaoAuthService {
 
         if (optionalMember.isEmpty()) {
             // 가입이 안 된 경우: 회원가입 유도를 위한 응답 반환
-            return new KakaoLoginResponse(null, null, email);
+            return new KakaoLoginResponse(null, null, null, email);
         }
 
         Member member = optionalMember.get();
@@ -73,6 +80,7 @@ public class KakaoAuthService {
 
         // 5. 리프레시 토큰 저장
         member.updateRefreshToken(refreshToken);
+        member.updateKakaoAccessToken(bearerCode);
         memberRepository.save(member);
 
         // 6. 응답 헤더 설정
@@ -86,20 +94,22 @@ public class KakaoAuthService {
         response.addCookie(refreshTokenCookie);
 
         // 7. 회원 정보 응답
-        return new KakaoLoginResponse(member.getNickname(), member.getMajor(), null);
+        return new KakaoLoginResponse(member.getNickname(), member.getMajor(), member.getSchool(), null);
     }
 
     @Transactional
-    public void kakaoSignUp(SignUpRequest request, HttpServletResponse response){
+    public void kakaoSignUp(SignUpRequest request, HttpServletResponse response) {
         //verificationcode가 맞는지 확인
         //맞다면 회원가입 진행
         //아니라면 에러
-        VerificationCode verificationCode = verificationCodeRepository.findByCode(request.verificationCode()).orElseThrow(
-                () -> new IllegalArgumentException("인증번호가 일치하지 않습니다.")
-        );
+        VerificationCode verificationCode = verificationCodeRepository.findByCode(request.verificationCode())
+                .orElseThrow(
+                        InvalidVerificationCode::new
+                );
 
-        Member member = memberRepository.save(Member.builder().email(verificationCode.getEmail()).nickname(request.name()).build());
-
+        Member member = memberRepository.save(
+                Member.builder().email(verificationCode.getEmail()).nickname(request.name()).school(request.school())
+                        .build());
 
         // 4. 토큰 발급
         String accessToken = jwtTokenProvider.createAccessToken(member.getId(), "member");
@@ -109,6 +119,39 @@ public class KakaoAuthService {
         member.updateRefreshToken(refreshToken);
         memberRepository.save(member);
         // 6. 응답 헤더 설정
+        response.setHeader("Authorization", "Bearer " + accessToken);
+
+        Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(refreshTokenCookie);
+    }
+
+    @Transactional
+    public void kakaoQuit(Long memberId) {
+        Member member = memberValidator.validateAndGetById(memberId);
+        kakaoUnlinkClient.unlink(member.getKakaoAccessToken());
+        member.delete();
+    }
+
+    @Transactional
+    public void refreshToken(String refresh, HttpServletResponse response) {
+        Long memberId = jwtTokenProvider.getMemberIdFromToken(refresh);
+        Member member = memberValidator.validateAndGetById(memberId);
+        if (!jwtTokenProvider.validateToken(refresh)) {
+            throw new InvalidRefreshTokenException();
+        }
+
+        // 토큰 재발급
+        String accessToken = jwtTokenProvider.createAccessToken(memberId, "member");
+        String refreshToken = jwtTokenProvider.createRefreshToken(memberId);
+
+        // 리프레시 토큰 저장
+        member.updateRefreshToken(refreshToken);
+        memberRepository.save(member);
+        // 응답 헤더 설정
         response.setHeader("Authorization", "Bearer " + accessToken);
 
         Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);

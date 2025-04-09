@@ -1,20 +1,25 @@
-CREATE DATABASE IF NOT EXISTS `forever`;
-USE `forever`;
+CREATE DATABASE IF NOT EXISTS `forevertest`;
+USE `forevertest`;
 
 CREATE TABLE IF NOT EXISTS member_tb (
                                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                          nickname VARCHAR(255),
-                                        email VARCHAR(255) NOT NULL UNIQUE,
-                                        major VARCHAR(512),
-                                        refresh_token VARCHAR(512),
-                                        available_tokens INT DEFAULT 3,
-                                        is_agreed_policy BOOLEAN NOT NULL DEFAULT TRUE,
-                                        effective_date_policy DATE NOT NULL DEFAULT '2025-04-03',
-                                        is_agreed_terms BOOLEAN NOT NULL DEFAULT TRUE,
-                                        effective_date_terms DATE NOT NULL DEFAULT '2025-04-03',
-                                        created_at DATETIME(6) NOT NULL,
-                                        updated_at DATETIME(6) NOT NULL
+    email VARCHAR(255) NOT NULL UNIQUE,
+    major VARCHAR(512),
+    school VARCHAR(512),
+    refresh_token VARCHAR(512),
+    kakao_access_token VARCHAR(512),
+    available_tokens INT DEFAULT 10,
+    is_agreed_policy BOOLEAN NOT NULL DEFAULT TRUE,
+    effective_date_policy DATE NOT NULL DEFAULT '2025-04-03',
+    is_agreed_terms BOOLEAN NOT NULL DEFAULT TRUE,
+    effective_date_terms DATE NOT NULL DEFAULT '2025-04-03',
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+    deleted_at DATETIME(6),
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL
     );
+
 
 CREATE TABLE IF NOT EXISTS folder_tb (
                            id BIGINT AUTO_INCREMENT PRIMARY KEY,

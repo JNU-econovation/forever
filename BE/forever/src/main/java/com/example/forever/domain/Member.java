@@ -2,6 +2,7 @@ package com.example.forever.domain;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.*;
 
 @Entity
@@ -27,11 +28,21 @@ public class Member extends BaseTimeEntity{
     private String major;
 
     @Column(length = 512)
+    private String school;
+
+    @Column(length = 512)
     private String refreshToken;
+
+    @Column(length = 512)
+    private String kakaoAccessToken;
 
     @Builder.Default
     @Column
     private int availableTokens = 10;
+
+    private boolean isDeleted = false;
+
+    private LocalDateTime deletedAt;
 
     @Builder.Default
     @Column(name = "is_agreed_policy", nullable = false)
@@ -53,6 +64,9 @@ public class Member extends BaseTimeEntity{
     public void updateRefreshToken(String token) {
         this.refreshToken = token;
     }
+    public void updateKakaoAccessToken(String token) {
+        this.kakaoAccessToken = token;
+    }
 
     public void agreePolicy() {
         this.isAgreedPolicy = true;
@@ -68,6 +82,11 @@ public class Member extends BaseTimeEntity{
 
     public void agreeTerms() {
         this.isAgreedTerms = true;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
 }
