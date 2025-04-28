@@ -4,6 +4,6 @@ public record SignUpRequest(
         String name,
         String major,
         String school,
-        String verificationCode
+        String email
 ) {
 }

@@ -46,13 +46,10 @@ public class AuthController {
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 
-    @GetMapping("/refresh")
+    @PostMapping("/refresh")
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> refreshToken(@CookieValue(value = "refresh_token", required = false) String refreshToken, HttpServletResponse resp) {
         kakaoAuthService.refreshToken(refreshToken, resp);
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
-
-
-
 
 }
