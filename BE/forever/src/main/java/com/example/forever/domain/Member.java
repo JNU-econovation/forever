@@ -40,6 +40,7 @@ public class Member extends BaseTimeEntity{
     @Column
     private int availableTokens = 10;
 
+    @Builder.Default
     private boolean isDeleted = false;
 
     private LocalDateTime deletedAt;
