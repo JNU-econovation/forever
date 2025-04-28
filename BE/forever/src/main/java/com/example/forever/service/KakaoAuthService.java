@@ -11,9 +11,9 @@ import com.example.forever.common.validator.MemberValidator;
 import com.example.forever.domain.Member;
 import com.example.forever.domain.VerificationCode;
 import com.example.forever.dto.KakaoLoginResponse;
-import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.email.VerificationCodeRepository;
+import com.example.forever.exception.auth.DeletedMemberException;
 import com.example.forever.exception.auth.InvalidKakaoCodeException;
 import com.example.forever.exception.auth.InvalidRefreshTokenException;
 import com.example.forever.exception.auth.InvalidVerificationCode;
@@ -25,7 +25,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Service
@@ -40,8 +39,8 @@ public class KakaoAuthService {
     private final MemberValidator memberValidator;
     private final KakaoUnlinkClient kakaoUnlinkClient;
 
+    //TODO : 환경변수화
     private final String kakaoClientId = "36d643394b6e66e4c5e99bf19398541f";
-    //private final String kakaoClientId = "97544952621589e082444154812d231c";
 
     @Transactional
     public KakaoLoginResponse kakaoLogin(String code, HttpServletResponse response) {
@@ -74,6 +73,11 @@ public class KakaoAuthService {
 
         Member member = optionalMember.get();
 
+        //회원탈퇴 된 회원일 경우
+        if (member.isDeleted()) {
+            throw new DeletedMemberException();
+        }
+
         // 4. 토큰 발급
         String accessToken = jwtTokenProvider.createAccessToken(member.getId(), "member");
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
@@ -102,13 +106,14 @@ public class KakaoAuthService {
         //verificationcode가 맞는지 확인
         //맞다면 회원가입 진행
         //아니라면 에러
-        VerificationCode verificationCode = verificationCodeRepository.findByCode(request.verificationCode())
-                .orElseThrow(
-                        InvalidVerificationCode::new
-                );
+//        VerificationCode verificationCode = verificationCodeRepository.findByCode(request.verificationCode())
+//                .orElseThrow(
+//                        InvalidVerificationCode::new
+//                );
+
 
         Member member = memberRepository.save(
-                Member.builder().email(verificationCode.getEmail()).nickname(request.name()).school(request.school())
+                Member.builder().email(request.email()).nickname(request.name()).school(request.school())
                         .build());
 
         // 4. 토큰 발급

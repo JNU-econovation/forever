@@ -1,2 +1,2 @@
-GET http://localhost:8080/api/oauth/refresh
-Cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwibWVtYmVySWQiOjIsImlhdCI6MTc0NDE1MzI0MCwiZXhwIjoxNzQ0NzU4MDQwfQ.x6uRbqh24wPAL_1LVGjDkJn3ufu1vNQCU_iEcpsgxQU
+POST http://localhost:8080/api/oauth/refresh
+Cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwibWVtYmVySWQiOjIsImlhdCI6MTc0NTQxNDY2OCwiZXhwIjoxNzQ2MDE5NDY4fQ.MDeAoW2gKqgCKy6ZvT0MRwiVVyWErCgZ7t-b2T4lk8w

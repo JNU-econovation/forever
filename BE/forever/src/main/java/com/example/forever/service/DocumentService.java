@@ -24,8 +24,10 @@ import com.example.forever.dto.document.response.EachQuestionResponse;
 import com.example.forever.dto.document.response.GetSummaryResponse;
 import com.example.forever.dto.document.response.QuestionAnswerResponse;
 import com.example.forever.dto.document.response.QuestionListResponse;
+import com.example.forever.exception.auth.NotResourceOwnerException;
 import com.example.forever.exception.document.AnswerNotFoundException;
 import com.example.forever.exception.document.QuestionNotFoundException;
+import com.example.forever.exception.folder.FolderNotFoundException;
 import com.example.forever.repository.AnswerRepository;
 import com.example.forever.repository.DocumentRepository;
 import com.example.forever.domain.Document;
@@ -60,20 +62,36 @@ public class DocumentService {
 
     @Transactional
     public DocumentSummaryResponse saveDocumentSummary(DocumentSummaryRequest request, MemberInfo memberInfo) {
-        Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
+        Long memberId = memberInfo.getMemberId();
+        // 1) 문서 작성자 검증
+        Member member = memberValidator.validateAndGetById(memberId);
 
-        Document savedDocument = documentRepository.save(Document.builder()
-                .title(request.title())
-                .summary(request.summary())
-                .member(member)
-                .folder(null)
-                .build());
+        // 2) 요청된 폴더가 루트(0)인지, 아니면 실제 폴더 조회
+        Folder folder = null;
+        if (request.folderId() != null && request.folderId() != 0L) {
+            folder = folderRepository.findById(request.folderId())
+                    .orElseThrow(FolderNotFoundException::new);
 
-        // 2. 최소 orderValue 조회
-        Optional<Integer> minOrderOpt = itemRepository.findMinOrderValue();
+            // 3) 소유권 검증
+            if (!folder.isOwnedBy(memberId)) {
+                throw new NotResourceOwnerException();
+            }
+        }
 
-        // 3. 새 orderValue 계산
-        int newOrderValue = minOrderOpt.map(min -> min / 2).orElse(0); // 처음엔 0으로 시작
+        // 3. Document 생성 시 folder 주입
+        Document savedDocument = documentRepository.save(
+                Document.builder()
+                        .title(request.title())
+                        .summary(request.summary())
+                        .member(member)
+                        .folder(folder)        // root면 null
+                        .build()
+        );
+
+
+        int newOrderValue = itemRepository.findMinOrderValue()
+                .map(min -> min / 2)
+                .orElse(0);
 
         // Item 생성 (파일)
         Item item = Item.builder()
@@ -92,7 +110,6 @@ public class DocumentService {
         Folder folder = folderRepository.save(
                 Folder.builder().name(request.folderName()).createdBy(memberInfo.getMemberId()).build()
         );
-        System.out.println("폴더 아이디" + folder.getId());
         // 2. 최소 orderValue 조회
         Optional<Integer> minOrderOpt = itemRepository.findMinOrderValue();
 

@@ -38,4 +38,10 @@ public class Folder extends BaseTimeEntity{
         this.name = name;
         this.updatedAt = LocalDateTime.now();
     }
+
+
+    // 특정 멤버가 소유자인지 여부 검사
+    public boolean isOwnedBy(Long memberId) {
+        return this.createdBy.equals(memberId);
+    }
 }
