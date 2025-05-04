@@ -97,8 +97,8 @@ public class DocumentService {
         Item item = Item.builder()
                 .type(ItemType.FILE)
                 .refId(savedDocument.getId())
-                .folder(null)
-                .orderValue(newOrderValue)  // 프론트에서 계산해서 넘겨줌
+                .folder(folder)
+                .orderValue(newOrderValue)
                 .build();
         itemRepository.save(item);
         // 5. 응답
