@@ -43,4 +43,6 @@ jobs:
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
           IMAGE_TAG: ${{ github.sha }}
 
-        run: ./BE/forever/gradlew jib
+        run: |
+          cd BE/forever
+          ./gradlew jib
