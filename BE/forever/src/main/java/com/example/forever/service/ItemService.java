@@ -47,7 +47,7 @@ public class ItemService {
 
         for (Item item : allItems) {
             if (item.getType() == ItemType.FILE) {
-                Document file = documentRepository.findById(item.getRefId())
+                Document file = documentRepository.findByIdAndIsDeletedFalse(item.getRefId())
                         .orElseThrow(() -> new IllegalArgumentException("File not found"));
 
                 Long folderId = (item.getFolder() != null) ? item.getFolder().getId() : 0L;
@@ -59,7 +59,7 @@ public class ItemService {
                         folderId
                 ));
             } else if (item.getType() == ItemType.FOLDER) {
-                Folder folder = folderRepository.findById(item.getRefId())
+                Folder folder = folderRepository.findByIdAndIsDeletedFalse(item.getRefId())
                         .orElseThrow(() -> new IllegalArgumentException("Folder not found"));
 
                 folderDtos.add(new FolderResponseDto(
@@ -85,7 +85,7 @@ public class ItemService {
 
         // 2. 소유자 검증
         if (type == ItemType.FILE) {
-            Document document = documentRepository.findById(item.getRefId())
+            Document document = documentRepository.findByIdAndIsDeletedFalse(item.getRefId())
                     .orElseThrow(DocumentNotFoundException::new);
 
             if (!document.getMember().getId().equals(member.getId())) {
@@ -93,7 +93,7 @@ public class ItemService {
             }
 
         } else if (type == ItemType.FOLDER) {
-            Folder folder = folderRepository.findById(item.getRefId())
+            Folder folder = folderRepository.findByIdAndIsDeletedFalse(item.getRefId())
                     .orElseThrow(DocumentNotFoundException::new);
 
             if (!folder.getCreatedBy().equals(member.getId())) {
@@ -104,7 +104,7 @@ public class ItemService {
         // 2. 새 폴더 조회 (null이면 루트)
         Folder targetFolder = null;
         if (request.parentFolderId() != null && request.parentFolderId() != 0) {
-            targetFolder = folderRepository.findById(request.parentFolderId())
+            targetFolder = folderRepository.findByIdAndIsDeletedFalse(request.parentFolderId())
                     .orElseThrow(() -> new IllegalArgumentException("Target folder not found"));
         }
 

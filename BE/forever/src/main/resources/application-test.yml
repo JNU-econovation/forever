@@ -5,7 +5,7 @@ spring:
       mode: always
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/forevertest?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/forever?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: 1234
 
@@ -23,7 +23,7 @@ spring:
     host: smtp.gmail.com  # Gmail의 SMTP 서버 호스트
     port: 587 # Gmail SMTP 서버 포트
     username: 4everr.2o25@gmail.com
-    password: hbca rfwt afoh kggm
+    password: ${EMAIL_PASSWORD}
     properties:
       mail:
         smtp:

@@ -132,11 +132,15 @@ public class DocumentService {
         document.update(request.newName());
     }
 
+    /**
+     * 문서 삭제 (소프트 삭제)
+     */
+    @Transactional
     public void deleteDocument(Long documentId, MemberInfo memberInfo) {
         Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
         Document document = documentValidator.validateAndGetById(documentId);
         DocumentAuthorizationValidator.validateAuthor(document, member);
-        documentRepository.delete(document);
+        document.delete(); // 소프트 삭제 적용
     }
 
 

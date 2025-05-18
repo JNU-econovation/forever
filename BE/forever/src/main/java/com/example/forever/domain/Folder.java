@@ -33,12 +33,27 @@ public class Folder extends BaseTimeEntity{
 
     @Column(nullable = false)
     private Long createdBy; // 생성자 ID 추적용
+    
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+    
+    private LocalDateTime deletedAt;
 
     public void updateName(String name) {
         this.name = name;
         this.updatedAt = LocalDateTime.now();
     }
-
+    
+    public void delete() {
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
+    
+    public void restore() {
+        this.isDeleted = false;
+        this.deletedAt = null;
+    }
 
     // 특정 멤버가 소유자인지 여부 검사
     public boolean isOwnedBy(Long memberId) {

@@ -23,21 +23,21 @@ VALUES ('근성', 'r@naver.com', '소프트웨어공학과', '전남대학교',
         false, NULL,
         NOW(), NOW());
 -- Folder 테이블 (parent_folder_id는 null이면 루트 폴더)
-INSERT INTO folder_tb (name, created_by, created_at, updated_at)
-VALUES ('Reports', 1, NOW(), NOW()),
-       ('Projects', 1, NOW(), NOW()),
-       ('Subfolder A', 1, NOW(), NOW());
+INSERT INTO folder_tb (name, created_by, is_deleted, deleted_at, created_at, updated_at)
+VALUES ('Reports', 1, false, NULL, NOW(), NOW()),
+       ('Projects', 1, false, NULL, NOW(), NOW()),
+       ('Subfolder A', 1, false, NULL, NOW(), NOW());
 
 
 -- Document 테이블 (각 파일은 Member와 Folder에 연결됨)
-INSERT INTO document_tb (title, summary, member_id, folder_id, created_at, updated_at)
-VALUES ('deep_learning_notes.pdf', '딥러닝 노트 정리본', 1, 1, NOW(), NOW()),
-       ('database_cheatsheet.md', 'DB 핵심 개념 요약본', 1, 2, NOW(), NOW()),
-       ('springboot_guide.docx', 'Spring Boot 입문 가이드', 1, 2, NOW(), NOW()),
-       ('project_plan.xlsx', '2025 프로젝트 계획안', 1, null, NOW(), NOW()),
-       ('interview_qna.txt', '면접 질문과 답변 정리', 2, null, NOW(), NOW()),
-       ('research_summary.pdf', '연구 논문 요약 정리', 1, 1, NOW(), NOW()),
-       ('network_basics.ppt', '컴퓨터 네트워크 기본 개념', 1, null, NOW(), NOW());
+INSERT INTO document_tb (title, summary, member_id, folder_id, is_deleted, deleted_at, created_at, updated_at)
+VALUES ('deep_learning_notes.pdf', '딥러닝 노트 정리본', 1, 1, false, NULL, NOW(), NOW()),
+       ('database_cheatsheet.md', 'DB 핵심 개념 요약본', 1, 2, false, NULL, NOW(), NOW()),
+       ('springboot_guide.docx', 'Spring Boot 입문 가이드', 1, 2, false, NULL, NOW(), NOW()),
+       ('project_plan.xlsx', '2025 프로젝트 계획안', 1, null, false, NULL, NOW(), NOW()),
+       ('interview_qna.txt', '면접 질문과 답변 정리', 2, null, false, NULL, NOW(), NOW()),
+       ('research_summary.pdf', '연구 논문 요약 정리', 1, 1, false, NULL, NOW(), NOW()),
+       ('network_basics.ppt', '컴퓨터 네트워크 기본 개념', 1, null, false, NULL, NOW(), NOW());
 
 
 -- Item 테이블 (파일과 폴더 모두 포함)
@@ -84,12 +84,4 @@ VALUES ('Supervised learning uses labeled data to train models.', 1, NOW(), NOW(
        ('TCP is connection-oriented while UDP is connectionless.', 5, NOW(), NOW()),
        ('Normalization organizes data to reduce redundancy in databases.', 6, NOW(), NOW()),
        ('Spring Boot annotations configure beans, request mappings, etc.', 7, NOW(), NOW()),
-       ('Vanishing gradient makes training deep networks difficult.', 8, NOW(), NOW()),
-       ('CAP theorem says consistency, availability, partition tolerance can’t all be achieved.', 9, NOW(), NOW()),
-       ('Classification assigns labels, regression predicts continuous values.', 10, NOW(), NOW()),
-       ('REST uses fixed routes, GraphQL allows flexible querying.', 11, NOW(), NOW()),
-       ('Indexing speeds up query performance by allowing fast lookups.', 12, NOW(), NOW());
-
-
-INSERT INTO app_info_tb (latest_version, store_url)
-VALUES ('0.1.1', 'https://play.google.com/store/apps/details?id=com.forever.summarysnap');
+       ('Vanishing gradient makes training deep networks difficult.', 8, NOW(), NOW())
