@@ -2,3 +2,8 @@ spring:
   profiles:
     active: prod
 
+# Discord 웹훅 설정
+discord:
+  webhook:
+    url: ${DISCORD_WEBHOOK_URL}
+

@@ -1,0 +1,123 @@
+package com.example.forever.controller;
+
+import com.example.forever.common.annotation.MemberInfo;
+import com.example.forever.common.response.ApiResponse;
+import com.example.forever.common.test.TestMemberArgumentResolver;
+import com.example.forever.dto.KakaoLoginResponse;
+import com.example.forever.dto.member.SignUpRequest;
+import com.example.forever.exception.auth.DeletedMemberException;
+import com.example.forever.exception.auth.InvalidKakaoCodeException;
+import com.example.forever.service.KakaoAuthService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@ExtendWith(MockitoExtension.class)
+class AuthControllerTest {
+
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
+
+    @Mock
+    private KakaoAuthService kakaoAuthService;
+
+    @InjectMocks
+    private AuthController authController;
+
+    @BeforeEach
+    void setUp() {
+        objectMapper = new ObjectMapper();
+        mockMvc = MockMvcBuilders.standaloneSetup(authController)
+                .setCustomArgumentResolvers(new TestMemberArgumentResolver())
+                .setHandlerExceptionResolvers(new ExceptionHandlerExceptionResolver())
+                .build();
+    }
+
+    @Test
+    @DisplayName("카카오 로그인 API 테스트 - 성공")
+    void oAuthLogin_Success() throws Exception {
+        // Given
+        String code = "valid-kakao-code";
+        KakaoLoginResponse response = new KakaoLoginResponse("테스트", "컴퓨터공학", "테스트대학교", null);
+        
+        when(kakaoAuthService.kakaoLogin(eq(code), any())).thenReturn(response);
+
+        // When & Then
+        mockMvc.perform(get("/api/oauth/kakao")
+                        .param("code", code))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.name").value(response.name()))
+                .andExpect(jsonPath("$.data.major").value(response.major()))
+                .andExpect(jsonPath("$.data.school").value(response.school()));
+
+        verify(kakaoAuthService).kakaoLogin(eq(code), any());
+    }
+
+    @Test
+    @DisplayName("카카오 회원가입 API 테스트 - 성공")
+    void oAuthSignup_Success() throws Exception {
+        // Given
+        SignUpRequest request = new com.example.forever.dto.member.SignUpRequest(
+                "테스트",
+                "컴퓨터공학",
+                "테스트대학교",
+                "test@example.com"
+        );
+        
+        doNothing().when(kakaoAuthService).kakaoSignUp(any(), any());
+
+        // When & Then
+        mockMvc.perform(post("/api/oauth/kakao/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
+        verify(kakaoAuthService).kakaoSignUp(any(), any());
+    }
+
+    @Test
+    @DisplayName("카카오 회원 탈퇴 API 테스트 - 성공")
+    void oAuthQuit_Success() throws Exception {
+        // Given
+        doNothing().when(kakaoAuthService).kakaoQuit(anyLong());
+
+        // When & Then
+        mockMvc.perform(post("/api/oauth/quit"))
+                .andExpect(status().isOk());
+
+        verify(kakaoAuthService).kakaoQuit(anyLong());
+    }
+
+    @Test
+    @DisplayName("토큰 갱신 API 테스트 - 성공")
+    void refreshToken_Success() throws Exception {
+        // Given
+        String refreshToken = "valid-refresh-token";
+        
+        doNothing().when(kakaoAuthService).refreshToken(eq(refreshToken), any());
+
+        // When & Then
+        mockMvc.perform(post("/api/oauth/refresh")
+                        .cookie(new Cookie("refresh_token", refreshToken)))
+                .andExpect(status().isOk());
+
+        verify(kakaoAuthService).refreshToken(eq(refreshToken), any());
+    }
+}

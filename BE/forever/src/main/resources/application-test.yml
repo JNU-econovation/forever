@@ -22,7 +22,7 @@ spring:
   mail:
     host: smtp.gmail.com  # Gmail의 SMTP 서버 호스트
     port: 587 # Gmail SMTP 서버 포트
-    username: 4everr.2o25@gmail.com
+    username: ${EMAIL_ADDRESS}
     password: ${EMAIL_PASSWORD}
     properties:
       mail:
@@ -35,3 +35,7 @@ spring:
           timeout: 5000 # 클라이언트가 SMTP 서버로부터 응답을 대기해야 하는 시간
           writetimeout: 5000 # 클라이언트가 작업을 완료하는데 대기해야 하는 시간
     auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분 이메일 인증 코드의 만료 시간(Millisecond)
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  token-validity-in-seconds: 86400

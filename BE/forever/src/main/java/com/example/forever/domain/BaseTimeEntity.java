@@ -5,7 +5,9 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+@Getter
 @MappedSuperclass
 public abstract class BaseTimeEntity {
     @Column(updatable = false)
