@@ -36,7 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-src/rest/**
 .env
 
-!**/src/main/java/com/example/forever/rest/**
+/src/main/java/com/example/forever/rest/
