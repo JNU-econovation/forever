@@ -37,3 +37,6 @@ out/
 .vscode/
 
 src/rest/**
+.env
+
+!**/src/main/java/com/example/forever/rest/**

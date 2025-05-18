@@ -20,11 +20,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     SELECT i FROM Item i
     WHERE
       (i.type = 'FILE' AND EXISTS (
-        SELECT 1 FROM Document d WHERE d.id = i.refId AND d.member.id = :memberId
+        SELECT 1 FROM Document d WHERE d.id = i.refId AND d.member.id = :memberId AND d.isDeleted = false
       ))
       OR
       (i.type = 'FOLDER' AND EXISTS (
-        SELECT 1 FROM Folder f WHERE f.id = i.refId AND f.createdBy = :memberId
+        SELECT 1 FROM Folder f WHERE f.id = i.refId AND f.createdBy = :memberId AND f.isDeleted = false
       ))
     ORDER BY i.orderValue ASC
 """)

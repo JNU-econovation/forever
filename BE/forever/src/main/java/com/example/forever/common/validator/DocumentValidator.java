@@ -13,7 +13,7 @@ public class DocumentValidator {
     private final DocumentRepository documentRepository;
 
     public Document validateAndGetById(Long documentId) {
-        return documentRepository.findById(documentId)
+        return documentRepository.findByIdAndIsDeletedFalse(documentId)
                 .orElseThrow(DocumentNotFoundException::new);
     }
 }

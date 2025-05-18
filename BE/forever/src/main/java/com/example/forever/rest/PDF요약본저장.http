@@ -4,5 +4,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvb
 
 {
   "title": "파일명",
-  "summary": "요약"
+  "summary": "요약",
+  "folderId": 1
 }

@@ -39,16 +39,41 @@ public class Document extends BaseTimeEntity {
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+    
+    private LocalDateTime deletedAt;
+
     @Builder
     public Document(String title, String summary, Member member, Folder folder) {
         this.title = title;
         this.summary = summary;
         this.member = member;
         this.folder = folder;
+        this.isDeleted = false;
+    }
+
+    @Builder
+    public Document(Long id, String title, String summary, Member member, Folder folder) {
+        this.id = id;
+        this.title = title;
+        this.summary = summary;
+        this.member = member;
+        this.folder = folder;
+        this.isDeleted = false;
     }
 
     public void update(String title) {
         this.title = title;
     }
-
+    
+    public void delete() {
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
+    
+    public void restore() {
+        this.isDeleted = false;
+        this.deletedAt = null;
+    }
 }
