@@ -34,7 +34,7 @@ public class DiscordWebhookService {
         
         // 피드백 정보
         String description = String.format(
-                "**위치**: %s\n**평점**: %d/5\n**내용**: %s\n**시간**: %s",
+                "**위치**: %s\n**평점**: %d/10\n**내용**: %s\n**시간**: %s",
                 feedback.getPosition(),
                 feedback.getRating(),
                 feedback.getContent(),
