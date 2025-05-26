@@ -30,6 +30,9 @@ public class Member extends BaseTimeEntity{
     @Column(length = 512)
     private String school;
 
+    @Column(length = 1024)
+    private String inflow;
+
     @Column(length = 512)
     private String refreshToken;
 

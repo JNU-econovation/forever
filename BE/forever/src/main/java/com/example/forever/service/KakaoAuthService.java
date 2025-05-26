@@ -112,8 +112,16 @@ public class KakaoAuthService {
 //                );
 
 
+        // inflow 리스트를 문자열로 변환 (JSON 형태 또는 콤마로 구분)
+        String inflowString = request.inflow() != null ? String.join(",", request.inflow()) : null;
+        
         Member member = memberRepository.save(
-                Member.builder().email(request.email()).nickname(request.name()).school(request.school())
+                Member.builder()
+                        .email(request.email())
+                        .nickname(request.name())
+                        .school(request.school())
+                        .major(request.major())
+                        .inflow(inflowString)
                         .build());
 
         // 4. 토큰 발급
