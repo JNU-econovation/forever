@@ -10,6 +10,7 @@ import com.example.forever.exception.auth.InvalidKakaoCodeException;
 import com.example.forever.service.KakaoAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,8 @@ class AuthControllerTest {
                 "테스트",
                 "컴퓨터공학",
                 "테스트대학교",
-                "test@example.com"
+                "test@example.com",
+                List.of("인플로우1", "인플로우2")
         );
         
         doNothing().when(kakaoAuthService).kakaoSignUp(any(), any());

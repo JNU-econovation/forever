@@ -17,7 +17,8 @@ public enum AuthErrorCode implements ErrorCode {
     NOT_RESOURCE_OWNER("소유자가 아닙니다.", HttpStatus.FORBIDDEN),
     INVALID_VERIFICATION_CODE("유효하지 않은 인증코드입니다.", HttpStatus.BAD_REQUEST),
     INVALID_REFRESH_TOKEN("유효하지 않은 리프레시토큰 입니다.", HttpStatus.BAD_REQUEST),
-    DELETE_MEMBER("탈퇴한 회원입니다.", HttpStatus.BAD_REQUEST);
+    DELETE_MEMBER("탈퇴한 회원입니다.", HttpStatus.BAD_REQUEST),
+    ALREADY_EXISTS_EMAIL("이미 존재하는 이메일입니다.", HttpStatus.BAD_REQUEST);
 
 
     private final String message;

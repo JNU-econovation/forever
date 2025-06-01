@@ -1,8 +1,14 @@
 package com.example.forever.config;
 
 import com.example.forever.common.auth.JwtTokenProvider;
+import com.example.forever.common.feign.kakao.client.KakaoInfoClient;
+import com.example.forever.common.feign.kakao.client.KakaoTokenClient;
+import com.example.forever.common.feign.kakao.client.KakaoUnlinkClient;
+import com.example.forever.service.DiscordWebhookService;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -18,20 +24,22 @@ public class TestConfig {
      * 테스트용 JwtTokenProvider 빈
      */
     @Bean
+    @Primary
     public JwtTokenProvider jwtTokenProvider() {
         return new JwtTokenProvider();
     }
-    
     /**
-     * 테스트용 JavaMailSender 빈
+     * 외부 API 클라이언트들은 Mock으로 처리
      */
-    @Bean
-    public JavaMailSender javaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("localhost");
-        mailSender.setPort(3025);
-        mailSender.setUsername("test");
-        mailSender.setPassword("test");
-        return mailSender;
-    }
+    @MockBean
+    private KakaoTokenClient kakaoTokenClient;
+    
+    @MockBean
+    private KakaoInfoClient kakaoInfoClient;
+    
+    @MockBean
+    private KakaoUnlinkClient kakaoUnlinkClient;
+    
+    @MockBean
+    private DiscordWebhookService discordWebhookService;
 }

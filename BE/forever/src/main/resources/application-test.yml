@@ -1,41 +1,63 @@
 spring:
-  sql:
-    init:
-      data-locations: classpath:data/data.sql
-      mode: always
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/forever?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1234
+  # Flyway 비활성화
+  flyway:
+    enabled: false
 
+  # 테스트용 H2 데이터베이스
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # JPA 설정
   jpa:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        show_sql: true
-        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: false
+        format_sql: false
 
+  # 메일 설정 (테스트용)
   mail:
-    host: smtp.gmail.com  # Gmail의 SMTP 서버 호스트
-    port: 587 # Gmail SMTP 서버 포트
-    username: ${EMAIL_ADDRESS}
-    password: ${EMAIL_PASSWORD}
+    host: localhost
+    port: 587
+    username: test@example.com
+    password: testpassword
     properties:
       mail:
         smtp:
-          auth: true # SMTP 서버에 인증 필요한 경우 true로 지정 Gmail은 요구함
+          auth: true
           starttls:
-            enable: true # SMTP 서버가 TLS를 사용하여 안전한 연결을 요구하는 경우 true로 설정
+            enable: true
             required: true
-          connectiontimeout: 5000 # 클라이언트가 SMTP 서버와의 연결을 설정하는 데 대기해야 하는 시간
-          timeout: 5000 # 클라이언트가 SMTP 서버로부터 응답을 대기해야 하는 시간
-          writetimeout: 5000 # 클라이언트가 작업을 완료하는데 대기해야 하는 시간
-    auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분 이메일 인증 코드의 만료 시간(Millisecond)
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
+# JWT 설정
 jwt:
-  secret: ${JWT_SECRET_KEY}
+  secret: test-jwt-secret-key-for-testing-only-minimum-32-characters
   token-validity-in-seconds: 86400
+
+# Discord 웹훅 설정 (테스트용 더미 값)
+discord:
+  webhook:
+    url: http://localhost:8080/test-webhook
+
+# 서버 설정
+server:
+  port: 0
+  shutdown: graceful
+
+# 로깅 설정 (에러 로그 최소화)
+logging:
+  level:
+    com.example.forever: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+    org.springframework.context.support.AbstractApplicationContext: ERROR
+    org.springframework.beans.factory.support.DefaultSingletonBeanRegistry: ERROR
