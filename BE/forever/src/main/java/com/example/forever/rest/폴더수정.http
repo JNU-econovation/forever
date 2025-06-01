@@ -1,7 +1,0 @@
-DELETE http://localhost:8080/api/folder/1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDM2MTkwNTcsImV4cCI6MTc0MzYxOTk1N30.P31eL8x1Edq6UdPpXUTEiit5BAR5IL_ddnyZ8hnWFcc
-
-{
-    "newName": "폴더수정"
-}
