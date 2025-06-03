@@ -7,6 +7,8 @@ import com.example.forever.common.response.ApiResponseGenerator;
 import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.dto.member.SignUpRequest;
+import com.example.forever.application.member.SignUpCommand;
+import com.example.forever.application.member.MemberApplicationService;
 import com.example.forever.service.KakaoAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final KakaoAuthService kakaoAuthService;
+    private final MemberApplicationService memberApplicationService;
 
     @GetMapping("/kakao")
     @Operation(summary = "카카오 로그인", description = "카카오 인가 코드를 통해 로그인을 진행합니다.")
@@ -57,7 +60,16 @@ public class AuthController {
             @Parameter(description = "회원가입 요청 데이터", required = true)
             @RequestBody SignUpRequest request, 
             HttpServletResponse response) {
-        kakaoAuthService.kakaoSignUp(request, response);
+        // DTO를 Command로 변환
+        SignUpCommand command = new SignUpCommand(
+                request.name(),
+                request.major(),
+                request.school(),
+                request.email(),
+                request.inflow()
+        );
+        
+        memberApplicationService.signUp(command, response);
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 

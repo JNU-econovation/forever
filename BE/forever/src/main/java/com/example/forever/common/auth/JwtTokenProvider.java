@@ -14,7 +14,7 @@ public class JwtTokenProvider {
 
     //TODO : 환경변수화
     private static final String SECRET_KEY = "secretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkey"; // 최소 256비트
-    private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60 * 24 * 2;
+    private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60 * 24;
     private static final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24 * 7;  // 7일
 
     private Key key;

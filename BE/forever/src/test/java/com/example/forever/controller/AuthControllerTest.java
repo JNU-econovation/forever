@@ -8,6 +8,7 @@ import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.exception.auth.DeletedMemberException;
 import com.example.forever.exception.auth.InvalidKakaoCodeException;
 import com.example.forever.service.KakaoAuthService;
+import com.example.forever.application.member.MemberApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
@@ -38,6 +39,9 @@ class AuthControllerTest {
 
     @Mock
     private KakaoAuthService kakaoAuthService;
+    
+    @Mock
+    private MemberApplicationService memberApplicationService;
 
     @InjectMocks
     private AuthController authController;
@@ -83,7 +87,7 @@ class AuthControllerTest {
                 List.of("인플로우1", "인플로우2")
         );
         
-        doNothing().when(kakaoAuthService).kakaoSignUp(any(), any());
+        doNothing().when(memberApplicationService).signUp(any(), any());
 
         // When & Then
         mockMvc.perform(post("/api/oauth/kakao/signup")
@@ -91,7 +95,7 @@ class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
 
-        verify(kakaoAuthService).kakaoSignUp(any(), any());
+        verify(memberApplicationService).signUp(any(), any());
     }
 
     @Test
