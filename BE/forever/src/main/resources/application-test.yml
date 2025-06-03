@@ -43,6 +43,11 @@ jwt:
   secret: test-jwt-secret-key-for-testing-only-minimum-32-characters
   token-validity-in-seconds: 86400
 
+# 카카오 설정 (테스트용)
+kakao:
+  client:
+    id: test-kakao-client-id-for-testing
+
 # Discord 웹훅 설정 (테스트용 더미 값)
 discord:
   webhook:

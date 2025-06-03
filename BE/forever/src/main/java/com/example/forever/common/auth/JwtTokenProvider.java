@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
@@ -12,8 +13,8 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    //TODO : 환경변수화
-    private static final String SECRET_KEY = "secretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkey"; // 최소 256비트
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
     private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60 * 24;
     private static final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24 * 7;  // 7일
 

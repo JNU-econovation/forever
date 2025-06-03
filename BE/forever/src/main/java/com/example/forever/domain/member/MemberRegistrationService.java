@@ -19,10 +19,10 @@ public class MemberRegistrationService {
             Major major,
             List<String> inflow) {
         
-        // 도메인 규칙: 이메일 중복 검사
+        //  이메일 중복 검사
         emailDuplicationChecker.checkEmailNotDuplicated(email);
         
-        // 도메인 규칙: inflow 변환
+        // inflow 변환
         String inflowString = convertInflowToString(inflow);
         
         // Member 도메인 객체 생성

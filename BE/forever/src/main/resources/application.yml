@@ -19,3 +19,9 @@ springdoc:
     display-query-params-without-oauth2: true
   show-actuator: false
 
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
+kakao:
+  client:
+    id: ${KAKAO_CLIENT_ID}

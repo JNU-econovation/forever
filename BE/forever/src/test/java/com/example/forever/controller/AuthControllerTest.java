@@ -6,9 +6,10 @@ import com.example.forever.common.test.TestMemberArgumentResolver;
 import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.exception.auth.DeletedMemberException;
-import com.example.forever.exception.auth.InvalidKakaoCodeException;
+import com.example.forever.application.auth.LoginResult;
 import com.example.forever.service.KakaoAuthService;
 import com.example.forever.application.member.MemberApplicationService;
+import com.example.forever.application.auth.AuthenticationApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
@@ -42,6 +43,9 @@ class AuthControllerTest {
     
     @Mock
     private MemberApplicationService memberApplicationService;
+    
+    @Mock
+    private AuthenticationApplicationService authenticationApplicationService;
 
     @InjectMocks
     private AuthController authController;
@@ -60,19 +64,19 @@ class AuthControllerTest {
     void oAuthLogin_Success() throws Exception {
         // Given
         String code = "valid-kakao-code";
-        KakaoLoginResponse response = new KakaoLoginResponse("테스트", "컴퓨터공학", "테스트대학교", null);
+        LoginResult loginResult = new LoginResult("테스트", "컴퓨터공학", "테스트대학교", null);
         
-        when(kakaoAuthService.kakaoLogin(eq(code), any())).thenReturn(response);
+        when(authenticationApplicationService.login(any(), any())).thenReturn(loginResult);
 
         // When & Then
         mockMvc.perform(get("/api/oauth/kakao")
                         .param("code", code))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value(response.name()))
-                .andExpect(jsonPath("$.data.major").value(response.major()))
-                .andExpect(jsonPath("$.data.school").value(response.school()));
+                .andExpect(jsonPath("$.data.name").value(loginResult.name()))
+                .andExpect(jsonPath("$.data.major").value(loginResult.major()))
+                .andExpect(jsonPath("$.data.school").value(loginResult.school()));
 
-        verify(kakaoAuthService).kakaoLogin(eq(code), any());
+        verify(authenticationApplicationService).login(any(), any());
     }
 
     @Test

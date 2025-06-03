@@ -3,6 +3,7 @@ package com.example.forever.common.auth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +14,8 @@ class JwtTokenProviderTest {
     @BeforeEach
     void setUp() {
         jwtTokenProvider = new JwtTokenProvider();
+        // 테스트용 시크릿 키 주입
+        ReflectionTestUtils.setField(jwtTokenProvider, "SECRET_KEY", "test-jwt-secret-key-for-testing-only-minimum-32-characters");
         jwtTokenProvider.init(); // PostConstruct 메소드 수동 호출
     }
     

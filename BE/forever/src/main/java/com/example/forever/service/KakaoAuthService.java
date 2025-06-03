@@ -24,6 +24,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,8 +41,8 @@ public class KakaoAuthService {
     private final MemberValidator memberValidator;
     private final KakaoUnlinkClient kakaoUnlinkClient;
 
-    //TODO : 환경변수화
-    private final String kakaoClientId = "36d643394b6e66e4c5e99bf19398541f";
+    @Value("${kakao.client.id}")
+    private String kakaoClientId;
 
     @Transactional
     public KakaoLoginResponse kakaoLogin(String code, HttpServletResponse response) {

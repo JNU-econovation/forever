@@ -38,7 +38,7 @@ public class AgreementController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "약관 동의 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 회원")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "존재하지 않는 회원")
     })
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> agreeToTerms(
             @Parameter(hidden = true) @AuthMember MemberInfo memberInfo){
@@ -52,7 +52,7 @@ public class AgreementController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "약관 동의 상태 조회 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 회원")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "존재하지 않는 회원")
     })
     public ApiResponse<ApiResponse.SuccesCustomBody<AgreementTermsResponse>> isTermsAgreed(
             @Parameter(hidden = true) @AuthMember MemberInfo memberInfo){
@@ -66,7 +66,7 @@ public class AgreementController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "정책 동의 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 회원")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "존재하지 않는 회원")
     })
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> agreeToPolicy(
             @Parameter(hidden = true) @AuthMember MemberInfo memberInfo){
@@ -80,7 +80,7 @@ public class AgreementController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "정책 동의 상태 조회 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 회원")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "존재하지 않는 회원")
     })
     public ApiResponse<ApiResponse.SuccesCustomBody<AgreementTermsResponse>> isPolicyAgreed(
             @Parameter(hidden = true) @AuthMember MemberInfo memberInfo){

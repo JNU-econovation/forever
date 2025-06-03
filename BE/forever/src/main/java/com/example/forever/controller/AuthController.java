@@ -5,10 +5,12 @@ import com.example.forever.common.annotation.MemberInfo;
 import com.example.forever.common.response.ApiResponse;
 import com.example.forever.common.response.ApiResponseGenerator;
 import com.example.forever.dto.KakaoLoginResponse;
-import com.example.forever.dto.member.LoginTokenResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.application.member.SignUpCommand;
 import com.example.forever.application.member.MemberApplicationService;
+import com.example.forever.application.auth.AuthenticationApplicationService;
+import com.example.forever.application.auth.LoginCommand;
+import com.example.forever.application.auth.LoginResult;
 import com.example.forever.service.KakaoAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,6 +36,7 @@ public class AuthController {
 
     private final KakaoAuthService kakaoAuthService;
     private final MemberApplicationService memberApplicationService;
+    private final AuthenticationApplicationService authenticationApplicationService;
 
     @GetMapping("/kakao")
     @Operation(summary = "카카오 로그인", description = "카카오 인가 코드를 통해 로그인을 진행합니다.")
@@ -46,7 +49,20 @@ public class AuthController {
             @Parameter(description = "카카오에서 발급받은 인가 코드", required = true)
             @RequestParam(value = "code") String code, 
             HttpServletResponse resp) {
-        KakaoLoginResponse response = kakaoAuthService.kakaoLogin(code, resp);
+        // 코드를 Command로 변환
+        LoginCommand command = new LoginCommand(code);
+        
+        // 인증 애플리케이션 서비스 호출
+        LoginResult result = authenticationApplicationService.login(command, resp);
+        
+        // 응답 형식 반환
+        KakaoLoginResponse response = new KakaoLoginResponse(
+                result.name(),
+                result.major(),
+                result.school(),
+                result.email()
+        );
+        
         return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 
@@ -79,7 +95,7 @@ public class AuthController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원탈퇴 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 회원")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "존재하지 않는 회원")
     })
     public ApiResponse<ApiResponse.SuccesCustomBody<Void>> oAuthQuit(
             @Parameter(hidden = true) @AuthMember MemberInfo memberInfo) {
