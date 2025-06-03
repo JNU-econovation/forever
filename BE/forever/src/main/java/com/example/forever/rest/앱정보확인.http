@@ -1,2 +1,0 @@
-GET http://localhost:8080/api/version
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVySWQiOjEsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE3NDM2MTQ3MTUsImV4cCI6MTc0MzYxNTYxNX0.FVb_EoZhwP3SCIK3PZaT6ERiTbGld5BdjdF1Yt_B2-0

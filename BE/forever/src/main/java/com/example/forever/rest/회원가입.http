@@ -1,8 +1,0 @@
-POST http://localhost:8080/api/oauth/kakao/signup
-Content-Type: application/json
-
-{
-  "name": "민주",
-  "major": "학과",
-  "verificationCode": "DffTKy"
-}

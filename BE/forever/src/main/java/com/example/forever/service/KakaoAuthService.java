@@ -13,6 +13,7 @@ import com.example.forever.domain.VerificationCode;
 import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.email.VerificationCodeRepository;
+import com.example.forever.exception.auth.AlreadyExistsEmailException;
 import com.example.forever.exception.auth.DeletedMemberException;
 import com.example.forever.exception.auth.InvalidKakaoCodeException;
 import com.example.forever.exception.auth.InvalidRefreshTokenException;
@@ -23,6 +24,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +41,8 @@ public class KakaoAuthService {
     private final MemberValidator memberValidator;
     private final KakaoUnlinkClient kakaoUnlinkClient;
 
-    //TODO : 환경변수화
-    private final String kakaoClientId = "36d643394b6e66e4c5e99bf19398541f";
+    @Value("${kakao.client.id}")
+    private String kakaoClientId;
 
     @Transactional
     public KakaoLoginResponse kakaoLogin(String code, HttpServletResponse response) {
@@ -111,6 +113,10 @@ public class KakaoAuthService {
 //                        InvalidVerificationCode::new
 //                );
 
+        // 이메일 중복 체크
+        if (memberRepository.findByEmail(request.email()).isPresent()) {
+            throw new AlreadyExistsEmailException();
+        }
 
         // inflow 리스트를 문자열로 변환 (JSON 형태 또는 콤마로 구분)
         String inflowString = request.inflow() != null ? String.join(",", request.inflow()) : null;

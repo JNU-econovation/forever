@@ -7,3 +7,21 @@ discord:
   webhook:
     url: ${DISCORD_WEBHOOK_URL}
 
+# Swagger 설정
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+  show-actuator: false
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
+kakao:
+  client:
+    id: ${KAKAO_CLIENT_ID}

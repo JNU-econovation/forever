@@ -1,8 +1,0 @@
-POST http://localhost:8080/api/documents/100/save
-Content-Type: application/json
-
-{
-    "questionContent": "질문",
-    "answerContent": "답변"
-}
-###
