@@ -13,7 +13,7 @@ import com.example.forever.application.member.MemberWithdrawalApplicationService
 import com.example.forever.application.auth.AuthenticationApplicationService;
 import com.example.forever.application.auth.LoginCommand;
 import com.example.forever.application.auth.LoginResult;
-import com.example.forever.service.KakaoAuthService;
+import com.example.forever.application.auth.TokenRefreshApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,10 +36,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "인증", description = "카카오 OAuth 기반 인증 API")
 public class AuthController {
 
-    private final KakaoAuthService kakaoAuthService;
     private final MemberApplicationService memberApplicationService;
     private final AuthenticationApplicationService authenticationApplicationService;
     private final MemberWithdrawalApplicationService memberWithdrawalApplicationService;
+    private final TokenRefreshApplicationService tokenRefreshApplicationService;
 
     @GetMapping("/kakao")
     @Operation(summary = "카카오 로그인", description = "카카오 인가 코드를 통해 로그인을 진행합니다.")
@@ -120,7 +120,7 @@ public class AuthController {
             @Parameter(description = "리프레시 토큰 (쿠키에서 자동 추출)")
             @CookieValue(value = "refresh_token", required = false) String refreshToken, 
             HttpServletResponse resp) {
-        kakaoAuthService.refreshToken(refreshToken, resp);
+        tokenRefreshApplicationService.refreshToken(refreshToken, resp);
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 }
