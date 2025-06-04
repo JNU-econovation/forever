@@ -1,15 +1,14 @@
 package com.example.forever.integration;
 
 import com.example.forever.domain.Member;
-import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.repository.MemberRepository;
-import com.example.forever.service.KakaoAuthService;
+import com.example.forever.application.member.MemberApplicationService;
+import com.example.forever.application.member.SignUpCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BasicIntegrationTest {
 
     @Autowired
-    private KakaoAuthService kakaoAuthService;
+    private MemberApplicationService memberApplicationService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -40,7 +39,7 @@ class BasicIntegrationTest {
     @DisplayName("회원가입이 정상 동작한다 - inflow 포함")
     void signUp_WithInflow_Success() {
         // given
-        SignUpRequest request = new SignUpRequest(
+        SignUpCommand command = new SignUpCommand(
                 "곽민주",
                 "소프트웨어공학과",
                 "전남대학교",
@@ -51,7 +50,7 @@ class BasicIntegrationTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // when
-        kakaoAuthService.kakaoSignUp(request, response);
+        memberApplicationService.signUp(command, response);
 
         // then
         Optional<Member> savedMember = memberRepository.findByEmail("rootachieve@gmail.com");
@@ -76,7 +75,7 @@ class BasicIntegrationTest {
     @DisplayName("회원가입이 정상 동작한다 - inflow null")
     void signUp_WithNullInflow_Success() {
         // given
-        SignUpRequest request = new SignUpRequest(
+        SignUpCommand command = new SignUpCommand(
                 "테스트유저",
                 "컴퓨터공학과",
                 "테스트대학교",
@@ -87,7 +86,7 @@ class BasicIntegrationTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // when
-        kakaoAuthService.kakaoSignUp(request, response);
+        memberApplicationService.signUp(command, response);
 
         // then
         Optional<Member> savedMember = memberRepository.findByEmail("test@example.com");
@@ -99,7 +98,7 @@ class BasicIntegrationTest {
     @DisplayName("회원가입이 정상 동작한다 - inflow 빈 리스트")
     void signUp_WithEmptyInflow_Success() {
         // given
-        SignUpRequest request = new SignUpRequest(
+        SignUpCommand command = new SignUpCommand(
                 "빈리스트유저",
                 "빈리스트학과",
                 "빈리스트대학교",
@@ -110,7 +109,7 @@ class BasicIntegrationTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // when
-        kakaoAuthService.kakaoSignUp(request, response);
+        memberApplicationService.signUp(command, response);
 
         // then
         Optional<Member> savedMember = memberRepository.findByEmail("empty@example.com");

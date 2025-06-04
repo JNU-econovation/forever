@@ -27,7 +27,7 @@ class MemberTest {
         assertNotNull(member);
         assertEquals(email, member.getEmail());
         assertEquals(nickname, member.getNickname());
-        assertEquals(10, member.getAvailableTokens()); // 기본값 확인
+        assertEquals(3, member.getAvailableTokens()); // 기본값 3으로 변경
         assertFalse(member.isDeleted()); // 기본값 확인
     }
     

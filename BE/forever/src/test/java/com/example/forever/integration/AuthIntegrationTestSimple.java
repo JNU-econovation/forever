@@ -160,7 +160,7 @@ class AuthIntegrationTestSimple {
         assertThat(savedMember).isPresent();
         
         Member member = savedMember.get();
-        assertThat(member.getAvailableTokens()).isEqualTo(10);
+        assertThat(member.getAvailableTokens()).isEqualTo(3); // 기본값 3으로 변경
         assertThat(member.isDeleted()).isFalse();
         assertThat(member.getDeletedAt()).isNull();
         assertThat(member.getIsAgreedPolicy()).isTrue();

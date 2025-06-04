@@ -1,14 +1,14 @@
 package com.example.forever.controller;
 
-import com.example.forever.common.annotation.MemberInfo;
-import com.example.forever.common.response.ApiResponse;
+
 import com.example.forever.common.test.TestMemberArgumentResolver;
-import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.SignUpRequest;
-import com.example.forever.exception.auth.DeletedMemberException;
 import com.example.forever.application.auth.LoginResult;
-import com.example.forever.service.KakaoAuthService;
+import com.example.forever.application.member.WithdrawResult;
+import com.example.forever.interfaces.web.auth.AuthController;
+import com.example.forever.application.member.MemberWithdrawalApplicationService;
 import com.example.forever.application.member.MemberApplicationService;
+import com.example.forever.application.auth.TokenRefreshApplicationService;
 import com.example.forever.application.auth.AuthenticationApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
@@ -21,8 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
@@ -37,15 +35,18 @@ class AuthControllerTest {
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
-
-    @Mock
-    private KakaoAuthService kakaoAuthService;
     
     @Mock
     private MemberApplicationService memberApplicationService;
     
     @Mock
     private AuthenticationApplicationService authenticationApplicationService;
+    
+    @Mock
+    private MemberWithdrawalApplicationService memberWithdrawalApplicationService;
+    
+    @Mock
+    private TokenRefreshApplicationService tokenRefreshApplicationService;
 
     @InjectMocks
     private AuthController authController;
@@ -106,13 +107,14 @@ class AuthControllerTest {
     @DisplayName("카카오 회원 탈퇴 API 테스트 - 성공")
     void oAuthQuit_Success() throws Exception {
         // Given
-        doNothing().when(kakaoAuthService).kakaoQuit(anyLong());
+        WithdrawResult withdrawResult = WithdrawResult.createSuccess();
+        when(memberWithdrawalApplicationService.withdraw(any())).thenReturn(withdrawResult);
 
         // When & Then
         mockMvc.perform(post("/api/oauth/quit"))
                 .andExpect(status().isOk());
 
-        verify(kakaoAuthService).kakaoQuit(anyLong());
+        verify(memberWithdrawalApplicationService).withdraw(any());
     }
 
     @Test
@@ -121,13 +123,13 @@ class AuthControllerTest {
         // Given
         String refreshToken = "valid-refresh-token";
         
-        doNothing().when(kakaoAuthService).refreshToken(eq(refreshToken), any());
+        doNothing().when(tokenRefreshApplicationService).refreshToken(eq(refreshToken), any());
 
         // When & Then
         mockMvc.perform(post("/api/oauth/refresh")
                         .cookie(new Cookie("refresh_token", refreshToken)))
                 .andExpect(status().isOk());
 
-        verify(kakaoAuthService).refreshToken(eq(refreshToken), any());
+        verify(tokenRefreshApplicationService).refreshToken(eq(refreshToken), any());
     }
 }
