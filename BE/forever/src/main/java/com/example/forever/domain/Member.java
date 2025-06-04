@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
+import com.example.forever.exception.token.InsufficientTokenException;
 
 @Entity
 @Table(name = "member_tb", uniqueConstraints = {
@@ -41,7 +42,15 @@ public class Member extends BaseTimeEntity{
 
     @Builder.Default
     @Column
-    private int availableTokens = 10;
+    private int availableTokens = 3;
+
+    @Builder.Default
+    @Column(name = "total_usage_count")
+    private int totalUsageCount = 0;
+
+    @Builder.Default
+    @Column(name = "last_token_refresh_date")
+    private LocalDate lastTokenRefreshDate = LocalDate.now();
 
     @Builder.Default
     private boolean isDeleted = false;
@@ -77,11 +86,30 @@ public class Member extends BaseTimeEntity{
     }
 
     public void useToken() {
+        if (!isAvailableTokens()) {
+            throw new InsufficientTokenException("사용 가능한 토큰이 없습니다.");
+        }
         this.availableTokens--;
+        this.totalUsageCount++;
     }
 
     public boolean isAvailableTokens() {
         return this.availableTokens > 0;
+    }
+
+    public void refreshDailyTokens() {
+        this.availableTokens = 3;
+        this.lastTokenRefreshDate = LocalDate.now();
+    }
+
+    public boolean shouldRefreshTokens() {
+        return !this.lastTokenRefreshDate.equals(LocalDate.now());
+    }
+
+    public void autoRefreshTokensIfNeeded() {
+        if (shouldRefreshTokens()) {
+            refreshDailyTokens();
+        }
     }
 
     public void agreeTerms() {

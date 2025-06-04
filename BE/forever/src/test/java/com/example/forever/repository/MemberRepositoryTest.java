@@ -117,7 +117,7 @@ class MemberRepositoryTest {
         entityManager.flush();
 
         // then
-        assertThat(savedMember.getAvailableTokens()).isEqualTo(10);
+        assertThat(savedMember.getAvailableTokens()).isEqualTo(3); // 기본값 3으로 변경
         assertThat(savedMember.isDeleted()).isFalse();
         assertThat(savedMember.getDeletedAt()).isNull();
         assertThat(savedMember.getIsAgreedPolicy()).isTrue();

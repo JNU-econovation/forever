@@ -2,6 +2,7 @@ package com.example.forever.domain.member;
 
 import com.example.forever.domain.Member;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberDomainRepository {
@@ -13,4 +14,6 @@ public interface MemberDomainRepository {
     Optional<Member> findById(Long id);
     
     boolean existsByEmail(Email email);
+    
+    List<Member> findAllActiveMembers();
 }

@@ -7,6 +7,7 @@ import com.example.forever.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,5 +34,12 @@ public class MemberJpaRepositoryAdapter implements MemberDomainRepository {
     @Override
     public boolean existsByEmail(Email email) {
         return memberRepository.findByEmail(email.getValue()).isPresent();
+    }
+    
+    @Override
+    public List<Member> findAllActiveMembers() {
+        return memberRepository.findAll().stream()
+                .filter(member -> !member.isDeleted())
+                .collect(java.util.stream.Collectors.toList());
     }
 }
