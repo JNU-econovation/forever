@@ -7,6 +7,9 @@ import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.SignUpRequest;
 import com.example.forever.exception.auth.DeletedMemberException;
 import com.example.forever.application.auth.LoginResult;
+import com.example.forever.application.member.WithdrawResult;
+import com.example.forever.interfaces.web.auth.AuthController;
+import com.example.forever.application.member.MemberWithdrawalApplicationService;
 import com.example.forever.service.KakaoAuthService;
 import com.example.forever.application.member.MemberApplicationService;
 import com.example.forever.application.auth.AuthenticationApplicationService;
@@ -46,6 +49,9 @@ class AuthControllerTest {
     
     @Mock
     private AuthenticationApplicationService authenticationApplicationService;
+    
+    @Mock
+    private MemberWithdrawalApplicationService memberWithdrawalApplicationService;
 
     @InjectMocks
     private AuthController authController;
@@ -106,13 +112,14 @@ class AuthControllerTest {
     @DisplayName("카카오 회원 탈퇴 API 테스트 - 성공")
     void oAuthQuit_Success() throws Exception {
         // Given
-        doNothing().when(kakaoAuthService).kakaoQuit(anyLong());
+        WithdrawResult withdrawResult = WithdrawResult.createSuccess();
+        when(memberWithdrawalApplicationService.withdraw(any())).thenReturn(withdrawResult);
 
         // When & Then
         mockMvc.perform(post("/api/oauth/quit"))
                 .andExpect(status().isOk());
 
-        verify(kakaoAuthService).kakaoQuit(anyLong());
+        verify(memberWithdrawalApplicationService).withdraw(any());
     }
 
     @Test
