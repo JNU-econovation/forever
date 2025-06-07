@@ -25,3 +25,19 @@ jwt:
 kakao:
   client:
     id: ${KAKAO_CLIENT_ID}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
+    access:
+      default: none
+  endpoint:
+    health:
+      access: unrestricted
+    prometheus:
+      access: unrestricted
