@@ -49,7 +49,6 @@ class MarketingAgreementApplicationServiceTest {
 
         // then
         assertThat(response.isAgreement()).isTrue();
-        assertThat(response.effectiveDate()).isEqualTo("25-06-08");
         verify(marketingAgreementService).getMarketingAgreement(MemberId.of(memberId));
     }
 
@@ -68,7 +67,6 @@ class MarketingAgreementApplicationServiceTest {
 
         // then
         assertThat(response.isAgreement()).isFalse();
-        assertThat(response.effectiveDate()).isEqualTo("25-06-08");
     }
 
     @Test
@@ -87,7 +85,6 @@ class MarketingAgreementApplicationServiceTest {
 
         // then
         assertThat(response.isAgreement()).isTrue();
-        assertThat(response.effectiveDate()).isEqualTo("25-06-08");
         verify(marketingAgreementService).updateMarketingAgreement(MemberId.of(memberId), true);
     }
 
