@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/BE/forever/src/main/resources/db/migration/V1__init_schema.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/BE/forever/src/main/resources/db/migration/V7__add_marketing_agreement_to_member.sql" dialect="GenericSQL" />
   </component>
 </project>

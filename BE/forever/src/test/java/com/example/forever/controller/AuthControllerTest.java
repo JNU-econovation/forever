@@ -89,7 +89,8 @@ class AuthControllerTest {
                 "컴퓨터공학",
                 "테스트대학교",
                 "test@example.com",
-                List.of("인플로우1", "인플로우2")
+                List.of("인플로우1", "인플로우2"),
+                true
         );
         
         doNothing().when(memberApplicationService).signUp(any(), any());

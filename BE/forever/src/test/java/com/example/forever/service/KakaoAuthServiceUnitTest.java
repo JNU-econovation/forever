@@ -41,7 +41,8 @@ class MemberApplicationServiceIntegrationTest {
                 "소프트웨어공학과", 
                 "전남대학교",
                 "rootachieve@gmail.com",
-                List.of("지인추천", "기타")
+                List.of("지인추천", "기타"),
+                true
         );
 
         // when
@@ -66,7 +67,8 @@ class MemberApplicationServiceIntegrationTest {
                 "null학과",
                 "null대학교",
                 "null@example.com",
-                null
+                null,
+                false
         );
 
         // when
@@ -87,7 +89,8 @@ class MemberApplicationServiceIntegrationTest {
                 "빈리스트학과",
                 "빈리스트대학교",
                 "empty@example.com",
-                List.of()
+                List.of(),
+                null
         );
 
         // when

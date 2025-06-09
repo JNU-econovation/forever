@@ -44,7 +44,8 @@ class BasicIntegrationTest {
                 "소프트웨어공학과",
                 "전남대학교",
                 "rootachieve@gmail.com",
-                List.of("지인추천", "기타")
+                List.of("지인추천", "기타"),
+                true
         );
         
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -80,7 +81,8 @@ class BasicIntegrationTest {
                 "컴퓨터공학과",
                 "테스트대학교",
                 "test@example.com",
-                null
+                null,
+                false
         );
         
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -103,7 +105,8 @@ class BasicIntegrationTest {
                 "빈리스트학과",
                 "빈리스트대학교",
                 "empty@example.com",
-                List.of()
+                List.of(),
+                null
         );
         
         MockHttpServletResponse response = new MockHttpServletResponse();
