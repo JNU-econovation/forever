@@ -21,7 +21,7 @@ import java.util.Objects;
 public class MarketingAgreement {
     
     @Column(name = "marketing_agreement")
-    private Boolean isAgreed;
+    private boolean isAgreed;
     
     @Column(name = "marketing_agreement_date")
     private LocalDateTime agreementDate;
