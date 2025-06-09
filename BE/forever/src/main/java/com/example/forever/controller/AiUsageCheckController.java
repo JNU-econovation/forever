@@ -41,7 +41,7 @@ public class AiUsageCheckController {
         return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 
-    @PostMapping("summary/complete")
+    @PostMapping("/summary/complete")
     @Operation(summary = "요약 완료 확인", description = "문서 요약이 완료되었음을 확인하고 AI 토큰 사용량을 차감합니다.")
     @SecurityRequirement(name = "Bearer Authentication")
     @ApiResponses(value = {
