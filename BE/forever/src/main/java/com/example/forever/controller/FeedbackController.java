@@ -28,12 +28,12 @@ public class FeedbackController {
      * 피드백 제출
      */
     @PostMapping
-    public ApiResponse<ApiResponse.SuccesCustomBody<FeedbackResponse>> submitFeedback(
+    public ApiResponse<ApiResponse.SuccesCustomBody<Void>> submitFeedback(
             @Valid @RequestBody FeedbackRequest request,
             @AuthMember MemberInfo memberInfo) {
         
-        FeedbackResponse response = feedbackService.saveFeedback(request, memberInfo);
-        return ApiResponseGenerator.success(response, HttpStatus.OK);
+        feedbackService.saveFeedback(request, memberInfo);
+        return ApiResponseGenerator.success(HttpStatus.OK);
     }
 
     /**
