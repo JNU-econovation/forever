@@ -31,6 +31,11 @@ public class MemberApplicationService {
                 email, nickname, school, major, command.inflow()
         );
         
+        // 마케팅 동의 설정
+        if (command.marketingAgreement() != null) {
+            newMember.setMarketingAgreement(command.marketingAgreement());
+        }
+        
         // 회원 저장
         Member savedMember = memberRepository.save(newMember);
         

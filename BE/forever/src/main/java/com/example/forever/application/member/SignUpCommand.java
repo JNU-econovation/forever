@@ -7,6 +7,7 @@ public record SignUpCommand(
         String major,
         String school,
         String email,
-        List<String> inflow
+        List<String> inflow,
+        Boolean marketingAgreement
 ) {
 }

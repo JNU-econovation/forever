@@ -7,4 +7,8 @@ public class MemberNotFoundException extends AuthException {
     public MemberNotFoundException(Long memberId) {
         super(AuthErrorCode.MEMBER_NOT_FOUND);
     }
+    
+    public MemberNotFoundException(String message) {
+        super(AuthErrorCode.MEMBER_NOT_FOUND);
+    }
 }

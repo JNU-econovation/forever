@@ -85,7 +85,8 @@ public class AuthController {
                 request.major(),
                 request.school(),
                 request.email(),
-                request.inflow()
+                request.inflow(),
+                request.marketingAgreement()
         );
         
         memberApplicationService.signUp(command, response);

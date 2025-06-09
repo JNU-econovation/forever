@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
+import com.example.forever.domain.member.MarketingAgreement;
 import com.example.forever.exception.token.InsufficientTokenException;
 
 @Entity
@@ -14,7 +15,7 @@ import com.example.forever.exception.token.InsufficientTokenException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Member extends BaseTimeEntity{
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,10 +74,15 @@ public class Member extends BaseTimeEntity{
     @Column(name = "effective_date_terms", nullable = false)
     private LocalDate effectiveDateTerms = LocalDate.of(2025, 4, 3);
 
+    @Embedded
+    @Builder.Default
+    private MarketingAgreement marketingAgreement = MarketingAgreement.of(false);
+
 
     public void updateRefreshToken(String token) {
         this.refreshToken = token;
     }
+
     public void updateKakaoAccessToken(String token) {
         this.kakaoAccessToken = token;
     }
@@ -116,9 +122,23 @@ public class Member extends BaseTimeEntity{
         this.isAgreedTerms = true;
     }
 
-    public void delete(){
+    public void delete() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
+    }
+
+    /**
+     * 마케팅 동의 상태 변경 DDD의 Aggregate Root가 자신의 상태 변경을 관리
+     */
+    public void updateMarketingAgreement(boolean isAgreed) {
+        this.marketingAgreement = this.marketingAgreement.updateAgreement(isAgreed);
+    }
+
+    /**
+     * 마케팅 동의 정보 설정 (생성 시에만 사용)
+     */
+    public void setMarketingAgreement(boolean isAgreed) {
+        this.marketingAgreement = MarketingAgreement.of(isAgreed);
     }
 
 }

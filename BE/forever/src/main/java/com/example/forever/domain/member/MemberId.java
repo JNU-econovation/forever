@@ -20,6 +20,10 @@ public class MemberId {
             throw new IllegalArgumentException("회원 ID는 양수여야 합니다.");
         }
     }
+
+    public static MemberId of(Long value) {
+        return new MemberId(value);
+    }
     
     @Override
     public boolean equals(Object obj) {
