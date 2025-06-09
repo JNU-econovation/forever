@@ -4,6 +4,7 @@ import com.example.forever.domain.Member;
 import com.example.forever.domain.member.MemberDomainRepository;
 import com.example.forever.domain.member.MemberId;
 import com.example.forever.domain.member.TokenRefreshService;
+import com.example.forever.dto.member.TokenUsageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -53,15 +54,34 @@ public class TokenUsageApplicationService {
     }
     
     /**
+     * 남은 토큰 사용량 조회
+     */
+    @Transactional(readOnly = true)
+    public TokenUsageResponse getRemainingUsage(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new com.example.forever.exception.auth.MemberNotFoundException("회원을 찾을 수 없습니다."));
+        
+        // 필요 시 토큰 자동 갱신
+        member.autoRefreshTokensIfNeeded();
+
+        // 변경사항이 있다면 저장
+        if (member.shouldRefreshTokens()) {
+            memberRepository.save(member);
+        }
+        
+        return new TokenUsageResponse(member.getAvailableTokens());
+    }
+
+    /**
      * 수동으로 토큰을 충전합니다
      */
     public void manualRefreshTokens(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        
+
         member.refreshDailyTokens();
         memberRepository.save(member);
-        
+
         log.info("수동 토큰 충전 완료: memberId={}", memberId);
     }
 }

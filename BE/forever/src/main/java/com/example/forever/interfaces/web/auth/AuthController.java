@@ -6,10 +6,12 @@ import com.example.forever.common.response.ApiResponse;
 import com.example.forever.common.response.ApiResponseGenerator;
 import com.example.forever.dto.KakaoLoginResponse;
 import com.example.forever.dto.member.SignUpRequest;
+import com.example.forever.dto.member.TokenUsageResponse;
 import com.example.forever.application.member.SignUpCommand;
 import com.example.forever.application.member.MemberApplicationService;
 import com.example.forever.application.member.WithdrawCommand;
 import com.example.forever.application.member.MemberWithdrawalApplicationService;
+import com.example.forever.application.token.TokenUsageApplicationService;
 import com.example.forever.application.auth.AuthenticationApplicationService;
 import com.example.forever.application.auth.LoginCommand;
 import com.example.forever.application.auth.LoginResult;
@@ -40,6 +42,7 @@ public class AuthController {
     private final AuthenticationApplicationService authenticationApplicationService;
     private final MemberWithdrawalApplicationService memberWithdrawalApplicationService;
     private final TokenRefreshApplicationService tokenRefreshApplicationService;
+    private final TokenUsageApplicationService tokenUsageApplicationService;
 
     @GetMapping("/kakao")
     @Operation(summary = "카카오 로그인", description = "카카오 인가 코드를 통해 로그인을 진행합니다.")
@@ -123,5 +126,19 @@ public class AuthController {
             HttpServletResponse resp) {
         tokenRefreshApplicationService.refreshToken(refreshToken, resp);
         return ApiResponseGenerator.success(HttpStatus.OK);
+    }
+
+    @GetMapping("/usage")
+    @Operation(summary = "토큰 사용량 조회", description = "현재 사용자의 남은 토큰 사용량을 조회합니다.")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "사용량 조회 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "존재하지 않는 회원")
+    })
+    public ApiResponse<ApiResponse.SuccesCustomBody<TokenUsageResponse>> getTokenUsage(
+            @Parameter(hidden = true) @AuthMember MemberInfo memberInfo) {
+        TokenUsageResponse response = tokenUsageApplicationService.getRemainingUsage(memberInfo.getMemberId());
+        return ApiResponseGenerator.success(response, HttpStatus.OK);
     }
 }
