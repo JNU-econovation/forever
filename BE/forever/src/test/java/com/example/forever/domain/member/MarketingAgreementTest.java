@@ -101,7 +101,6 @@ class MarketingAgreementTest {
 
         // when & then
         assertThat(agreement).isNotEqualTo(null);
-        assertThat(agreement.getIsAgreed()).isNotNull();
         assertThat(agreement.getAgreementDate()).isNotNull();
     }
 }

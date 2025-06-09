@@ -68,7 +68,6 @@ public class RestoreServiceTest {
         testFolder.delete(); // 소프트 삭제 상태로 만들기
 
         testDocument = Document.builder()
-                .id(1L)
                 .title("Test Document")
                 .summary("Test Summary")
                 .member(testMember)

@@ -7,6 +7,7 @@ import com.example.forever.domain.Member;
 import com.example.forever.dto.feedback.FeedbackRequest;
 import com.example.forever.dto.feedback.FeedbackResponse;
 import com.example.forever.repository.FeedbackRepository;
+import com.example.forever.repository.FeedbackContentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
+    private final FeedbackContentRepository feedbackContentRepository;
     private final MemberValidator memberValidator;
     private final DiscordWebhookService discordWebhookService;
 
@@ -29,22 +31,23 @@ public class FeedbackService {
      * 피드백 저장
      */
     @Transactional
-    public FeedbackResponse saveFeedback(FeedbackRequest request, MemberInfo memberInfo) {
+    public void saveFeedback(FeedbackRequest request, MemberInfo memberInfo) {
         Member member = memberValidator.validateAndGetById(memberInfo.getMemberId());
 
-        Feedback feedback = Feedback.builder()
-                .position(request.position())
-                .content(request.content())
-                .rating(request.rating())
-                .member(member)
-                .build();
+        Feedback feedback = Feedback.create(
+                request.position(),
+                request.rating(),
+                member,
+                request.content()
+        );
 
         Feedback savedFeedback = feedbackRepository.save(feedback);
         
         // Discord 웹훅을 통해 알림 전송
         discordWebhookService.sendFeedbackNotification(savedFeedback);
 
-        return FeedbackResponse.fromEntity(savedFeedback);
+        log.info("피드백이 저장되었습니다. 위치: {}, 평점: {}, 내용 개수: {}", 
+                request.position(), request.rating(), request.content().size());
     }
 
     /**
