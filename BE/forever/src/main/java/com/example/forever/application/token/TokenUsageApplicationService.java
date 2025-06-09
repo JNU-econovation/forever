@@ -56,7 +56,7 @@ public class TokenUsageApplicationService {
     /**
      * 남은 토큰 사용량 조회
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public TokenUsageResponse getRemainingUsage(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new com.example.forever.exception.auth.MemberNotFoundException("회원을 찾을 수 없습니다."));

@@ -7,11 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 토큰 사용량 관련 도메인 서비스
- * DDD의 Domain Service 패턴을 적용하여 비즈니스 로직을 캡슐화
  */
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class TokenUsageService {
     
     private final MemberDomainRepository memberDomainRepository;
