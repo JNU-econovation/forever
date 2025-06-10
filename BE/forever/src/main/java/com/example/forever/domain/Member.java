@@ -64,7 +64,7 @@ public class Member extends BaseTimeEntity {
 
     @Builder.Default
     @Column(name = "effective_date_policy", nullable = false)
-    private LocalDate effectiveDatePolicy = LocalDate.of(2025, 4, 3);
+    private LocalDate effectiveDatePolicy = LocalDate.of(2025, 6, 17);
 
     @Builder.Default
     @Column(name = "is_agreed_terms", nullable = false)
@@ -72,7 +72,7 @@ public class Member extends BaseTimeEntity {
 
     @Builder.Default
     @Column(name = "effective_date_terms", nullable = false)
-    private LocalDate effectiveDateTerms = LocalDate.of(2025, 4, 3);
+    private LocalDate effectiveDateTerms = LocalDate.of(2025, 6, 17);
 
     @Embedded
     @Builder.Default

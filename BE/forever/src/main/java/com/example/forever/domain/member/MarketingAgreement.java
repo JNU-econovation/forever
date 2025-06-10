@@ -2,6 +2,7 @@ package com.example.forever.domain.member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,13 +25,13 @@ public class MarketingAgreement {
     private boolean isAgreed;
     
     @Column(name = "marketing_agreement_date")
-    private LocalDateTime agreementDate;
+    private LocalDate agreementDate;
     
     /**
      * 마케팅 동의 생성 팩토리 메서드
      */
     public static MarketingAgreement of(boolean isAgreed) {
-        return new MarketingAgreement(isAgreed, LocalDateTime.now());
+        return new MarketingAgreement(isAgreed, LocalDate.of(2025, 6, 17));
     }
     
     /**
@@ -41,7 +42,7 @@ public class MarketingAgreement {
         if (this.isAgreed == newAgreement) {
             return this;
         }
-        return new MarketingAgreement(newAgreement, LocalDateTime.now());
+        return new MarketingAgreement(newAgreement, LocalDate.of(2025, 6, 17));
     }
     
     /**
@@ -54,7 +55,7 @@ public class MarketingAgreement {
     /**
      * 동의 날짜 조회 (방어적 복사)
      */
-    public LocalDateTime getAgreementDate() {
+    public LocalDate getAgreementDate() {
         return agreementDate;
     }
     
