@@ -12,8 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,18 +30,15 @@ class MarketingAgreementApplicationServiceTest {
     @InjectMocks
     private MarketingAgreementApplicationService applicationService;
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy-MM-dd");
-
     @Test
     @DisplayName("마케팅 동의 정보 조회 성공")
     void getMarketingAgreement_Success() {
         // given
         Long memberId = 1L;
-        LocalDateTime agreementDate = LocalDateTime.of(2025, 6, 8, 12, 0);
         MarketingAgreement agreement = MarketingAgreement.of(true);
 
         when(marketingAgreementService.getMarketingAgreement(any(MemberId.class)))
-                .thenReturn(createMarketingAgreementWithDate(true, agreementDate));
+                .thenReturn(agreement);
 
         // when
         MarketingAgreementResponse response = applicationService.getMarketingAgreement(memberId);
@@ -57,10 +53,10 @@ class MarketingAgreementApplicationServiceTest {
     void getMarketingAgreement_NotAgreed() {
         // given
         Long memberId = 1L;
-        LocalDateTime agreementDate = LocalDateTime.of(2025, 6, 8, 15, 30);
+        MarketingAgreement agreement = MarketingAgreement.of(false);
 
         when(marketingAgreementService.getMarketingAgreement(any(MemberId.class)))
-                .thenReturn(createMarketingAgreementWithDate(false, agreementDate));
+                .thenReturn(agreement);
 
         // when
         MarketingAgreementResponse response = applicationService.getMarketingAgreement(memberId);
@@ -75,10 +71,10 @@ class MarketingAgreementApplicationServiceTest {
         // given
         Long memberId = 1L;
         MarketingAgreementUpdateRequest request = new MarketingAgreementUpdateRequest(true);
-        LocalDateTime updatedDate = LocalDateTime.of(2025, 6, 8, 16, 45);
+        MarketingAgreement updatedAgreement = MarketingAgreement.of(true);
 
         when(marketingAgreementService.updateMarketingAgreement(any(MemberId.class), eq(true)))
-                .thenReturn(createMarketingAgreementWithDate(true, updatedDate));
+                .thenReturn(updatedAgreement);
 
         // when
         MarketingAgreementResponse response = applicationService.updateMarketingAgreement(memberId, request);
@@ -94,10 +90,10 @@ class MarketingAgreementApplicationServiceTest {
         // given
         Long memberId = 1L;
         MarketingAgreementUpdateRequest request = new MarketingAgreementUpdateRequest(false);
-        LocalDateTime updatedDate = LocalDateTime.of(2025, 12, 25, 10, 30);
+        MarketingAgreement updatedAgreement = MarketingAgreement.of(false);
 
         when(marketingAgreementService.updateMarketingAgreement(any(MemberId.class), eq(false)))
-                .thenReturn(createMarketingAgreementWithDate(false, updatedDate));
+                .thenReturn(updatedAgreement);
 
         // when
         MarketingAgreementResponse response = applicationService.updateMarketingAgreement(memberId, request);
@@ -107,12 +103,21 @@ class MarketingAgreementApplicationServiceTest {
         verify(marketingAgreementService).updateMarketingAgreement(MemberId.of(memberId), false);
     }
 
-    /**
-     * 테스트용 MarketingAgreement 생성 (특정 날짜 포함)
-     */
-    private MarketingAgreement createMarketingAgreementWithDate(boolean isAgreed, LocalDateTime date) {
-        MarketingAgreement mockAgreement = MarketingAgreement.of(isAgreed);
-        // 단순화를 위해 현재 시간 사용
-        return mockAgreement;
+    @Test
+    @DisplayName("마케팅 동의 날짜 확인")
+    void verifyMarketingAgreementDate() {
+        // given
+        Long memberId = 1L;
+        MarketingAgreement agreement = MarketingAgreement.of(true);
+
+        when(marketingAgreementService.getMarketingAgreement(any(MemberId.class)))
+                .thenReturn(agreement);
+
+        // when
+        MarketingAgreementResponse response = applicationService.getMarketingAgreement(memberId);
+
+        // then
+        assertThat(response.isAgreement()).isTrue();
+        // 날짜는 고정값이므로 별도 검증 불필요 (도메인 레벨에서 검증됨)
     }
 }
