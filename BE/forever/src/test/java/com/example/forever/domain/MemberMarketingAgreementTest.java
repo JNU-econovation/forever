@@ -4,7 +4,7 @@ import com.example.forever.domain.member.MarketingAgreement;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +39,7 @@ class MemberMarketingAgreementTest {
 
         // then
         assertThat(member.getMarketingAgreement().isAgreed()).isTrue();
-        assertThat(member.getMarketingAgreement().getAgreementDate()).isBefore(LocalDateTime.now().plusSeconds(1));
+        assertThat(member.getMarketingAgreement().getAgreementDate()).isEqualTo(LocalDate.of(2025, 6, 17));
     }
 
     @Test
@@ -51,14 +51,15 @@ class MemberMarketingAgreementTest {
                 .nickname("테스트")
                 .build();
         member.setMarketingAgreement(false);
-        LocalDateTime originalDate = member.getMarketingAgreement().getAgreementDate();
+        LocalDate originalDate = member.getMarketingAgreement().getAgreementDate();
 
         // when
         member.updateMarketingAgreement(true);
 
         // then
         assertThat(member.getMarketingAgreement().isAgreed()).isTrue();
-        assertThat(member.getMarketingAgreement().getAgreementDate()).isAfter(originalDate);
+        assertThat(member.getMarketingAgreement().getAgreementDate()).isEqualTo(LocalDate.of(2025, 6, 17));
+        assertThat(originalDate).isEqualTo(LocalDate.of(2025, 6, 17)); // 원본 날짜도 같은 고정값
     }
 
     @Test
@@ -91,11 +92,31 @@ class MemberMarketingAgreementTest {
         // when & then
         member.setMarketingAgreement(true);
         assertThat(member.getMarketingAgreement().isAgreed()).isTrue();
+        assertThat(member.getMarketingAgreement().getAgreementDate()).isEqualTo(LocalDate.of(2025, 6, 17));
 
         member.updateMarketingAgreement(false);
         assertThat(member.getMarketingAgreement().isAgreed()).isFalse();
+        assertThat(member.getMarketingAgreement().getAgreementDate()).isEqualTo(LocalDate.of(2025, 6, 17));
 
         member.updateMarketingAgreement(true);
         assertThat(member.getMarketingAgreement().isAgreed()).isTrue();
+        assertThat(member.getMarketingAgreement().getAgreementDate()).isEqualTo(LocalDate.of(2025, 6, 17));
+    }
+
+    @Test
+    @DisplayName("마케팅 동의 날짜가 DATE 타입으로 정상 저장됨")
+    void marketingAgreementDate_IsDateType() {
+        // given & when
+        Member member = Member.builder()
+                .email("test@example.com")
+                .nickname("테스트")
+                .build();
+        member.setMarketingAgreement(true);
+
+        // then
+        LocalDate agreementDate = member.getMarketingAgreement().getAgreementDate();
+        assertThat(agreementDate).isNotNull();
+        assertThat(agreementDate).isInstanceOf(LocalDate.class);
+        assertThat(agreementDate).isEqualTo(LocalDate.of(2025, 6, 17));
     }
 }
